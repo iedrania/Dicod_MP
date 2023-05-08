@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Mentoring</string>
+
+    <!--Profile Page-->
+    <string name="tvFullname">Full Name</string>
+    <string name="tvRole">Role</string>
+    <string name="tvUsername">Username</string>
+    <string name="tvEmail">Email</string>
+    <string name="hintFullname">Insert your name</string>
+    <string name="hintRole">Insert your name</string>
+    <string name="tvGender">Gender</string>
+    <string name="tvInterest">Interest</string>
+    <string name="btnLogout">Logout</string>
 </resources>

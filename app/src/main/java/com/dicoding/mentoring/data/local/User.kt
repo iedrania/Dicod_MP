@@ -1,4 +1,7 @@
 package com.dicoding.mentoring.data.local
 
-class User {
-}
+data class User (
+    val id : Int,
+    val name : String,
+    val photo : Int,
+)
