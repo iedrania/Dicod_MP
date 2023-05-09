@@ -1,4 +1,9 @@
 package com.dicoding.mentoring.data.local
 
-class User {
-}
+data class User(
+    val loginResult: Login
+)
+
+data class Login(
+    val token: String
+) // TODO sesuaikan dengan API
