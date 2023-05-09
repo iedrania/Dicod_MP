@@ -2,7 +2,7 @@ package com.dicoding.mentoring.ui
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.dicoding.mentoring.data.local.User
+import com.dicoding.mentoring.data.local.UserResponse
 import com.dicoding.mentoring.data.remote.network.ApiConfig
 import com.dicoding.mentoring.helper.LoginPreferences
 import kotlinx.coroutines.launch
@@ -22,9 +22,9 @@ class UserViewModel(private val pref: LoginPreferences) : ViewModel() {
         _isError.value = false
         _isLoading.value = true
         val client = ApiConfig.getApiService().postRegister(name, email, password)
-        client.enqueue(object : Callback<User> {
+        client.enqueue(object : Callback<UserResponse> {
             override fun onResponse(
-                call: Call<User>, response: Response<User>
+                call: Call<UserResponse>, response: Response<UserResponse>
             ) {
                 _isLoading.value = false
                 val responseBody = response.body()
@@ -39,7 +39,7 @@ class UserViewModel(private val pref: LoginPreferences) : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<User>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 _isLoading.value = false
                 _isError.value = true
                 Log.e(TAG, "postRegister onFailure: ${t.message}")
@@ -51,9 +51,9 @@ class UserViewModel(private val pref: LoginPreferences) : ViewModel() {
         _isError.value = false
         _isLoading.value = true
         val client = ApiConfig.getApiService().postLogin(email, password)
-        client.enqueue(object : Callback<User> {
+        client.enqueue(object : Callback<UserResponse> {
             override fun onResponse(
-                call: Call<User>, response: Response<User>
+                call: Call<UserResponse>, response: Response<UserResponse>
             ) {
                 _isLoading.value = false
                 val responseBody = response.body()
@@ -68,7 +68,7 @@ class UserViewModel(private val pref: LoginPreferences) : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<User>, t: Throwable) {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 _isLoading.value = false
                 _isError.value = true
                 Log.e(TAG, "postLogin onFailure: ${t.message}")
