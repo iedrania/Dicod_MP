@@ -13,6 +13,7 @@ import com.dicoding.mentoring.helper.LoginPreferences
 import com.dicoding.mentoring.helper.ViewModelFactory
 import com.dicoding.mentoring.ui.UserViewModel
 import com.dicoding.mentoring.ui.login.LoginActivity
+import com.dicoding.mentoring.ui.rating.RatingActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "login")
 
@@ -36,6 +37,12 @@ class MainActivity : AppCompatActivity() {
         val btnMainLogout = findViewById<Button>(R.id.btn_main_logout)
         btnMainLogout.setOnClickListener {
             userViewModel.saveLoginInfo("")
+        }
+
+        val btnMainRating = findViewById<Button>(R.id.btn_main_rating)
+        btnMainRating.setOnClickListener {
+            val intent = Intent(this@MainActivity, RatingActivity::class.java)
+            startActivity(intent)
         }
     }
 }

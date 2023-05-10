@@ -21,4 +21,9 @@
     <string name="tvGender">Gender</string>
     <string name="tvInterest">Interest</string>
     <string name="btnLogout">Logout</string>
+
+    <string name="rate_prompt">Bagaimana pengalaman mentoring Anda bersama Mentor?</string>
+    <string name="feedback_prompt">Berikan feedback Anda untuk mentor…</string>
+    <string name="submit">Kirim</string>
+    <string name="rating_bar">Bintang</string>
 </resources>
