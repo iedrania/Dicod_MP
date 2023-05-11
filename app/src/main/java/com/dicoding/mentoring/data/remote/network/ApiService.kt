@@ -1,6 +1,6 @@
 package com.dicoding.mentoring.data.remote.network
 
-import com.dicoding.mentoring.data.local.UserResponse
+import com.dicoding.mentoring.data.local.RegisterResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -11,12 +11,5 @@ interface ApiService {
         @Field("name") name: String,
         @Field("email") email: String,
         @Field("password") password: String
-    ): Call<UserResponse>
-
-    @FormUrlEncoded
-    @POST("login")
-    fun postLogin(
-        @Field("email") email: String,
-        @Field("password") password: String
-    ): Call<UserResponse>
+    ): Call<RegisterResponse>
 }

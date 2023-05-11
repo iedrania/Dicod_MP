@@ -1,42 +1,30 @@
 package com.dicoding.mentoring
 
-import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
-import com.dicoding.mentoring.helper.LoginPreferences
-import com.dicoding.mentoring.helper.ViewModelFactory
-import com.dicoding.mentoring.ui.UserViewModel
+import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.mentoring.ui.login.LoginActivity
 import com.dicoding.mentoring.ui.rating.RatingActivity
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "login")
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val pref = LoginPreferences.getInstance(dataStore)
-        val userViewModel = ViewModelProvider(
-            this, ViewModelFactory(pref)
-        )[UserViewModel::class.java]
-        userViewModel.getLoginInfo().observe(this) { token ->
-            if (token.isEmpty()) {
-                val intent = Intent(this@MainActivity, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-        }
+        auth = Firebase.auth
 
         val btnMainLogout = findViewById<Button>(R.id.btn_main_logout)
         btnMainLogout.setOnClickListener {
-            userViewModel.saveLoginInfo("")
+            Firebase.auth.signOut()
+            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+            finish()
         }
 
         val btnMainRating = findViewById<Button>(R.id.btn_main_rating)
