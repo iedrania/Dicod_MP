@@ -40,4 +40,7 @@
     <string name="title_home">Home</string>
     <string name="title_profile">Profile</string>
     <string name="tvMenteeName">Mentee name</string>
+
+    <!--Chat-->
+    <string name="say_something">Katakan sesuatu…</string>
 </resources>
