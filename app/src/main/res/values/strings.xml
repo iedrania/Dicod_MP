@@ -26,9 +26,17 @@
     <string name="hintRole">Insert your name</string>
     <string name="tvGender">Gender</string>
     <string name="tvInterest">Interest</string>
+    <string name="tvBiography">Biography</string>
+    <string name="btnSave">Save</string>
 
     <!--Rating Page-->
     <string name="rate_prompt">Bagaimana pengalaman mentoring Anda bersama Mentor?</string>
     <string name="feedback_prompt">Berikan feedback Anda untuk mentor…</string>
     <string name="rating_bar">Bintang</string>
+
+    <!--Bottom Navigation-->
+    <string name="title_message">Message</string>
+    <string name="title_schedule">Schedule</string>
+    <string name="title_home">Home</string>
+    <string name="title_profile">Profile</string>
 </resources>

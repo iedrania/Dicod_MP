@@ -23,9 +23,6 @@
             android:name=".ui.profile.ListInterestActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.profile.ProfileActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
@@ -37,6 +34,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".BottomNavigationActivity"
+            android:exported="true">
+        </activity>
     </application>
-
 </manifest>

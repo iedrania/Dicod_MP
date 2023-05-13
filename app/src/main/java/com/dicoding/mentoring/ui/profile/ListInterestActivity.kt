@@ -22,10 +22,15 @@ class ListInterestActivity : AppCompatActivity() {
         supportActionBar?.setTitle("Choose Interest")
 
         val interests = listOf(
-            Interest("Multiplatform"),
-            Interest("Machine Learning"),
-            Interest("Mobile Development"),
-            Interest("React Development")
+            Interest("Android Developer"),
+            Interest("iOS Developer"),
+            Interest("Multi-Platform App Developer"),
+            Interest("Machine Learning Developer"),
+            Interest("Front-End Web Developer"),
+            Interest("Back-End Web Developer"),
+            Interest("React Developer"),
+            Interest("DevOps Engineer Developer"),
+            Interest("Google Cloud Professional"),
         )
 
         //setRecyclerView
@@ -33,5 +38,11 @@ class ListInterestActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         val adapter = InterestAdapter(interests)
         recyclerView.adapter = adapter
+
+        val btnSave = findViewById<Button>(R.id.btn_save)
+
+        btnSave.setOnClickListener{
+            finish()
+        }
     }
 }
