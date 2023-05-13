@@ -39,12 +39,12 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/quicksand_semibold"
                 android:maxLines="1"
-                android:text="Kim Namjoon"
                 android:textColor="@color/primary"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_item_photo"
-                app:layout_constraintTop_toTopOf="@id/iv_item_photo" />
+                app:layout_constraintTop_toTopOf="@id/iv_item_photo"
+                tools:text="Kim Namjoon" />
 
             <RatingBar
                 style="?android:attr/ratingBarStyleSmall"
@@ -61,8 +61,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
-            android:text="Lorem ipsum dolor sit amet. Literally the best leader of all time."
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            tools:text="Lorem ipsum dolor sit amet. Literally the best leader of all time." />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
@@ -72,27 +72,27 @@
             <com.google.android.material.chip.Chip
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Android" />
+                tools:text="Android" />
 
             <com.google.android.material.chip.Chip
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="UI/UX" />
+                tools:text="UI/UX" />
 
             <com.google.android.material.chip.Chip
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Web" />
+                tools:text="Web" />
 
             <com.google.android.material.chip.Chip
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Web Dev" />
+                tools:text="Web Dev" />
 
             <com.google.android.material.chip.Chip
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Web Dev" />
+                tools:text="Web Dev" />
 
         </com.google.android.material.chip.ChipGroup>
     </LinearLayout>

@@ -20,6 +20,11 @@ class MainActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
+        val btnMainMain = findViewById<Button>(R.id.btn_main_main)
+        btnMainMain.setOnClickListener {
+            startActivity(Intent(this@MainActivity, BottomNavigationActivity::class.java))
+        }
+
         val btnMainLogout = findViewById<Button>(R.id.btn_main_logout)
         btnMainLogout.setOnClickListener {
             Firebase.auth.signOut()
@@ -29,8 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         val btnMainRating = findViewById<Button>(R.id.btn_main_rating)
         btnMainRating.setOnClickListener {
-            val intent = Intent(this@MainActivity, RatingActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this@MainActivity, RatingActivity::class.java))
         }
     }
 }
