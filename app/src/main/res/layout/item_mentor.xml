@@ -16,7 +16,6 @@
         android:paddingVertical="14dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_item_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -45,6 +44,7 @@
                 tools:text="Kim Namjoon" />
 
             <RatingBar
+                android:id="@+id/rb_item_rating"
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -63,28 +63,9 @@
             tools:text="Lorem ipsum dolor sit amet. Literally the best leader of all time." />
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group"
+            android:id="@+id/cg_item_interests"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" />
 
-            <com.google.android.material.chip.Chip
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                tools:text="Android" />
-
-            <com.google.android.material.chip.Chip
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                tools:text="UI/UX" />
-
-            <com.google.android.material.chip.Chip
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                tools:text="Web" />
-
-        </com.google.android.material.chip.ChipGroup>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

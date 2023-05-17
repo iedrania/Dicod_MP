@@ -30,28 +30,28 @@ class ProfileFragment : Fragment() {
         }
 
         //action when click Add Interest
-        binding.chipAddInterest.setOnClickListener{
+        binding.chipAddInterest.setOnClickListener {
             val intent = Intent(activity, ListInterestActivity::class.java)
             activity?.startActivity(intent)
         }
 
         //action when click button save
-        binding.btnSave.setOnClickListener{
-            Toast.makeText(context,"Data berhasil disimpan",Toast.LENGTH_SHORT).show()
+        binding.btnSave.setOnClickListener {
+            Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
         }
 
         return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_fragment_profile,menu)
+        inflater.inflate(R.menu.menu_fragment_profile, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
-            R.id.action_logout ->{
-                Toast.makeText(context,"Action logo berhasil",Toast.LENGTH_SHORT).show()
+        when (item.itemId) {
+            R.id.action_logout -> {
+                Toast.makeText(context, "Action logo berhasil", Toast.LENGTH_SHORT).show()
             }
         }
         return super.onContextItemSelected(item)
@@ -64,9 +64,9 @@ class ProfileFragment : Fragment() {
 //    }
 
 
-    private fun openGallery(){
+    private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent,PICK_IMAGE_REQUEST)
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
     @Suppress
@@ -79,7 +79,6 @@ class ProfileFragment : Fragment() {
             // Save the imageUri for further use, such as updating user profile
         }
     }
-
 
 
 }

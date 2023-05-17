@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <include layout="@layout/item_mentor" />
-
     <Button
         android:id="@+id/btn_main_main"
         android:layout_width="wrap_content"

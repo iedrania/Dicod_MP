@@ -9,6 +9,7 @@
     <string name="tvFullname">Full Name</string>
     <string name="logout">Keluar</string>
     <string name="btnLogout">Logout</string>
+    <string name="error_toast">Mohon coba lagi nanti.</string>
 
     <!--Auth-->
     <string name="login">Masuk</string>
