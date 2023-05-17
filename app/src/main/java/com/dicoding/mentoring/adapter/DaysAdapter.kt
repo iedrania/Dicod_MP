@@ -1,23 +1,26 @@
 package com.dicoding.mentoring.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
+import com.dicoding.mentoring.R
 import com.dicoding.mentoring.data.local.Days
-import com.dicoding.mentoring.databinding.ItemDaysChipBinding
+import com.dicoding.mentoring.databinding.InterestItemBinding
 
 class DaysAdapter(private val days : List<Days>): RecyclerView.Adapter<DaysAdapter.DaysViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DaysAdapter.DaysViewHolder {
-        val binding = ItemDaysChipBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return DaysViewHolder(binding)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.interest_item,parent,false)
+        return DaysViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: DaysViewHolder, position: Int) {
         val days = days[position]
-        holder.binding.itemChipDay.text = days.name
-        holder.binding.itemChipDay.isChecked = days.isSelected
+        holder.checkBox.text = days.name
+        holder.checkBox.isChecked = days.isSelected
 
-        holder.binding.itemChipDay.setOnCheckedChangeListener{_, isChecked ->
+        holder.checkBox.setOnCheckedChangeListener{_, isChecked ->
             days.isSelected = isChecked
         }
     }
@@ -26,7 +29,9 @@ class DaysAdapter(private val days : List<Days>): RecyclerView.Adapter<DaysAdapt
         return days.size
     }
 
-    inner class DaysViewHolder(val binding: ItemDaysChipBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class DaysViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        val checkBox: CheckBox = itemView.findViewById(R.id.checkBox)
+    }
 
 
 }

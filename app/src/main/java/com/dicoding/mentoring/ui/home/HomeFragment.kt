@@ -9,9 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.mentoring.adapter.DaysAdapter
 import com.dicoding.mentoring.adapter.MentorsAdapter
-import com.dicoding.mentoring.data.local.Days
 import com.dicoding.mentoring.databinding.FragmentHomeBinding
 import com.dicoding.mentoring.ui.login.LoginActivity
 import com.google.firebase.auth.ktx.auth
@@ -30,6 +28,12 @@ class HomeFragment : Fragment() {
     ): View {
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        binding.chipChooseDays.setOnClickListener {
+            val intent = Intent(activity, ListDayActivity::class.java)
+            activity?.startActivity(intent)
+        }
+
         return binding.root
     }
 
@@ -40,20 +44,6 @@ class HomeFragment : Fragment() {
 
         homeViewModel.isLoading.observe(viewLifecycleOwner) { showLoading(it) }
         homeViewModel.isError.observe(viewLifecycleOwner) { showError(it) }
-
-        val days = listOf(
-            Days("Monday", false),
-            Days("Tuesday", false),
-            Days("Wednesday", false),
-            Days("Thursday", false),
-            Days("Friday", false),
-            Days("Saturday", false),
-            Days("Sunday", false)
-        )
-
-        binding.rvDays.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rvDays.adapter = DaysAdapter(days)
     }
 
     private fun getCurrentUser() {
