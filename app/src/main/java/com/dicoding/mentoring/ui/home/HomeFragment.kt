@@ -1,5 +1,6 @@
 package com.dicoding.mentoring.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.mentoring.adapter.DaysAdapter
 import com.dicoding.mentoring.data.local.Days
 import com.dicoding.mentoring.databinding.FragmentHomeBinding
+import com.dicoding.mentoring.ui.profile.ListInterestActivity
 
 class HomeFragment : Fragment() {
 
@@ -31,28 +33,18 @@ class HomeFragment : Fragment() {
         val homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+
+        binding.chipChooseDays.setOnClickListener {
+            val intent = Intent(activity, ListDayActivity::class.java)
+            activity?.startActivity(intent)
+        }
+
         return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val days = listOf(
-            Days("Monday",false),
-            Days("Tuesday",false),
-            Days("Wednesday",false),
-            Days("Thursday",false),
-            Days("Friday",false),
-            Days("Saturday",false),
-            Days("Sunday",false)
-        )
-
-        adapter = DaysAdapter(days)
-
-        binding.rvDays.layoutManager =  LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rvDays.adapter = adapter
 
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
