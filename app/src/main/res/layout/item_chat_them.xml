@@ -7,18 +7,21 @@
     android:layout_marginVertical="12dp">
 
     <TextView
-        android:id="@+id/tv_item_chat_text_me"
+        android:id="@+id/tv_item_chat_text_them"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/rounded_message_me"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/rounded_message_them"
+        android:elevation="5dp"
         android:maxWidth="300dp"
+        android:padding="15dp"
         android:paddingHorizontal="20dp"
         android:paddingVertical="14dp"
         android:textColor="@android:color/black"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="This is my message" />
+        tools:text="Other's message" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
