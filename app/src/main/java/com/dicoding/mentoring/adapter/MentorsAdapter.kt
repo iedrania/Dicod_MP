@@ -1,5 +1,6 @@
 package com.dicoding.mentoring.adapter
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -36,46 +37,117 @@ class MentorsAdapter(
         Glide.with(holder.itemView.context).load(mentor.photoUrl).into(holder.binding.ivItemPhoto)
 
         holder.itemView.setOnClickListener {
-            val group = hashMapOf(
-                "createdAt" to Timestamp.now(),
-                "createdBy" to user.uid,
-                "isPrivate" to true,
-                "members" to arrayListOf(user.uid, mentor.id),
-                "modifiedAt" to Timestamp.now(),
-                "name" to mentor.name,
-                "recentMessage" to hashMapOf(
-                    "messageText" to null,
-                    "sentAt" to null,
-                    "sentBy" to null,
-                )
-            )
+            var groupId: String
+            val listGroup: MutableList<Pair<String, ArrayList<String>>> = mutableListOf()
 
-            var groupId = ""
+            db.collection("groups").whereArrayContains("members", user.uid).get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        Log.d(TAG, "${document.id} => ${document.data}")
+                        document.data.toString().let {
+                            val (id, members) = document.id to (document.data["members"] as ArrayList<String>)
+                            val tuple = id to members
+                            listGroup.add(tuple)
+                        }
+                    }
 
-            // TODO check if group already exist
-            db.collection("groups").add(group).addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
-                groupId = documentReference.id
-                // TODO if groupId == ""
-            }.addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-            }
+                    for ((id, members) in listGroup) {
+                        if (members.contains(mentor.id)) {
+                            groupId = id
+                            break
+                        }
+                    }
 
-            // FIXME empty string added to groups even when groupId is not
-            db.collection("users").document(user.uid)
-                .update("groups", FieldValue.arrayUnion(groupId))
-                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
-                .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
-            db.collection("users").document(mentor.id)
-                .update("groups", FieldValue.arrayUnion(groupId))
-                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
-                .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+                    if (documents.isEmpty) {
+                        val group = hashMapOf(
+                            "createdAt" to Timestamp.now(),
+                            "createdBy" to user.uid,
+                            "displayName" to hashMapOf(
+                                "group" to "",
+                                "mentor" to mentor.name,
+                                "mentee" to user.displayName,
+                            ),
+                            "isPrivate" to true,
+                            "members" to hashMapOf(
+                                user.uid to true,
+                                mentor.id to true,
+                            ),
+                            "modifiedAt" to Timestamp.now(),
+                            "photoUrl" to hashMapOf(
+                                "mentee" to user.photoUrl.toString(),
+                                "mentor" to mentor.photoUrl.toString(),
+                            ),
+                            "recentMessage" to hashMapOf(
+                                "messageText" to null,
+                                "senderName" to null,
+                                "senderPhotoUrl" to null,
+                                "sentAt" to null,
+                                "sentBy" to null,
+                            )
+                        )
 
+                        db.collection("groups").add(group)
+                            .addOnSuccessListener { documentReference ->
+                                Log.d(
+                                    TAG, "DocumentSnapshot written with ID: ${documentReference.id}"
+                                )
+
+                                groupId = documentReference.id
+
+                                db.collection("users").document(user.uid)
+                                    .update("groups", FieldValue.arrayUnion(groupId))
+                                    .addOnSuccessListener {
+                                        Log.d(TAG, "DocumentSnapshot successfully updated!")
+
+                                        db.collection("users").document(mentor.id)
+                                            .update("groups", FieldValue.arrayUnion(groupId))
+                                            .addOnSuccessListener {
+                                                Log.d(TAG, "DocumentSnapshot successfully updated!")
+                                            }.addOnFailureListener { e ->
+                                                Log.w(TAG, "Error updating document", e)
+                                            }
+
+                                        openChatActivity(
+                                            holder.itemView.context,
+                                            groupId,
+                                            group["displayName"] as Map<String, String>
+                                        )
+                                    }.addOnFailureListener { e ->
+                                        Log.w(TAG, "Error updating document", e)
+                                    }
+                            }.addOnFailureListener { e ->
+                                Log.w(TAG, "Error adding document", e)
+                            }
+                    } else {
+                        val document = documents.first()
+                        openChatActivity(
+                            holder.itemView.context,
+                            document.id,
+                            document.data["displayName"] as Map<String, String>
+                        )
+                    }
+                }.addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting groups documents: ", exception)
+                }
+        }
+    }
+
+    private fun openChatActivity(
+        context: Context, groupId: String, mapDisplayName: Map<String, String>
+    ) {
+        if (groupId.isNotEmpty()) {
             // TODO move fragment to chats
-            val intent = Intent(holder.itemView.context, ChatActivity::class.java)
+            val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra("extra_group", groupId)
-            intent.putExtra("extra_title", mentor.id) // TODO based on role
-            holder.itemView.context.startActivity(intent)
+//          TODO if (user.getIdToken(false).result.claims["mentee"] as Boolean) {
+            if (true) {
+                intent.putExtra("extra_title", mapDisplayName["mentor"])
+            } else {
+                intent.putExtra("extra_title", mapDisplayName["mentee"])
+            }
+            context.startActivity(intent)
+        } else {
+            Log.d(TAG, "groupId empty")
         }
     }
 

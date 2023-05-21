@@ -48,12 +48,12 @@ class MessageFragment : Fragment() {
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
                         Log.d(TAG, "${document.id} => ${document.data}")
-                        val (id, message) = document.id to (document.data["recentMessage"] as Map<String, Any>)
+                        val (id, message) = document.id to (document.data)
                         val tuple = id to message
                         listMessage.add(tuple)
                     }
                     binding.rvMessages.layoutManager = LinearLayoutManager(requireContext())
-                    binding.rvMessages.adapter = MessagesAdapter(listMessage)
+                    binding.rvMessages.adapter = MessagesAdapter(user, listMessage)
                 }.addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting groups documents: ", exception)
                 }

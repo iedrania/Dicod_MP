@@ -9,6 +9,7 @@ import com.dicoding.mentoring.adapter.ChatAdapter
 import com.dicoding.mentoring.data.local.Chat
 import com.dicoding.mentoring.databinding.ActivityChatBinding
 import com.dicoding.mentoring.ui.login.LoginActivity
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
@@ -37,8 +38,41 @@ class ChatActivity : AppCompatActivity() {
         val user = Firebase.auth.currentUser
         if (user !== null) {
             val db = Firebase.firestore
+
+            binding.btnChatSend.setOnClickListener {
+                if (binding.edChatInput.text.isNotBlank()) {
+                    val data = hashMapOf(
+                        "messageText" to binding.edChatInput.text.toString(),
+                        "sentBy" to user.uid,
+                        "sentAt" to Timestamp.now(),
+                        "imageUrl" to null, // TODO image chat
+                    )
+
+                    db.collection("messages/${groupId}/texts").add(data)
+                        .addOnSuccessListener { documentReference ->
+                            Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+                        }.addOnFailureListener { e ->
+                            Log.w(TAG, "Error adding document", e)
+                        }
+
+                    val recent = hashMapOf(
+                        "messageText" to binding.edChatInput.text.toString(),
+                        "sentAt" to Timestamp.now(),
+                        "sentBy" to user.uid,
+                    )
+
+                    db.collection("groups").document(groupId).update("recentMessage", recent)
+                        .addOnSuccessListener {
+                            Log.d(
+                                TAG, "DocumentSnapshot successfully updated!"
+                            )
+                        }.addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+
+                    binding.edChatInput.text.clear()
+                }
+            }
+
             val chats = ArrayList<Chat>()
-            // TODO if not exist add messages document with texts collection with groupId as id
             registration = db.collection("messages/${groupId}/texts").orderBy("sentAt")
                 .addSnapshotListener { value, e ->
                     if (e != null) {
