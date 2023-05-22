@@ -4,12 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.FragmentProfileBinding
+import com.google.firebase.auth.FirebaseAuth
 import java.io.File
 
 class ProfileFragment : Fragment() {
@@ -18,12 +21,14 @@ class ProfileFragment : Fragment() {
     private lateinit var currPhotoPath: String
     private lateinit var getFile: File
     private val PICK_IMAGE_REQUEST = 1
+    private lateinit var profileViewModel : ProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
+
 
         binding.chipChangePicture.setOnClickListener {
             openGallery()
@@ -39,6 +44,8 @@ class ProfileFragment : Fragment() {
         binding.btnSave.setOnClickListener {
             Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
         }
+
+        getCurrentUser()
 
         return binding.root
     }
@@ -57,13 +64,6 @@ class ProfileFragment : Fragment() {
         return super.onContextItemSelected(item)
     }
 
-//    private fun getEdTextData(){
-//        val getEmail = binding.editTextEmail.text.toString()
-//        val getUsername = binding.editTextUsername.text.toString()
-//        val getFullname = binding.editTextFullname.text.toString()
-//    }
-
-
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, PICK_IMAGE_REQUEST)
@@ -80,5 +80,29 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun getCurrentUser() {
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.getIdToken(false)
+        if (user !== null) {
+            // get list of all mentors for adapter
+            val token = user.getIdToken(false).result.token
+            Log.d("ProfileFragment", "token user pada profile fragment adalah : $token")
+
+            profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
+            profileViewModel.getProfile(token)
+            profileViewModel.userProfile.observe(viewLifecycleOwner){
+                binding.editTextFullname.setText(it.name)
+                binding.editTextPhone.setText(it.phone)
+                binding.editTextEmail.setText(it.email)
+                binding.editTextBiography.setText(it.bio)
+                if (it.roleID == 2 ){
+                    binding.radioMentor.isChecked = true
+                }else{
+                    binding.radioMentee.isChecked = true
+                }
+            }
+
+        }
+    }
 
 }

@@ -45,4 +45,5 @@
 
     <!--Chat-->
     <string name="say_something">Katakan sesuatu…</string>
+    <string name="btn_bottom_navigation">Bottom Navigation</string>
 </resources>

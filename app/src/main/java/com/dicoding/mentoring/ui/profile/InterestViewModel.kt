@@ -1,5 +1,5 @@
 package com.dicoding.mentoring.ui.profile
 
-class InteresViewModel {
+class InterestViewModel {
     // TODO: Implement the ViewModel
 }
