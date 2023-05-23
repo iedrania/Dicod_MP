@@ -20,6 +20,7 @@ class ChatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityChatBinding
     private lateinit var registration: ListenerRegistration
+    private lateinit var chatAdapter: ChatAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +32,16 @@ class ChatActivity : AppCompatActivity() {
         supportActionBar?.title = pageTitle
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        if (groupId != null) getCurrentUser(groupId) else finish()
+        if (groupId != null) {
+            getCurrentUser(groupId)
+        } else {
+            finish()
+        }
     }
 
     private fun getCurrentUser(groupId: String) {
         val user = Firebase.auth.currentUser
-        if (user !== null) {
+        if (user != null) {
             val db = Firebase.firestore
 
             binding.btnChatSend.setOnClickListener {
@@ -48,7 +53,7 @@ class ChatActivity : AppCompatActivity() {
                         "imageUrl" to null, // TODO image chat
                     )
 
-                    db.collection("messages/${groupId}/texts").add(data)
+                    db.collection("messages/$groupId/texts").add(data)
                         .addOnSuccessListener { documentReference ->
                             Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
                         }.addOnFailureListener { e ->
@@ -72,15 +77,14 @@ class ChatActivity : AppCompatActivity() {
                 }
             }
 
-            val chats = ArrayList<Chat>()
-            registration = db.collection("messages/${groupId}/texts").orderBy("sentAt")
+            registration = db.collection("messages/$groupId/texts").orderBy("sentAt")
                 .addSnapshotListener { value, e ->
                     if (e != null) {
                         Log.w(TAG, "Listen failed.", e)
                         return@addSnapshotListener
                     }
 
-                    chats.clear()
+                    val chats = ArrayList<Chat>()
 
                     for (doc in value!!) {
                         doc.toObject<Chat>().let {
@@ -89,7 +93,9 @@ class ChatActivity : AppCompatActivity() {
                     }
                     Log.d(TAG, "Current chats for user: $chats")
                     binding.rvChats.layoutManager = LinearLayoutManager(this)
-                    binding.rvChats.adapter = ChatAdapter(chats, user.uid)
+                    chatAdapter = ChatAdapter(chats, user.uid)
+                    binding.rvChats.adapter = chatAdapter
+                    scrollToBottom()
                 }
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
@@ -97,9 +103,16 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    override fun finish() {
+    private fun scrollToBottom() {
+        val itemCount = chatAdapter.itemCount
+        if (itemCount > 0) {
+            binding.rvChats.scrollToPosition(itemCount - 1)
+        }
+    }
+
+    override fun onDestroy() {
         registration.remove()
-        super.finish()
+        super.onDestroy()
     }
 
     override fun onSupportNavigateUp(): Boolean {
