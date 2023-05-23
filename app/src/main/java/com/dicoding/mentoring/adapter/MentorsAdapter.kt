@@ -30,35 +30,45 @@ class MentorsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mentor = listMentor[position]
+
+        // display mentor info
         holder.binding.tvItemName.text = mentor.name
         holder.binding.tvItemBio.text = mentor.bio
         holder.binding.rbItemRating.rating = mentor.avgRating
         mentor.listInterest.forEach { holder.binding.cgItemInterests.addChip(it) }
         Glide.with(holder.itemView.context).load(mentor.photoUrl).into(holder.binding.ivItemPhoto)
 
+        // onclick: redirect to messages
         holder.itemView.setOnClickListener {
-            var groupId: String
-            val listGroup: MutableList<Pair<String, ArrayList<String>>> = mutableListOf()
+            var groupId: String? = null
+            var groupData: Map<String, Any>? = null
+            val listGroup: MutableList<Pair<String, Map<String, Any>>> = mutableListOf()
 
             db.collection("groups").whereArrayContains("members", user.uid).get()
                 .addOnSuccessListener { documents ->
+                    // get groups for this user
                     for (document in documents) {
-                        Log.d(TAG, "${document.id} => ${document.data}")
-                        document.data.toString().let {
-                            val (id, members) = document.id to (document.data["members"] as ArrayList<String>)
-                            val tuple = id to members
+                        document.let {
+                            val (id, data) = document.id to document.data
+                            val tuple = id to data
                             listGroup.add(tuple)
                         }
                     }
+                    Log.d(TAG, "groups for this user $listGroup")
 
-                    for ((id, members) in listGroup) {
+                    // get groups for this user that contains this mentor
+                    for ((id, data) in listGroup) {
+                        val members = data["members"] as ArrayList<String>
                         if (members.contains(mentor.id)) {
                             groupId = id
+                            groupData = data
                             break
                         }
                     }
+                    Log.d(TAG, "groups for this user and mentor ${groupData.toString()}")
 
-                    if (documents.isEmpty) {
+                    if (groupId == null && groupData == null) {
+                        // create new group if not exist
                         val group = hashMapOf(
                             "createdAt" to Timestamp.now(),
                             "createdBy" to user.uid,
@@ -88,42 +98,44 @@ class MentorsAdapter(
 
                         db.collection("groups").add(group)
                             .addOnSuccessListener { documentReference ->
+                                groupId = documentReference.id
                                 Log.d(
                                     TAG, "DocumentSnapshot written with ID: ${documentReference.id}"
                                 )
 
-                                groupId = documentReference.id
-
+                                // update user
                                 db.collection("users").document(user.uid)
                                     .update("groups", FieldValue.arrayUnion(groupId))
                                     .addOnSuccessListener {
-                                        Log.d(TAG, "DocumentSnapshot successfully updated!")
+                                        Log.d(TAG, "group added to user")
 
+                                        // update mentor
                                         db.collection("users").document(mentor.id)
                                             .update("groups", FieldValue.arrayUnion(groupId))
                                             .addOnSuccessListener {
-                                                Log.d(TAG, "DocumentSnapshot successfully updated!")
+                                                Log.d(TAG, "group added to mentor")
                                             }.addOnFailureListener { e ->
-                                                Log.w(TAG, "Error updating document", e)
+                                                Log.w(TAG, "Error updating mentor groups", e)
                                             }
 
+                                        // open chat
                                         openChatActivity(
                                             holder.itemView.context,
-                                            groupId,
+                                            documentReference.id,
                                             group["displayName"] as Map<String, String>
                                         )
                                     }.addOnFailureListener { e ->
-                                        Log.w(TAG, "Error updating document", e)
+                                        Log.w(TAG, "Error updating user groups", e)
                                     }
                             }.addOnFailureListener { e ->
-                                Log.w(TAG, "Error adding document", e)
+                                Log.w(TAG, "Error adding group document", e)
                             }
                     } else {
-                        val document = documents.first()
+                        // open old group if exist
                         openChatActivity(
                             holder.itemView.context,
-                            document.id,
-                            document.data["displayName"] as Map<String, String>
+                            groupId!!,
+                            groupData!!["displayName"] as Map<String, String>
                         )
                     }
                 }.addOnFailureListener { exception ->
@@ -136,7 +148,7 @@ class MentorsAdapter(
         context: Context, groupId: String, mapDisplayName: Map<String, String>
     ) {
         if (groupId.isNotEmpty()) {
-            // TODO move fragment to chats
+            // TODO move activity fragment to messages
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra("extra_group", groupId)
 //          TODO if (user.getIdToken(false).result.claims["mentee"] as Boolean) {
