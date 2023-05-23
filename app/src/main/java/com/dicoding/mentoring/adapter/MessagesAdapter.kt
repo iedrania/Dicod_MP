@@ -7,12 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dicoding.mentoring.databinding.ItemMessagesBinding
 import com.dicoding.mentoring.ui.chat.ChatActivity
-import com.google.firebase.auth.FirebaseUser
 
-class MessagesAdapter(
-    private val user: FirebaseUser,
-    private val listMessage: MutableList<Pair<String, Map<String, Any>>>
-) : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
+class MessagesAdapter(private val listMessage: ArrayList<Pair<String, Map<String, Any>>>) :
+    RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
