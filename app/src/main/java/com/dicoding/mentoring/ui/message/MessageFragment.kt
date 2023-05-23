@@ -44,6 +44,8 @@ class MessageFragment : Fragment() {
     private fun getCurrentUser() {
         val user = Firebase.auth.currentUser
         if (user !== null) {
+            val userRole = user.getIdToken(false).result.claims["role"] as String
+
             // get list of all groups for this user
             val db = Firebase.firestore
             registration = db.collection("groups").whereArrayContains("members", user.uid)
@@ -62,7 +64,7 @@ class MessageFragment : Fragment() {
                         messages.add(tuple)
                     }
                     binding.rvMessages.layoutManager = LinearLayoutManager(requireContext())
-                    binding.rvMessages.adapter = MessagesAdapter(messages)
+                    binding.rvMessages.adapter = MessagesAdapter(userRole, messages)
                 }
         } else {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))

@@ -151,11 +151,10 @@ class MentorsAdapter(
             // TODO move activity fragment to messages
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra("extra_group", groupId)
-//          TODO if (user.getIdToken(false).result.claims["mentee"] as Boolean) {
-            if (true) {
-                intent.putExtra("extra_title", mapDisplayName["mentor"])
-            } else {
+            if (user.getIdToken(false).result.claims["mentor"] as Boolean) {
                 intent.putExtra("extra_title", mapDisplayName["mentee"])
+            } else {
+                intent.putExtra("extra_title", mapDisplayName["mentor"])
             }
             context.startActivity(intent)
         } else {
