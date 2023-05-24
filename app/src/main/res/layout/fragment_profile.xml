@@ -115,7 +115,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/quicksand_regular"
-                android:hint="Insert phone number"
+                android:hint="+62..."
+                android:inputType="number"
                 android:paddingStart="15dp"
                 android:textSize="14sp" />
 
@@ -190,7 +191,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:text="Add Interest"
+                android:text="Edit Interest"
                 app:chipIcon="@drawable/ic_add_circle" />
 
             <TextView
@@ -208,7 +209,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:minLines="2"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                android:textSize="14sp"/>
 
             <Button
                 android:id="@+id/btn_save"
@@ -222,7 +224,6 @@
                 android:text="Save"
                 android:textAllCaps="false"
                 android:textSize="14sp" />
-
 
         </LinearLayout>
     </ScrollView>

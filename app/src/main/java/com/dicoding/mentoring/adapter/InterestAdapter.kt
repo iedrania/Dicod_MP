@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.mentoring.R
-import com.dicoding.mentoring.data.local.Interest
+import com.dicoding.mentoring.data.local.InterestItem
 
-class InterestAdapter(private val interests : List<Interest>) : RecyclerView.Adapter<InterestAdapter.ListViewHolder>(){
+class InterestAdapter(private val interests : List<InterestItem>) : RecyclerView.Adapter<InterestAdapter.ListViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.interest_item,parent,false)
@@ -18,9 +18,9 @@ class InterestAdapter(private val interests : List<Interest>) : RecyclerView.Ada
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val interest = interests[position]
         holder.checkBox.text = interest.name
-        holder.checkBox.isChecked = interest.isSelected
+        holder.checkBox.isChecked = interest.isChecked
         holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
-            interest.isSelected = isChecked
+            interest.isChecked = isChecked
         }
     }
 

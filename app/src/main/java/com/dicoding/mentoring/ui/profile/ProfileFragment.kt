@@ -18,10 +18,8 @@ import java.io.File
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
-    private lateinit var currPhotoPath: String
-    private lateinit var getFile: File
     private val PICK_IMAGE_REQUEST = 1
-    private lateinit var profileViewModel : ProfileViewModel
+    private lateinit var profileViewModel: ProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +27,19 @@ class ProfileFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
 
+        //Obtain Firebase user token
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.getIdToken(false)
+        // get list of all mentors for adapter
+        val token = user?.getIdToken(false)?.result?.token
+
+        //Obtain ViewModel
+        profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
+
+        //Get User Profile Data
+        if (token != null) {
+            getUserDataProfile(token)
+        }
 
         binding.chipChangePicture.setOnClickListener {
             openGallery()
@@ -42,11 +53,22 @@ class ProfileFragment : Fragment() {
 
         //action when click button save
         binding.btnSave.setOnClickListener {
-            Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
+            if (token != null) {
+                Log.d(
+                    "ProfileFragment",
+                    "updateProfile : token user pada profile fragment adalah : $token"
+                )
+                profileViewModel.updateProfile(
+                    token,
+                    binding.editTextFullname.text.toString(),
+                    binding.radioGender.checkedRadioButtonId.toString().toInt(),
+                    binding.editTextPhone.text.toString(),
+                    binding.editTextBiography.text.toString(),
+                    binding.editTextEmail.text.toString()
+                )
+                Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
+            }
         }
-
-        getCurrentUser()
-
         return binding.root
     }
 
@@ -80,29 +102,27 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun getCurrentUser() {
-        val user = FirebaseAuth.getInstance().currentUser
-        user?.getIdToken(false)
-        if (user !== null) {
-            // get list of all mentors for adapter
-            val token = user.getIdToken(false).result.token
-            Log.d("ProfileFragment", "token user pada profile fragment adalah : $token")
-
-            profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
-            profileViewModel.getProfile(token)
-            profileViewModel.userProfile.observe(viewLifecycleOwner){
-                binding.editTextFullname.setText(it.name)
-                binding.editTextPhone.setText(it.phone)
-                binding.editTextEmail.setText(it.email)
-                binding.editTextBiography.setText(it.bio)
-                if (it.roleID == 2 ){
-                    binding.radioMentor.isChecked = true
-                }else{
-                    binding.radioMentee.isChecked = true
-                }
+    private fun getUserDataProfile(token: String) {
+        Log.d(
+            "ProfileFragment",
+            "getUserDataProfile : token user pada profile fragment adalah : $token"
+        )
+        profileViewModel.getProfile(token)
+        profileViewModel.userProfile.observe(viewLifecycleOwner) {
+            binding.editTextFullname.setText(it.name)
+            binding.editTextPhone.setText(it.phone)
+            binding.editTextEmail.setText(it.email)
+            binding.editTextBiography.setText(it.bio)
+            if (it.roleID == 2) {
+                binding.radioMentor.isChecked = true
+            } else {
+                binding.radioMentee.isChecked = true
             }
-
         }
     }
 
+    private fun getUserInterest(token:String) {
+
+    }
 }
+

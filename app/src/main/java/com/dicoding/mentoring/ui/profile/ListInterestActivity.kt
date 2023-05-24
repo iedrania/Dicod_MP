@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.adapter.InterestAdapter
 import com.dicoding.mentoring.data.local.Interest
+import com.dicoding.mentoring.data.local.InterestItem
 import com.dicoding.mentoring.databinding.ActivityListInterestBinding
 
 class ListInterestActivity : AppCompatActivity() {
@@ -22,15 +23,15 @@ class ListInterestActivity : AppCompatActivity() {
         supportActionBar?.setTitle("Choose Interest")
 
         val interests = listOf(
-            Interest("Android Developer"),
-            Interest("iOS Developer"),
-            Interest("Multi-Platform App Developer"),
-            Interest("Machine Learning Developer"),
-            Interest("Front-End Web Developer"),
-            Interest("Back-End Web Developer"),
-            Interest("React Developer"),
-            Interest("DevOps Engineer Developer"),
-            Interest("Google Cloud Professional"),
+            InterestItem("Android Developer"),
+            InterestItem("iOS Developer"),
+            InterestItem("Multi-Platform App Developer"),
+            InterestItem("Machine Learning Developer"),
+            InterestItem("Front-End Web Developer"),
+            InterestItem("Back-End Web Developer"),
+            InterestItem("React Developer"),
+            InterestItem("DevOps Engineer Developer"),
+            InterestItem("Google Cloud Professional"),
         )
 
         //setRecyclerView
@@ -44,5 +45,9 @@ class ListInterestActivity : AppCompatActivity() {
         btnSave.setOnClickListener{
             finish()
         }
+    }
+
+    private fun setupViewModel(){
+
     }
 }

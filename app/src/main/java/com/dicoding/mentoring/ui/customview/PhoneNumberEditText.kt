@@ -18,6 +18,7 @@ class PhoneNumberEditText : AppCompatEditText, View.OnTouchListener {
 
     private lateinit var clearButtonImage: Drawable
 
+
     constructor(context: Context) : super(context) {
         init()
     }
@@ -41,8 +42,6 @@ class PhoneNumberEditText : AppCompatEditText, View.OnTouchListener {
         // Menginisialisasi gambar clear button
         clearButtonImage = ContextCompat.getDrawable(context, R.drawable.ic_close) as Drawable
 
-        //Setup edittext hanya menyimpan data integer
-        inputType = InputType.TYPE_CLASS_NUMBER
 
         // Menambahkan aksi kepada clear button
         setOnTouchListener(this)
@@ -50,17 +49,25 @@ class PhoneNumberEditText : AppCompatEditText, View.OnTouchListener {
         // Menambahkan aksi ketika ada perubahan text akan memunculkan clear button
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // Do nothing.
+
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().isNotEmpty()) showClearButton() else hideClearButton()
-                if (!s.isDigitsOnly()){
-                    error = "Input harus berupa Angka!"
+                val phoneNumber = s.toString()
+
+                // Check apakah phone number tidak dimulai dengan "+62"
+                if (!phoneNumber.startsWith("+62")) {
+                    // Berikan error pada EditText
+                    error = "Input harus dimulai dengan '+62'"
+                } else {
+                    // Hapus error jika input valid
+                    error = null
                 }
             }
 
             override fun afterTextChanged(s: Editable) {
+                s.toString()
             }
         })
     }
