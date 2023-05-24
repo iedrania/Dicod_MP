@@ -19,9 +19,8 @@
 
     <fragment
         android:id="@+id/navigation_schedule"
-        android:name="com.dicoding.mentoring.ui.message.MessageFragment"
-        android:label="@string/title_schedule"
-        tools:layout="@layout/fragment_schedule" />
+        android:name="com.dicoding.mentoring.ui.schedule.ScheduleFragment"
+        android:label="@string/title_schedule" />
 
     <fragment
         android:id="@+id/navigation_profile"

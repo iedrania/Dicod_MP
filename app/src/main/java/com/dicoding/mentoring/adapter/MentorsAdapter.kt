@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dicoding.mentoring.data.local.Mentor
+import com.dicoding.mentoring.data.local.Mentors
 import com.dicoding.mentoring.databinding.ItemMentorBinding
 import com.dicoding.mentoring.ui.chat.ChatActivity
 import com.google.android.material.chip.Chip
@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class MentorsAdapter(
     private val user: FirebaseUser,
     private val db: FirebaseFirestore,
-    private val listMentor: List<Mentor>
+    private val mentorsResponse: List<Mentors>
 ) : RecyclerView.Adapter<MentorsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,14 +29,28 @@ class MentorsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val mentor = listMentor[position]
+        val mentor = mentorsResponse[position]
 
         // display mentor info
-        holder.binding.tvItemName.text = mentor.name
-        holder.binding.tvItemBio.text = mentor.bio
-        holder.binding.rbItemRating.rating = mentor.avgRating
-        mentor.listInterest.forEach { holder.binding.cgItemInterests.addChip(it) }
-        Glide.with(holder.itemView.context).load(mentor.photoUrl).into(holder.binding.ivItemPhoto)
+        holder.binding.tvItemName.text = mentor.User.name
+        holder.binding.tvItemBio.text = mentor.User.bio
+        holder.binding.rbItemRating.rating = mentor.averageRating ?: 0.toFloat()
+
+        val listInterest = ArrayList<String>()
+        if (mentor.User.isPathAndroid == true) listInterest.add("Android")
+        if (mentor.User.isPathWeb == true) listInterest.add("Web")
+        if (mentor.User.isPathIos == true) listInterest.add("iOS")
+        if (mentor.User.isPathMl == true) listInterest.add("ML")
+        if (mentor.User.isPathFlutter == true) listInterest.add("Flutter")
+        if (mentor.User.isPathFe == true) listInterest.add("FE")
+        if (mentor.User.isPathBe == true) listInterest.add("BE")
+        if (mentor.User.isPathReact == true) listInterest.add("React")
+        if (mentor.User.isPathDevops == true) listInterest.add("DevOps")
+        if (mentor.User.isPathGcp == true) listInterest.add("GCP")
+        listInterest.forEach { holder.binding.cgItemInterests.addChip(it) }
+
+        Glide.with(holder.itemView.context).load(mentor.User.profile_picture_url)
+            .into(holder.binding.ivItemPhoto)
 
         // onclick: redirect to messages
         holder.itemView.setOnClickListener {
@@ -59,7 +73,7 @@ class MentorsAdapter(
                     // get groups for this user that contains this mentor
                     for ((id, data) in listGroup) {
                         val members = data["members"] as ArrayList<String>
-                        if (members.contains(mentor.id)) {
+                        if (members.contains(mentor.User.id.toString())) {
                             groupId = id
                             groupData = data
                             break
@@ -74,18 +88,18 @@ class MentorsAdapter(
                             "createdBy" to user.uid,
                             "displayName" to hashMapOf(
                                 "group" to "",
-                                "mentor" to mentor.name,
+                                "mentor" to mentor.User.name,
                                 "mentee" to user.displayName,
                             ),
                             "isPrivate" to true,
                             "members" to hashMapOf(
                                 user.uid to true,
-                                mentor.id to true,
+                                mentor.User.id.toString() to true,
                             ),
                             "modifiedAt" to Timestamp.now(),
                             "photoUrl" to hashMapOf(
                                 "mentee" to user.photoUrl.toString(),
-                                "mentor" to mentor.photoUrl.toString(),
+                                "mentor" to mentor.User.profile_picture_url.toString(),
                             ),
                             "recentMessage" to hashMapOf(
                                 "messageText" to null,
@@ -110,7 +124,7 @@ class MentorsAdapter(
                                         Log.d(TAG, "group added to user")
 
                                         // update mentor
-                                        db.collection("users").document(mentor.id)
+                                        db.collection("users").document(mentor.User.id.toString())
                                             .update("groups", FieldValue.arrayUnion(groupId))
                                             .addOnSuccessListener {
                                                 Log.d(TAG, "group added to mentor")
@@ -169,7 +183,7 @@ class MentorsAdapter(
         }
     }
 
-    override fun getItemCount() = listMentor.size
+    override fun getItemCount() = mentorsResponse.size
 
     class ViewHolder(var binding: ItemMentorBinding) : RecyclerView.ViewHolder(binding.root)
 

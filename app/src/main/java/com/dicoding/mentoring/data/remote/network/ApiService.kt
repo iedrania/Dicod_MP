@@ -1,8 +1,6 @@
 package com.dicoding.mentoring.data.remote.network
 
 import com.dicoding.mentoring.data.local.*
-import com.google.firebase.firestore.auth.User
-import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -24,18 +22,26 @@ interface ApiService {
         @Field("feedback") feedback: String
     ): Call<FeedbackResponse>
 
-    @GET("mentors")
+    @GET("mentor/all")
     fun getMentors(
         @Header("Authorization") token: String,
-        @Query("mentee_id") menteeId: String,
-        @Query("list_day") listDay: List<String>,
-        @Query("list_interest") listInterest: List<String>
     ): Call<MentorsResponse>
+
+    @GET("mentors-by-interest")
+    fun getMentorsByInterest(
+        @Header("Authorization") token: String, @Query("list_interest") listInterest: List<String>
+    ): Call<MentorsResponse>
+
+    @GET("schedules")
+    fun getSchedules(
+        @Header("Authorization") token: String,
+        @Query("from_date") fromDate: String,
+    ): Call<ScheduleResponse>
 
     @GET("user")
     fun getUserProfile(
         @Header("Authorization") token: String,
-    ) : Call<UserProfileResponse>
+    ): Call<UserProfileResponse>
 
     @FormUrlEncoded
     @POST("user")
