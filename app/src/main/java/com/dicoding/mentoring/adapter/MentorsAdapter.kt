@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dicoding.mentoring.data.local.Mentor
+import com.dicoding.mentoring.data.local.Mentors
 import com.dicoding.mentoring.databinding.ItemMentorBinding
 import com.dicoding.mentoring.ui.chat.ChatActivity
 import com.google.android.material.chip.Chip
@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class MentorsAdapter(
     private val user: FirebaseUser,
     private val db: FirebaseFirestore,
-    private val listMentor: List<Mentor>
+    private val mentorsResponse: List<Mentors>
 ) : RecyclerView.Adapter<MentorsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,53 +29,77 @@ class MentorsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val mentor = listMentor[position]
-        holder.binding.tvItemName.text = mentor.name
-        holder.binding.tvItemBio.text = mentor.bio
-        holder.binding.rbItemRating.rating = mentor.avgRating
-        mentor.listInterest.forEach { holder.binding.cgItemInterests.addChip(it) }
-        Glide.with(holder.itemView.context).load(mentor.photoUrl).into(holder.binding.ivItemPhoto)
+        val mentor = mentorsResponse[position]
 
+        // display mentor info
+        holder.binding.tvItemName.text = mentor.User.name
+        holder.binding.tvItemBio.text = mentor.User.bio
+        holder.binding.rbItemRating.rating = mentor.averageRating ?: 0.toFloat()
+
+        val listInterest = ArrayList<String>()
+        if (mentor.User.isPathAndroid == true) listInterest.add("Android")
+        if (mentor.User.isPathWeb == true) listInterest.add("Web")
+        if (mentor.User.isPathIos == true) listInterest.add("iOS")
+        if (mentor.User.isPathMl == true) listInterest.add("ML")
+        if (mentor.User.isPathFlutter == true) listInterest.add("Flutter")
+        if (mentor.User.isPathFe == true) listInterest.add("FE")
+        if (mentor.User.isPathBe == true) listInterest.add("BE")
+        if (mentor.User.isPathReact == true) listInterest.add("React")
+        if (mentor.User.isPathDevops == true) listInterest.add("DevOps")
+        if (mentor.User.isPathGcp == true) listInterest.add("GCP")
+        listInterest.forEach { holder.binding.cgItemInterests.addChip(it) }
+
+        Glide.with(holder.itemView.context).load(mentor.User.profile_picture_url)
+            .into(holder.binding.ivItemPhoto)
+
+        // onclick: redirect to messages
         holder.itemView.setOnClickListener {
-            var groupId: String
-            val listGroup: MutableList<Pair<String, ArrayList<String>>> = mutableListOf()
+            var groupId: String? = null
+            var groupData: Map<String, Any>? = null
+            val listGroup: MutableList<Pair<String, Map<String, Any>>> = mutableListOf()
 
             db.collection("groups").whereArrayContains("members", user.uid).get()
                 .addOnSuccessListener { documents ->
+                    // get groups for this user
                     for (document in documents) {
-                        Log.d(TAG, "${document.id} => ${document.data}")
-                        document.data.toString().let {
-                            val (id, members) = document.id to (document.data["members"] as ArrayList<String>)
-                            val tuple = id to members
+                        document.let {
+                            val (id, data) = document.id to document.data
+                            val tuple = id to data
                             listGroup.add(tuple)
                         }
                     }
+                    Log.d(TAG, "groups for this user $listGroup")
 
-                    for ((id, members) in listGroup) {
-                        if (members.contains(mentor.id)) {
+                    // get groups for this user that contains this mentor
+                    for ((id, data) in listGroup) {
+                        val members = data["members"] as ArrayList<String>
+                        if (members.contains(mentor.User.id.toString())) {
                             groupId = id
+                            groupData = data
                             break
                         }
                     }
+                    Log.d(TAG, "groups for this user and mentor ${groupData.toString()}")
 
-                    if (documents.isEmpty) {
+                    if (groupId == null && groupData == null) {
+                        // create new group if not exist
                         val group = hashMapOf(
                             "createdAt" to Timestamp.now(),
                             "createdBy" to user.uid,
                             "displayName" to hashMapOf(
                                 "group" to "",
-                                "mentor" to mentor.name,
+                                "mentor" to mentor.User.name,
                                 "mentee" to user.displayName,
                             ),
                             "isPrivate" to true,
                             "members" to hashMapOf(
                                 user.uid to true,
-                                mentor.id to true,
+                                mentor.User.id.toString() to true,
                             ),
                             "modifiedAt" to Timestamp.now(),
                             "photoUrl" to hashMapOf(
                                 "mentee" to user.photoUrl.toString(),
-                                "mentor" to mentor.photoUrl.toString(),
+                                "mentor" to mentor.User.profile_picture_url.toString(),
                             ),
                             "recentMessage" to hashMapOf(
                                 "messageText" to null,
@@ -88,42 +112,44 @@ class MentorsAdapter(
 
                         db.collection("groups").add(group)
                             .addOnSuccessListener { documentReference ->
+                                groupId = documentReference.id
                                 Log.d(
                                     TAG, "DocumentSnapshot written with ID: ${documentReference.id}"
                                 )
 
-                                groupId = documentReference.id
-
+                                // update user
                                 db.collection("users").document(user.uid)
                                     .update("groups", FieldValue.arrayUnion(groupId))
                                     .addOnSuccessListener {
-                                        Log.d(TAG, "DocumentSnapshot successfully updated!")
+                                        Log.d(TAG, "group added to user")
 
-                                        db.collection("users").document(mentor.id)
+                                        // update mentor
+                                        db.collection("users").document(mentor.User.id.toString())
                                             .update("groups", FieldValue.arrayUnion(groupId))
                                             .addOnSuccessListener {
-                                                Log.d(TAG, "DocumentSnapshot successfully updated!")
+                                                Log.d(TAG, "group added to mentor")
                                             }.addOnFailureListener { e ->
-                                                Log.w(TAG, "Error updating document", e)
+                                                Log.w(TAG, "Error updating mentor groups", e)
                                             }
 
+                                        // open chat
                                         openChatActivity(
                                             holder.itemView.context,
-                                            groupId,
+                                            documentReference.id,
                                             group["displayName"] as Map<String, String>
                                         )
                                     }.addOnFailureListener { e ->
-                                        Log.w(TAG, "Error updating document", e)
+                                        Log.w(TAG, "Error updating user groups", e)
                                     }
                             }.addOnFailureListener { e ->
-                                Log.w(TAG, "Error adding document", e)
+                                Log.w(TAG, "Error adding group document", e)
                             }
                     } else {
-                        val document = documents.first()
+                        // open old group if exist
                         openChatActivity(
                             holder.itemView.context,
-                            document.id,
-                            document.data["displayName"] as Map<String, String>
+                            groupId!!,
+                            groupData!!["displayName"] as Map<String, String>
                         )
                     }
                 }.addOnFailureListener { exception ->
@@ -136,14 +162,13 @@ class MentorsAdapter(
         context: Context, groupId: String, mapDisplayName: Map<String, String>
     ) {
         if (groupId.isNotEmpty()) {
-            // TODO move fragment to chats
+            // TODO move activity fragment to messages
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra("extra_group", groupId)
-//          TODO if (user.getIdToken(false).result.claims["mentee"] as Boolean) {
-            if (true) {
-                intent.putExtra("extra_title", mapDisplayName["mentor"])
-            } else {
+            if (user.getIdToken(false).result.claims["mentor"] as Boolean) {
                 intent.putExtra("extra_title", mapDisplayName["mentee"])
+            } else {
+                intent.putExtra("extra_title", mapDisplayName["mentor"])
             }
             context.startActivity(intent)
         } else {
@@ -158,7 +183,7 @@ class MentorsAdapter(
         }
     }
 
-    override fun getItemCount() = listMentor.size
+    override fun getItemCount() = mentorsResponse.size
 
     class ViewHolder(var binding: ItemMentorBinding) : RecyclerView.ViewHolder(binding.root)
 

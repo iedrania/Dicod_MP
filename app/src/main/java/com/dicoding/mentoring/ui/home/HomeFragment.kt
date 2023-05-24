@@ -50,12 +50,7 @@ class HomeFragment : Fragment() {
         val user = Firebase.auth.currentUser
         if (user !== null) {
             // get list of all mentors for adapter
-            user.getIdToken(false).addOnSuccessListener { result ->
-                homeViewModel.findMentors(
-                    result, user.uid, listDay = listOf("Sunday", "Monday"), // TODO user
-                    listInterest = listOf("UI/UX", "Android") // TODO user
-                )
-            }
+            user.getIdToken(false).addOnSuccessListener { homeViewModel.findMentors(it.token) }
 
             // get groups of user: list of mentors already in this user's groups
             // to make a new collection if not exist yet for messages
@@ -67,9 +62,9 @@ class HomeFragment : Fragment() {
                     homeViewModel.listMentor.observe(viewLifecycleOwner) {
                         if (document.data?.get("groups") !== null) {
                             binding.rvMentors.layoutManager = LinearLayoutManager(requireContext())
-                            binding.rvMentors.adapter = MentorsAdapter(user, db, it)
+                            binding.rvMentors.adapter = MentorsAdapter(user, db, it.mentors)
                         } else {
-                            // TODO make sure every user sign up added to firestore and already have an empty groups
+                            Log.d(TAG, "make sure user is in firestore")
                         }
                     }
                 } else {

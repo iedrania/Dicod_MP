@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.dicoding.mentoring.ui.BottomNavigationActivity
 import com.dicoding.mentoring.ui.login.LoginActivity
 import com.dicoding.mentoring.ui.rating.RatingActivity
 import com.google.firebase.auth.FirebaseAuth

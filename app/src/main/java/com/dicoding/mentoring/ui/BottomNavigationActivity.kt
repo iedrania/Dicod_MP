@@ -1,4 +1,4 @@
-package com.dicoding.mentoring
+package com.dicoding.mentoring.ui
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.dicoding.mentoring.R
 
 import com.dicoding.mentoring.databinding.ActivityBottomNavigationBinding
 
@@ -27,7 +28,10 @@ class BottomNavigationActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_message, R.id.navigation_schedule,R.id.navigation_profile
+                R.id.navigation_home,
+                R.id.navigation_message,
+                R.id.navigation_schedule,
+                R.id.navigation_profile
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

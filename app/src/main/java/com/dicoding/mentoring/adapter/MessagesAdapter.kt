@@ -7,11 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dicoding.mentoring.databinding.ItemMessagesBinding
 import com.dicoding.mentoring.ui.chat.ChatActivity
-import com.google.firebase.auth.FirebaseUser
 
 class MessagesAdapter(
-    private val user: FirebaseUser,
-    private val listMessage: MutableList<Pair<String, Map<String, Any>>>
+    private val userRole: String, private val listMessage: ArrayList<Pair<String, Map<String, Any>>>
 ) : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,20 +21,19 @@ class MessagesAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val message = listMessage[position]
 
-//      TODO val mentee = user.getIdToken(false).result.claims["mentee"] as Boolean
-        val mentee = true
+        val mentor = userRole == "mentor"
         val displayName = message.second["displayName"] as HashMap<String, String>
         val chatTitle: String?
         val photoUrl = message.second["photoUrl"] as HashMap<String, String>
-        if (mentee) {
-            chatTitle = displayName["mentor"]
-            holder.binding.tvItemMessagesName.text = chatTitle
-            Glide.with(holder.itemView.context).load(photoUrl["mentor"])
-                .into(holder.binding.ivItemMessagesPhoto)
-        } else {
+        if (mentor) {
             chatTitle = displayName["mentee"]
             holder.binding.tvItemMessagesName.text = chatTitle
             Glide.with(holder.itemView.context).load(photoUrl["mentee"])
+                .into(holder.binding.ivItemMessagesPhoto)
+        } else {
+            chatTitle = displayName["mentor"]
+            holder.binding.tvItemMessagesName.text = chatTitle
+            Glide.with(holder.itemView.context).load(photoUrl["mentor"])
                 .into(holder.binding.ivItemMessagesPhoto)
         }
 

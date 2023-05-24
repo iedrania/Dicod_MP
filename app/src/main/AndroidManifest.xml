@@ -35,7 +35,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".BottomNavigationActivity"
+            android:name=".ui.BottomNavigationActivity"
             android:exported="false" />
         <activity
             android:name=".ui.login.LoginActivity"
