@@ -1,14 +1,9 @@
 package com.dicoding.mentoring.data.local
 
-import android.content.ClipData.Item
-import java.sql.Time
+import com.google.gson.annotations.SerializedName
 
-data class Schedule (
-    val date : String?,
-    val mentoringSession: List<ItemSchedule>
-    )
-
-data class ItemSchedule(
-    val name : String?,
-    val time : String?
+data class Schedule(
+    @field:SerializedName("name") val name: String?,
+    @field:SerializedName("start_time") val fromDate: String?,
+    @field:SerializedName("end_time") val toDate: String?,
 )

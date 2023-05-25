@@ -46,4 +46,5 @@
     <!--Chat-->
     <string name="say_something">Katakan sesuatu…</string>
     <string name="btn_bottom_navigation">Bottom Navigation</string>
+    <string name="get_schedule_failed">Get schedule failed</string>
 </resources>

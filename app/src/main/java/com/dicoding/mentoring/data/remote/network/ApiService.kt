@@ -33,11 +33,11 @@ interface ApiService {
         @Header("Authorization") token: String, @Query("list_interest") listInterest: List<String>
     ): Call<MentorsResponse>
 
-//    @GET("schedules")
-//    fun getSchedules(
-//        @Header("Authorization") token: String,
-//        @Query("from_date") fromDate: String,
-//    ): Call<ScheduleResponse>
+    @GET("mentoring/schedule")
+    fun getSchedule(
+        @Header("Authorization") token: String,
+        @Query("from_date") fromDate: String,
+    ): Call<ScheduleResponse>
 
     @GET("user")
     fun getUserProfile(
@@ -48,27 +48,27 @@ interface ApiService {
     @POST("user")
     fun updateUserProfile(
         @Header("Authorization") token: String?,
-        @Field("name") name : String?,
-        @Field("gender_id") gender_id : Int?,
-        @Field("phone") phone : String?,
-        @Field("bio") bio : String?,
-        @Field("email") email : String?
-    ) : Call<UserProfileResponse>
+        @Field("name") name: String?,
+        @Field("gender_id") gender_id: Int?,
+        @Field("phone") phone: String?,
+        @Field("bio") bio: String?,
+        @Field("email") email: String?
+    ): Call<UserProfileResponse>
 
     @GET("user/interest")
     fun getUserInterest(
         @Header("Authorization") token: String
-    ) : Call<InterestResponse>
+    ): Call<InterestResponse>
 
     @FormUrlEncoded
     @POST("user/interest")
     fun updateUserInterest(
         @Header("Authorization") token: String,
-    ) : Call<UserProfileResponse>
+    ): Call<UserProfileResponse>
 
     @FormUrlEncoded
     @POST("user/avatar")
     fun updateUserProfilePicture(
-        @Header("Authorization") token:String
-    ) : Callback<UserProfileResponse>
+        @Header("Authorization") token: String
+    ): Callback<UserProfileResponse>
 }
