@@ -6,9 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.mentoring.R
 import com.dicoding.mentoring.adapter.MentorsAdapter
 import com.dicoding.mentoring.databinding.FragmentHomeBinding
 import com.dicoding.mentoring.ui.login.LoginActivity
@@ -84,7 +86,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun showError(isError: Boolean) {
-        binding.progressBar.visibility = if (isError) View.VISIBLE else View.GONE
+        if (isError) {
+            Toast.makeText(
+                requireContext(), getString(R.string.get_mentors_failed), Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     override fun onDestroyView() {

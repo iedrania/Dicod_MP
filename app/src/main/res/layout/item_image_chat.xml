@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="32dp"
-    android:layout_marginVertical="24dp">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="12dp">
 
     <ImageView
         android:id="@+id/iv_item_chat_photo"
@@ -14,7 +14,7 @@
         android:adjustViewBounds="true"
         android:maxHeight="200dp"
         android:padding="10dp"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@android:drawable/ic_menu_gallery" />
@@ -30,4 +30,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_item_chat_photo"
         tools:text="This is a message" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
