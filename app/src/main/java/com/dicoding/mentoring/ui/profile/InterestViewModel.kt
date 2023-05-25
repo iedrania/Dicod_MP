@@ -3,6 +3,8 @@ package com.dicoding.mentoring.ui.profile
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import com.dicoding.mentoring.data.local.Interest
 import com.dicoding.mentoring.data.local.InterestResponse
 import com.dicoding.mentoring.data.remote.network.ApiConfig
@@ -10,8 +12,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-//TODO Finishing the logic for get the Interest
-class InterestViewModel {
+class InterestViewModel : ViewModel() {
 
     private val _userInterest = MutableLiveData<Interest>()
     val userInterest : LiveData<Interest> = _userInterest
@@ -25,7 +26,6 @@ class InterestViewModel {
             ) {
                 if(response.isSuccessful){
                     _userInterest.value = response.body()?.user
-                    Log.d("InterestViewModel","response body adalah : ${response.body()?.user}")
                 }else{
                     Log.e(ProfileViewModel.TAG, "onFailure: ${response.message()}")
                 }

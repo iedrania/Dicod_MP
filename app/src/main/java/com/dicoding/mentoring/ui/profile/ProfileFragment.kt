@@ -120,9 +120,5 @@ class ProfileFragment : Fragment() {
             }
         }
     }
-
-    private fun getUserInterest(token:String) {
-
-    }
 }
 

@@ -33,11 +33,11 @@ interface ApiService {
         @Header("Authorization") token: String, @Query("list_interest") listInterest: List<String>
     ): Call<MentorsResponse>
 
-    @GET("schedules")
-    fun getSchedules(
-        @Header("Authorization") token: String,
-        @Query("from_date") fromDate: String,
-    ): Call<ScheduleResponse>
+//    @GET("schedules")
+//    fun getSchedules(
+//        @Header("Authorization") token: String,
+//        @Query("from_date") fromDate: String,
+//    ): Call<ScheduleResponse>
 
     @GET("user")
     fun getUserProfile(
