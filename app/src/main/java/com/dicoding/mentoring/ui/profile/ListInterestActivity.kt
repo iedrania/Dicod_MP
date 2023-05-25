@@ -72,7 +72,6 @@ class ListInterestActivity : AppCompatActivity() {
 
             setRecyclerView(interests)
         }
-
     }
 
     private fun setRecyclerView(interests: List<InterestItem>) {

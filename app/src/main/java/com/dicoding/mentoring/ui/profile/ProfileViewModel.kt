@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.mentoring.data.local.Interest
-import com.dicoding.mentoring.data.local.InterestResponse
-import com.dicoding.mentoring.data.local.UserProfileResponse
-import com.dicoding.mentoring.data.local.UserResponse
+import com.dicoding.mentoring.data.local.*
 import com.dicoding.mentoring.data.remote.network.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,10 +27,10 @@ class ProfileViewModel: ViewModel() {
 
     fun getProfile(token: String?){
         val client = ApiConfig.getApiService().getUserProfile("Bearer $token")
-        client.enqueue(object: Callback<UserProfileResponse>{
+        client.enqueue(object: Callback<GetUserProfileResponse>{
             override fun onResponse(
-                call: Call<UserProfileResponse>,
-                response: Response<UserProfileResponse>
+                call: Call<GetUserProfileResponse>,
+                response: Response<GetUserProfileResponse>
             ) {
                 if(response.isSuccessful){
                     _userProfile.value = response.body()?.user
@@ -43,50 +40,30 @@ class ProfileViewModel: ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<UserProfileResponse>, t: Throwable) {
+            override fun onFailure(call: Call<GetUserProfileResponse>, t: Throwable) {
                 Log.e(TAG, "OnFailure : ${t.message}")
             }
         })
     }
 
-    //TODO responsenya masih belum succesful
-    fun updateProfile(token: String?, name : String?, gender_id : Int?, phone: String?, bio: String?, email: String?){
-        val client = ApiConfig.getApiService().updateUserProfile("Bearer $token", name, gender_id, phone, bio, email)
-        client.enqueue(object : Callback<UserProfileResponse>{
+    fun updateProfile(token: String?, name : String?, phone: String?, bio: String?, email: String?){
+        val client = ApiConfig.getApiService().updateUserProfile("Bearer $token", name, phone, bio, email)
+        client.enqueue(object : Callback<PostUserProfileResponse>{
             override fun onResponse(
-                call: Call<UserProfileResponse>,
-                response: Response<UserProfileResponse>
+                call: Call<PostUserProfileResponse>,
+                response: Response<PostUserProfileResponse>
             ) {
+                Log.e(TAG, "Response gagal, response body : $response")
                 if (response.isSuccessful){
-                    _userProfile.value = response.body()?.user
+                    _userProfile.value = response.body()?.updatedUser
                     Log.e(TAG, "Response sukses, response body : ${response.body()}")
                 }else {
-                    Log.e(TAG, "onFailure: ${response.message()}")
+                    Log.e(TAG, "updateProfile onFailure: ${response.body().toString()}")
                 }
             }
-            override fun onFailure(call: Call<UserProfileResponse>, t: Throwable) {
-                Log.e(TAG, "OnFailure : ${t.message}")
+            override fun onFailure(call: Call<PostUserProfileResponse>, t: Throwable) {
+                Log.e(TAG, "OnFailure : ${t.message.toString()}")
             }
         })
     }
-
-    fun getInterest(token: String?){
-        val client = ApiConfig.getApiService().getUserInterest("Bearer $token")
-        client.enqueue(object : Callback<InterestResponse>{
-            override fun onResponse(
-                call: Call<InterestResponse>,
-                response: Response<InterestResponse>
-            ) {
-                if (response.isSuccessful){
-                _interestProfile.value = response.body()?.user
-                Log.e(TAG, "Response sukses, response body : ${response.body()}")
-                }
-            }
-
-            override fun onFailure(call: Call<InterestResponse>, t: Throwable) {
-                Log.e(TAG, "OnFailure : ${t.message}")
-            }
-        })
-    }
-
 }

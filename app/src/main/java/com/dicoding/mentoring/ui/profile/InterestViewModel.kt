@@ -33,11 +33,27 @@ class InterestViewModel : ViewModel() {
 
             override fun onFailure(call: Call<InterestResponse>, t: Throwable) {
                 Log.e(ProfileViewModel.TAG, "OnFailure : ${t.message}")
-
             }
-
         })
-
     }
+
+//    fun updateInterest(token: String?){
+//        val client = ApiConfig.getApiService().updateUserInterest("Bearer $token, ")
+//        client.enqueue(object : Callback<InterestResponse>{
+//            override fun onResponse(
+//                call: Call<InterestResponse>,
+//                response: Response<InterestResponse>
+//            ) {
+//                if(response.isSuccessful){
+//                    Log.d()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<InterestResponse>, t: Throwable) {
+//                TODO("Not yet implemented")
+//            }
+//
+//        })
+//    }
 
 }
