@@ -40,37 +40,33 @@
                     app:layout_constraintStart_toEndOf="@+id/img_profile_pic"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <TextView
+                style="@style/Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
                 android:fontFamily="@font/quicksand_semibold"
-                android:text="@string/tvFullname"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:text="@string/tvFullname" />
 
             <EditText
                 android:id="@+id/edit_text_fullname"
+                style="@style/Body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/quicksand_regular"
                 android:hint="Insert fullname"
-                android:paddingStart="15dp"
-                android:textSize="14sp" />
+                android:paddingHorizontal="16dp" />
 
             <TextView
+                style="@style/Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
                 android:fontFamily="@font/quicksand_semibold"
-                android:text="@string/tvRole"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:text="@string/tvRole" />
 
             <RadioGroup
                 android:id="@+id/radio_role"
@@ -82,71 +78,67 @@
 
                 <RadioButton
                     android:id="@+id/radio_mentee"
+                    style="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_semibold"
-                    android:text="Mentee"
-                    android:textSize="14sp" />
+                    android:text="Mentee" />
 
                 <RadioButton
                     android:id="@+id/radio_mentor"
+                    style="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_semibold"
-                    android:text="Mentor"
-                    android:textSize="14sp" />
+                    android:text="Mentor" />
 
             </RadioGroup>
 
             <TextView
+                style="@style/Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
                 android:fontFamily="@font/quicksand_semibold"
-                android:text="Phone"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:text="Phone" />
 
             <com.dicoding.mentoring.ui.customview.PhoneNumberEditText
                 android:id="@+id/edit_text_phone"
+                style="@style/Body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:fontFamily="@font/quicksand_regular"
                 android:hint="+62..."
-                android:paddingStart="15dp"
-                android:textSize="14sp" />
+                android:paddingHorizontal="16dp" />
 
             <TextView
+                style="@style/Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
                 android:fontFamily="@font/quicksand_semibold"
-                android:text="@string/tvEmail"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:text="@string/tvEmail" />
 
             <com.dicoding.mentoring.ui.customview.EmailEditText
                 android:id="@+id/edit_text_email"
+                style="@style/Body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/quicksand_regular"
                 android:hint="Insert email"
                 android:inputType="textEmailAddress"
-                android:paddingStart="15dp"
-                android:textSize="14sp" />
+                android:paddingHorizontal="16dp" />
 
             <TextView
+                style="@style/Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
                 android:fontFamily="@font/quicksand_semibold"
-                android:text="@string/tvGender"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:text="@string/tvGender" />
 
 
             <RadioGroup
@@ -158,32 +150,31 @@
 
                 <RadioButton
                     android:id="@+id/radio_male"
+                    style="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_semibold"
-                    android:text="Male"
-                    android:textSize="14sp" />
+                    android:text="Male" />
 
                 <RadioButton
                     android:id="@+id/radio_female"
+                    style="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_semibold"
-                    android:text="Female"
-                    android:textSize="14sp" />
+                    android:text="Female" />
 
             </RadioGroup>
 
             <TextView
+                style="@style/Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
                 android:fontFamily="@font/quicksand_semibold"
-                android:text="@string/tvInterest"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:text="@string/tvInterest" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_add_interest"
@@ -194,22 +185,21 @@
                 app:chipIcon="@drawable/ic_add_circle" />
 
             <TextView
+                style="@style/Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
                 android:fontFamily="@font/quicksand_semibold"
-                android:text="@string/tvBiography"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:text="@string/tvBiography" />
 
             <EditText
                 android:id="@+id/edit_text_biography"
+                style="@style/Body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:minLines="2"
-                android:scrollbars="vertical"
-                android:textSize="14sp"/>
+                android:scrollbars="vertical" />
 
             <Button
                 android:id="@+id/btn_save"

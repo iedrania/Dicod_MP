@@ -6,13 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicoding.mentoring.data.local.FeedbackResponse
 import com.dicoding.mentoring.data.remote.network.ApiConfig
-import com.google.firebase.auth.FirebaseAuth
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RatingViewModel(private val auth: FirebaseAuth) : ViewModel() {
+class RatingViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -22,12 +21,12 @@ class RatingViewModel(private val auth: FirebaseAuth) : ViewModel() {
     private val _isSuccess = MutableLiveData<Boolean>()
     val isSuccess: LiveData<Boolean> = _isSuccess
 
-    fun postFeedback(idMentor: String, rating: Float, feedback: String) {
+    fun postFeedback(token: String?, mentoringId: String, rating: Float, feedback: String) {
         _isSuccess.value = false
         _isError.value = false
         _isLoading.value = true
-        val client = ApiConfig.getApiService()
-            .postFeedback(auth.currentUser?.uid ?: "", idMentor, rating, feedback) // TODO
+        val client =
+            ApiConfig.getApiService().postFeedback("Bearer $token", mentoringId, rating, feedback)
         client.enqueue(object : Callback<FeedbackResponse> {
             override fun onResponse(
                 call: Call<FeedbackResponse>, response: Response<FeedbackResponse>

@@ -51,8 +51,4 @@ class MessagesAdapter(
     override fun getItemCount() = listMessage.size
 
     class ViewHolder(var binding: ItemMessagesBinding) : RecyclerView.ViewHolder(binding.root)
-
-    companion object {
-        private const val TAG = "MessagesAdapter"
-    }
 }

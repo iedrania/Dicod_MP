@@ -1,6 +1,7 @@
 package com.dicoding.mentoring.ui.rating
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -9,8 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.ActivityRatingBinding
-import com.dicoding.mentoring.helper.ViewModelFactory
-import com.google.firebase.auth.FirebaseAuth
+import com.dicoding.mentoring.ui.login.LoginActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -18,7 +18,6 @@ class RatingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRatingBinding
     private lateinit var ratingViewModel: RatingViewModel
-    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,25 +26,32 @@ class RatingActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        auth = Firebase.auth
+        getCurrentUser()
 
-        ratingViewModel = ViewModelProvider(
-            this, ViewModelFactory(auth)
-        )[RatingViewModel::class.java]
+        ratingViewModel = ViewModelProvider(this)[RatingViewModel::class.java]
         ratingViewModel.isLoading.observe(this) { showLoading(it) }
         ratingViewModel.isError.observe(this) { showError(it) }
         ratingViewModel.isSuccess.observe(this) {
             finish()
         }
+    }
 
-        binding.btnRatingSubmit.setOnClickListener {
-            ratingViewModel.postFeedback(
-                "idMentor", // TODO get mentor id
-                binding.rbRateStars.rating,
-                binding.edRateFeedback.text.toString()
-            )
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(it.windowToken, 0)
+    private fun getCurrentUser() {
+        val user = Firebase.auth.currentUser
+        if (user !== null) {
+            user.getIdToken(false).addOnSuccessListener {
+                binding.btnRatingSubmit.setOnClickListener { it1 ->
+                    ratingViewModel.postFeedback(
+                        it.token, "9999", // TODO get mentoring id
+                        binding.rbRateStars.rating, binding.edRateFeedback.text.toString()
+                    )
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(it1.windowToken, 0)
+                }
+            }
+        } else {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
     }
 
@@ -63,5 +69,6 @@ class RatingActivity : AppCompatActivity() {
                 this@RatingActivity, getString(R.string.feedback_failed), Toast.LENGTH_SHORT
             ).show()
         }
+        finish()
     }
 }

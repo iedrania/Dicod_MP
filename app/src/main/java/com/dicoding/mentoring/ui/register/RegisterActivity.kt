@@ -13,7 +13,6 @@ import com.dicoding.mentoring.MainActivity
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.ActivityRegisterBinding
 import com.dicoding.mentoring.helper.ViewModelFactory
-import com.dicoding.mentoring.ui.UserViewModel
 import com.dicoding.mentoring.ui.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth

@@ -10,7 +10,7 @@ import com.dicoding.mentoring.R
 import com.dicoding.mentoring.data.local.Chat
 
 class ChatAdapter(private val chats: List<Chat>, private val currentUser: String) :
-    RecyclerView.Adapter<ChatViewHolder>() {
+    RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         return if (viewType == VIEW_TYPE_MY_MESSAGE) {
@@ -50,12 +50,12 @@ class ChatAdapter(private val chats: List<Chat>, private val currentUser: String
         }
     }
 
+    open class ChatViewHolder(view: View) : ViewHolder(view) {
+        open fun bind(chat: Chat) {}
+    }
+
     companion object {
         private const val VIEW_TYPE_MY_MESSAGE = 1
         private const val VIEW_TYPE_OTHER_MESSAGE = 2
     }
-}
-
-open class ChatViewHolder(view: View) : ViewHolder(view) {
-    open fun bind(chat: Chat) {}
 }
