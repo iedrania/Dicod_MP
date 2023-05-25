@@ -42,18 +42,17 @@ interface ApiService {
     @GET("user")
     fun getUserProfile(
         @Header("Authorization") token: String,
-    ): Call<UserProfileResponse>
+    ): Call<GetUserProfileResponse>
 
     @FormUrlEncoded
     @POST("user")
     fun updateUserProfile(
         @Header("Authorization") token: String?,
         @Field("name") name : String?,
-        @Field("gender_id") gender_id : Int?,
         @Field("phone") phone : String?,
         @Field("bio") bio : String?,
         @Field("email") email : String?
-    ) : Call<UserProfileResponse>
+    ) : Call<PostUserProfileResponse>
 
     @GET("user/interest")
     fun getUserInterest(
@@ -64,11 +63,20 @@ interface ApiService {
     @POST("user/interest")
     fun updateUserInterest(
         @Header("Authorization") token: String,
-    ) : Call<UserProfileResponse>
+        @Field("is_path_android") is_path_android : Boolean,
+        @Field("is_path_ios") is_path_ios : Boolean,
+        @Field("is_path_flutter") is_path_flutter: Boolean,
+        @Field("is_path_ml") is_path_ml : Boolean,
+        @Field("is_path_fe") is_path_fe: Boolean,
+        @Field("is_path_be") is_path_be : Boolean,
+        @Field("is_path_react") is_path_react: Boolean,
+        @Field("is_path_devops") is_path_devops: Boolean,
+        @Field("is_path_gcp") is_path_gcp : Boolean
+    ) : Call<InterestResponse>
 
     @FormUrlEncoded
     @POST("user/avatar")
     fun updateUserProfilePicture(
         @Header("Authorization") token:String
-    ) : Callback<UserProfileResponse>
+    ) : Callback<GetUserProfileResponse>
 }

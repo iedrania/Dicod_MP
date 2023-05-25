@@ -61,7 +61,6 @@ class ProfileFragment : Fragment() {
                 profileViewModel.updateProfile(
                     token,
                     binding.editTextFullname.text.toString(),
-                    binding.radioGender.checkedRadioButtonId.toString().toInt(),
                     binding.editTextPhone.text.toString(),
                     binding.editTextBiography.text.toString(),
                     binding.editTextEmail.text.toString()
