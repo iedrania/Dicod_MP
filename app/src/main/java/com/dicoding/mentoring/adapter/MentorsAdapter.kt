@@ -31,7 +31,6 @@ class MentorsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mentor = mentorsResponse[position]
 
-        // display mentor info
         holder.binding.tvItemName.text = mentor.User.name
         holder.binding.tvItemBio.text = mentor.User.bio
         holder.binding.rbItemRating.rating = mentor.averageRating ?: 0.toFloat()
@@ -49,6 +48,16 @@ class MentorsAdapter(
         if (mentor.User.isPathGcp == true) listInterest.add("GCP")
         listInterest.forEach { holder.binding.cgItemInterests.addChip(it) }
 
+        val listDays = ArrayList<String>()
+        if (mentor.User.is_monday_available == true) listDays.add("Senin")
+        if (mentor.User.is_tuesday_available == true) listDays.add("Selasa")
+        if (mentor.User.is_wednesday_available == true) listDays.add("Rabu")
+        if (mentor.User.is_thursday_available == true) listDays.add("Kamis")
+        if (mentor.User.is_friday_available == true) listDays.add("Jumat")
+        if (mentor.User.is_saturday_available == true) listDays.add("Sabtu")
+        if (mentor.User.is_sunday_available == true) listDays.add("Minggu")
+        listDays.forEach { holder.binding.cgItemDays.addChip(it) }
+
         Glide.with(holder.itemView.context).load(mentor.User.profile_picture_url)
             .into(holder.binding.ivItemPhoto)
 
@@ -60,7 +69,6 @@ class MentorsAdapter(
 
             db.collection("groups").whereArrayContains("members", user.uid).get()
                 .addOnSuccessListener { documents ->
-                    // get groups for this user
                     for (document in documents) {
                         document.let {
                             val (id, data) = document.id to document.data

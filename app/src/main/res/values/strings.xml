@@ -8,8 +8,7 @@
     <string name="full_name">Nama Lengkap</string>
     <string name="tvFullname">Full Name</string>
     <string name="logout">Keluar</string>
-    <string name="btnLogout">Logout</string>
-    <string name="error_toast">Mohon coba lagi nanti.</string>
+    <string name="general_error_message">Ups! Terjadi kesalahan.\nMohon coba lagi nanti.</string>
 
     <!--Auth-->
     <string name="login">Masuk</string>
@@ -45,7 +44,11 @@
 
     <!--Chat-->
     <string name="say_something">Katakan sesuatu…</string>
-    <string name="btn_bottom_navigation">Bottom Navigation</string>
-    <string name="get_mentors_failed">Get mentors failed</string>
     <string name="get_schedule_failed">Get schedule failed</string>
+
+    <!--Home-->
+    <string name="home_intro_mentee">Siap untuk mempelajari sesuatu yang baru?</string>
+    <string name="home_intro_mentor">Siap untuk berbagi ilmu?</string>
+    <string name="interests_label">Bidang ketertarikan:</string>
+    <string name="days_label">Hari tersedia:</string>
 </resources>

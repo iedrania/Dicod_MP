@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,14 +27,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-        binding.chipChooseDays.setOnClickListener {
-            val intent = Intent(activity, ListDayActivity::class.java)
-            activity?.startActivity(intent)
-        }
-
         return binding.root
     }
 
@@ -44,6 +36,7 @@ class HomeFragment : Fragment() {
 
         getCurrentUser()
 
+        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeViewModel.isLoading.observe(viewLifecycleOwner) { showLoading(it) }
         homeViewModel.isError.observe(viewLifecycleOwner) { showError(it) }
     }
@@ -51,29 +44,31 @@ class HomeFragment : Fragment() {
     private fun getCurrentUser() {
         val user = Firebase.auth.currentUser
         if (user !== null) {
-            // get list of all mentors for adapter
+            "Halo, ${user.displayName}".also { binding.tvMainWelcome.text = it }
+            if (user.getIdToken(false).result.claims["role"] == "mentor") {
+                binding.tvMainIntro.text = getString(R.string.home_intro_mentor)
+            } else {
+                binding.tvMainIntro.text = getString(R.string.home_intro_mentee)
+            }
+
             user.getIdToken(false).addOnSuccessListener { homeViewModel.findMentors(it.token) }
 
-            // get groups of user: list of mentors already in this user's groups
-            // to make a new collection if not exist yet for messages
-
             val db = Firebase.firestore
-            val docRef = db.collection("users").document(user.uid)
-            docRef.get().addOnSuccessListener { document ->
+            db.collection("users").document(user.uid).get().addOnSuccessListener { document ->
                 if (document != null) {
                     homeViewModel.listMentor.observe(viewLifecycleOwner) {
                         if (document.data?.get("groups") !== null) {
                             binding.rvMentors.layoutManager = LinearLayoutManager(requireContext())
                             binding.rvMentors.adapter = MentorsAdapter(user, db, it.mentors)
                         } else {
-                            Log.d(TAG, "make sure user is in firestore")
+                            Log.d(TAG, "User's groups field does not exist")
                         }
                     }
                 } else {
-                    Log.d(TAG, "No such document")
+                    Log.d(TAG, "User's document does not exist")
                 }
             }.addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
+                Log.d(TAG, "get user's document failed with ", exception)
             }
         } else {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
@@ -86,11 +81,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showError(isError: Boolean) {
-        if (isError) {
-            Toast.makeText(
-                requireContext(), getString(R.string.get_mentors_failed), Toast.LENGTH_SHORT
-            ).show()
-        }
+        binding.tvMainError.visibility = if (isError) View.VISIBLE else View.GONE
     }
 
     override fun onDestroyView() {

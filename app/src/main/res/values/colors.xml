@@ -12,4 +12,6 @@
     <color name="primary_reverse">#91B4DA</color>
     <color name="red">#A03838</color>
     <color name="light_gray">#EFEFEF</color>
+    <color name="on_primary">#000000</color>
+    <color name="secondary">#3D3D3D</color>
 </resources>
