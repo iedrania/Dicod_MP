@@ -1,4 +1,4 @@
-package com.dicoding.mentoring.ui
+package com.dicoding.mentoring.ui.register
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -31,7 +31,7 @@ class UserViewModel(private val auth: FirebaseAuth) : ViewModel() {
                 val responseBody = response.body()
                 if (response.isSuccessful && responseBody != null) {
                     auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener() { task ->
+                        .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 Log.d(TAG, "signInFromRegister:success")
                             } else {

@@ -36,6 +36,7 @@ class HomeViewModel : ViewModel() {
                         _listMentor.value = responseBody!!
                     }
                 } else {
+                    _isError.value = true
                     Log.e(TAG, "findMentors onError: ${response.message()}")
                 }
             }

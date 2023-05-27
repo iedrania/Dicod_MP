@@ -18,15 +18,11 @@
 
     <TextView
         android:id="@+id/tv_item_messages_name"
+        style="@style/Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="14dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/quicksand_semibold"
-        android:maxLines="1"
-        android:textColor="@color/primary"
-        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_item_messages_photo"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,14 +30,13 @@
 
     <TextView
         android:id="@+id/tv_item_messages_preview"
+        style="@style/Body"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="14dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textColor="@color/black"
-        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_item_messages_photo"

@@ -33,11 +33,11 @@ interface ApiService {
         @Header("Authorization") token: String, @Query("list_interest") listInterest: List<String>
     ): Call<MentorsResponse>
 
-//    @GET("schedules")
-//    fun getSchedules(
-//        @Header("Authorization") token: String,
-//        @Query("from_date") fromDate: String,
-//    ): Call<ScheduleResponse>
+    @GET("mentoring/schedule")
+    fun getSchedule(
+        @Header("Authorization") token: String,
+        @Query("from_date") fromDate: String,
+    ): Call<ScheduleResponse>
 
     @GET("user")
     fun getUserProfile(
@@ -55,10 +55,11 @@ interface ApiService {
         @Field("email") email : String?
     ) : Call<PostUserProfileResponse>
 
+
     @GET("user/interest")
     fun getUserInterest(
         @Header("Authorization") token: String
-    ) : Call<InterestResponse>
+    ): Call<InterestResponse>
 
     @FormUrlEncoded
     @PUT("user/interest")
@@ -75,9 +76,10 @@ interface ApiService {
         @Field("is_path_gcp") is_path_gcp :  Boolean?
     ) : Call<PostUserProfileResponse>
 
+
     @FormUrlEncoded
     @POST("user/avatar")
     fun updateUserProfilePicture(
-        @Header("Authorization") token:String
-    ) : Callback<GetUserProfileResponse>
+        @Header("Authorization") token: String
+    ): Callback<GetUserProfileResponse>
 }

@@ -8,18 +8,17 @@
 
     <TextView
         android:id="@+id/tv_item_chat_text_them"
+        style="@style/Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/rounded_message_them"
         android:elevation="5dp"
         android:maxWidth="300dp"
         android:padding="15dp"
         android:paddingHorizontal="20dp"
         android:paddingVertical="14dp"
-        android:textColor="@android:color/black"
-        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Other's message" />
