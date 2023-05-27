@@ -51,20 +51,35 @@ class ProfileFragment : Fragment() {
             activity?.startActivity(intent)
         }
 
-        //action when click button save
+        //Update profile when save button clicked
         binding.btnSave.setOnClickListener {
             if (token != null) {
                 Log.d(
                     "ProfileFragment",
                     "updateProfile : token user pada profile fragment adalah : $token"
                 )
-                profileViewModel.updateProfile(
-                    token,
-                    binding.editTextFullname.text.toString(),
-                    binding.editTextPhone.text.toString(),
-                    binding.editTextBiography.text.toString(),
-                    binding.editTextEmail.text.toString()
-                )
+
+                var gender_id: Int? = null
+
+                profileViewModel.userProfile.observe(viewLifecycleOwner) {
+
+                    if (binding.radioMale.isChecked) {
+                        it.genderID = 1
+                    } else if (binding.radioFemale.isChecked) {
+                        it.genderID = 2
+                    }
+                    gender_id = it.genderID
+                    println(gender_id)
+
+                }
+                    profileViewModel.updateProfile(
+                        token,
+                        binding.editTextFullname.text.toString(),
+                        gender_id,
+                        binding.editTextPhone.text.toString(),
+                        binding.editTextBiography.text.toString(),
+                        binding.editTextEmail.text.toString()
+                    )
                 Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
             }
         }

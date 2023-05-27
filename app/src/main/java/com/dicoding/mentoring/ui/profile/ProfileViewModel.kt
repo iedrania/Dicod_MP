@@ -46,14 +46,14 @@ class ProfileViewModel: ViewModel() {
         })
     }
 
-    fun updateProfile(token: String?, name : String?, phone: String?, bio: String?, email: String?){
-        val client = ApiConfig.getApiService().updateUserProfile("Bearer $token", name, phone, bio, email)
+    fun updateProfile(token: String?, name : String?,gender: Int?, phone: String?, bio: String?, email: String?){
+        val client = ApiConfig.getApiService().updateUserProfile("Bearer $token", name, gender, phone, bio, email)
         client.enqueue(object : Callback<PostUserProfileResponse>{
             override fun onResponse(
                 call: Call<PostUserProfileResponse>,
                 response: Response<PostUserProfileResponse>
             ) {
-                Log.e(TAG, "Response gagal, response body : $response")
+                Log.e(TAG, "response body : $response")
                 if (response.isSuccessful){
                     _userProfile.value = response.body()?.updatedUser
                     Log.e(TAG, "Response sukses, response body : ${response.body()}")

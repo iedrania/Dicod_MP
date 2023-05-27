@@ -1,11 +1,6 @@
 package com.dicoding.mentoring.data.local
 
-import com.google.gson.annotations.SerializedName
 
-data class GeneralUserResponse(
-    val error: Boolean,
-    val message: String
-)
 
 data class GetUserProfileResponse(
     val error: Boolean,
@@ -23,7 +18,7 @@ data class UserResponse (
     val id: Long?,
     val name: String?,
     val roleID: Int?,
-    val genderID: Int?,
+    var genderID: Int?,
     val email: String?,
     val address: String?,
     val phone: String?,

@@ -8,16 +8,16 @@ data class InterestResponse(
 )
 
 data class Interest (
-    val is_path_android: Boolean?,
+    var is_path_android: Boolean?,
     val is_path_web: Boolean?,
-    val is_path_ios: Boolean?,
-    val is_path_ml: Boolean?,
-    val is_path_flutter: Boolean?,
-    val is_path_fe: Boolean?,
-    val is_path_be: Boolean?,
-    val is_path_react: Boolean?,
-    val is_path_devops: Boolean?,
-    val is_path_gcp: Boolean?
+    var is_path_ios: Boolean?,
+    var is_path_ml: Boolean?,
+    var is_path_flutter: Boolean?,
+    var is_path_fe: Boolean?,
+    var is_path_be: Boolean?,
+    var is_path_react: Boolean?,
+    var is_path_devops: Boolean?,
+    var is_path_gcp: Boolean?
 )
 
 data class InterestItem (
