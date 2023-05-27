@@ -132,6 +132,12 @@ class ProfileFragment : Fragment() {
             } else {
                 binding.radioMentee.isChecked = true
             }
+            if(it.genderID == 1) {
+                binding.radioMale.isChecked = true
+            }else{
+                binding.radioFemale.isChecked = true
+            }
+
         }
     }
 }
