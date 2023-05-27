@@ -21,16 +21,16 @@ class ListInterestActivity : AppCompatActivity() {
     private lateinit var interestViewModel: InterestViewModel
     private lateinit var binding: ActivityListInterestBinding
 
-    private val interests : MutableList<InterestItem> = mutableListOf(
-        InterestItem(1,"Android Developer",false),
-        InterestItem(2,"iOS Developer",false),
-        InterestItem(3,"Multi-Platform App Developer",false),
-        InterestItem(4,"Machine Learning Developer",false),
-        InterestItem(5,"Front-End Web Developer",false),
-        InterestItem(6,"Back-End Web Developer",false),
-        InterestItem(7,"React Developer",false),
-        InterestItem(8,"DevOps Engineer Developer",false),
-        InterestItem(9,"Google Cloud Professional",false),
+    private val interests: MutableList<InterestItem> = mutableListOf(
+        InterestItem(0, "Android Developer", false),
+        InterestItem(1, "iOS Developer", false),
+        InterestItem(2, "Multi-Platform App Developer", false),
+        InterestItem(3, "Machine Learning Developer", false),
+        InterestItem(4, "Front-End Web Developer", false),
+        InterestItem(5, "Back-End Web Developer", false),
+        InterestItem(6, "React Developer", false),
+        InterestItem(7, "DevOps Engineer Developer", false),
+        InterestItem(8, "Google Cloud Professional", false),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +53,7 @@ class ListInterestActivity : AppCompatActivity() {
         getInterest(token)
 
         btnSave.setOnClickListener {
+            updateInterest(token)
             finish()
         }
     }
@@ -60,19 +61,51 @@ class ListInterestActivity : AppCompatActivity() {
     private fun getInterest(token: String?) {
         interestViewModel.getInterest(token)
         interestViewModel.userInterest.observe(this) {
-            if (it.is_path_android == true) updateItemValue(1,true)
-            if (it.is_path_ios == true) updateItemValue(2,true)
-            if (it.is_path_flutter == true) updateItemValue(3,true)
-            if (it.is_path_ml == true) updateItemValue(4,true)
-            if (it.is_path_fe == true) updateItemValue(5,true)
-            if (it.is_path_be == true) updateItemValue(6,true)
-            if (it.is_path_react == true) updateItemValue(7,true)
-            if (it.is_path_devops == true) updateItemValue(8,true)
-            if (it.is_path_gcp == true) updateItemValue(9,true)
+            if (it.is_path_android == true) updateItemValue(0, true)
+            if (it.is_path_ios == true) updateItemValue(1, true)
+            if (it.is_path_flutter == true) updateItemValue(2, true)
+            if (it.is_path_ml == true) updateItemValue(3, true)
+            if (it.is_path_fe == true) updateItemValue(4, true)
+            if (it.is_path_be == true) updateItemValue(5, true)
+            if (it.is_path_react == true) updateItemValue(6, true)
+            if (it.is_path_devops == true) updateItemValue(7, true)
+            if (it.is_path_gcp == true) updateItemValue(8, true)
 
             setRecyclerView(interests)
         }
     }
+
+    fun isBool(value: Any): Boolean {
+        return value is Boolean
+    }
+
+    private fun updateInterest(token: String?) {
+        //Get checkbox value of each interest
+        var isPathAndro = interests[0].isChecked
+        var isPathIos = interests[1].isChecked
+        var isPathFlutter = interests[2].isChecked
+        var isPathML = interests[3].isChecked
+        var isPathFE = interests[4].isChecked
+        var isPathBE = interests[5].isChecked
+        var isPathReact = interests[6].isChecked
+        var isPathDevops = interests[7].isChecked
+        var isPathGCP = interests[8].isChecked
+
+        //Put the data to API
+        interestViewModel.updateInterest(
+            token,
+            isPathAndro,
+            isPathIos,
+            isPathFlutter,
+            isPathML,
+            isPathFE,
+            isPathBE,
+            isPathReact,
+            isPathDevops,
+            isPathGCP,
+        )
+    }
+
 
     private fun setRecyclerView(interests: List<InterestItem>) {
         binding.rvInterest.layoutManager = LinearLayoutManager(this)
@@ -80,7 +113,7 @@ class ListInterestActivity : AppCompatActivity() {
         binding.rvInterest.adapter = adapter
     }
 
-    private fun updateItemValue(idInterest: Int, newValue:Boolean){
+    private fun updateItemValue(idInterest: Int, newValue: Boolean) {
         val itemIndex = interests.indexOfFirst { it.id == idInterest }
         if (idInterest > 0) {
             interests[itemIndex].isChecked = newValue

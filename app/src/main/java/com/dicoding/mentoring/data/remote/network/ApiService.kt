@@ -45,14 +45,16 @@ interface ApiService {
     ): Call<GetUserProfileResponse>
 
     @FormUrlEncoded
-    @POST("user")
+    @PUT("user")
     fun updateUserProfile(
         @Header("Authorization") token: String?,
-        @Field("name") name: String?,
-        @Field("phone") phone: String?,
-        @Field("bio") bio: String?,
-        @Field("email") email: String?
-    ): Call<PostUserProfileResponse>
+        @Field("name") name : String?,
+        @Field("gender_id") gender_id : Int?,
+        @Field("phone") phone : String?,
+        @Field("bio") bio : String?,
+        @Field("email") email : String?
+    ) : Call<PostUserProfileResponse>
+
 
     @GET("user/interest")
     fun getUserInterest(
@@ -60,19 +62,20 @@ interface ApiService {
     ): Call<InterestResponse>
 
     @FormUrlEncoded
-    @POST("user/interest")
+    @PUT("user/interest")
     fun updateUserInterest(
         @Header("Authorization") token: String,
-        @Field("is_path_android") is_path_android: Boolean,
-        @Field("is_path_ios") is_path_ios: Boolean,
-        @Field("is_path_flutter") is_path_flutter: Boolean,
-        @Field("is_path_ml") is_path_ml: Boolean,
-        @Field("is_path_fe") is_path_fe: Boolean,
-        @Field("is_path_be") is_path_be: Boolean,
-        @Field("is_path_react") is_path_react: Boolean,
-        @Field("is_path_devops") is_path_devops: Boolean,
-        @Field("is_path_gcp") is_path_gcp: Boolean
-    ): Call<InterestResponse>
+        @Field("is_path_android") is_path_android : Boolean?,
+        @Field("is_path_ios") is_path_ios :  Boolean?,
+        @Field("is_path_flutter") is_path_flutter:  Boolean?,
+        @Field("is_path_ml") is_path_ml :  Boolean?,
+        @Field("is_path_fe") is_path_fe:  Boolean?,
+        @Field("is_path_be") is_path_be :  Boolean?,
+        @Field("is_path_react") is_path_react:  Boolean?,
+        @Field("is_path_devops") is_path_devops:  Boolean?,
+        @Field("is_path_gcp") is_path_gcp :  Boolean?
+    ) : Call<PostUserProfileResponse>
+
 
     @FormUrlEncoded
     @POST("user/avatar")
