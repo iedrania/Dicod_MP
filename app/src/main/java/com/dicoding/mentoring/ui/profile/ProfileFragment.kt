@@ -54,33 +54,7 @@ class ProfileFragment : Fragment() {
         //Update profile when save button clicked
         binding.btnSave.setOnClickListener {
             if (token != null) {
-                Log.d(
-                    "ProfileFragment",
-                    "updateProfile : token user pada profile fragment adalah : $token"
-                )
-
-                var gender_id: Int? = null
-
-                profileViewModel.userProfile.observe(viewLifecycleOwner) {
-
-                    if (binding.radioMale.isChecked) {
-                        it.genderID = 1
-                    } else if (binding.radioFemale.isChecked) {
-                        it.genderID = 2
-                    }
-                    gender_id = it.genderID
-                    println(gender_id)
-
-                }
-                    profileViewModel.updateProfile(
-                        token,
-                        binding.editTextFullname.text.toString(),
-                        gender_id,
-                        binding.editTextPhone.text.toString(),
-                        binding.editTextBiography.text.toString(),
-                        binding.editTextEmail.text.toString()
-                    )
-                Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
+                updateUserDataProfile(token)
             }
         }
         return binding.root
@@ -132,13 +106,38 @@ class ProfileFragment : Fragment() {
             } else {
                 binding.radioMentee.isChecked = true
             }
-            if(it.genderID == 1) {
+            if (it.genderID == 1) {
                 binding.radioMale.isChecked = true
-            }else{
+            } else {
                 binding.radioFemale.isChecked = true
             }
 
         }
     }
+
+    private fun updateUserDataProfile(token: String) {
+        var gender_id: Int? = null
+        profileViewModel.userProfile.observe(viewLifecycleOwner) {
+
+            if (binding.radioMale.isChecked) {
+                it.genderID = 1
+            } else if (binding.radioFemale.isChecked) {
+                it.genderID = 2
+            }
+            gender_id = it.genderID
+            println(gender_id)
+
+        }
+        profileViewModel.updateProfile(
+            token,
+            binding.editTextFullname.text.toString(),
+            gender_id,
+            binding.editTextPhone.text.toString(),
+            binding.editTextBiography.text.toString(),
+            binding.editTextEmail.text.toString()
+        )
+        Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
+    }
+
 }
 
