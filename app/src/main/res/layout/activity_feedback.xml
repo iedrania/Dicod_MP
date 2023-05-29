@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    tools:context=".ui.rating.RatingActivity">
+    tools:context=".ui.feedback.FeedbackActivity">
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -22,11 +22,11 @@
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/rate_prompt"
+        android:id="@+id/tv_feedback_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="144dp"
-        android:text="@string/rate_prompt"
+        android:text="@string/feedback_prompt"
         android:textAlignment="center"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,27 +34,27 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <RatingBar
-        android:id="@+id/rb_rate_stars"
+        android:id="@+id/rb_feedback_stars"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:contentDescription="@string/rating_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rate_prompt" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_feedback_prompt" />
 
     <TextView
-        android:id="@+id/tv_rate_rating"
+        android:id="@+id/tv_feedback_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rb_rate_stars"
+        app:layout_constraintTop_toBottomOf="@+id/rb_feedback_stars"
         tools:text="Sempurna!" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tf_rate_feedback"
+        android:id="@+id/tf_feedback_feedback"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,19 +64,19 @@
         app:boxStrokeWidth="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rate_rating">
+        app:layout_constraintTop_toBottomOf="@+id/tv_feedback_rating">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ed_rate_feedback"
+            android:id="@+id/ed_feedback_feedback"
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:gravity="start|top"
-            android:hint="@string/feedback_prompt"
+            android:hint="@string/feedback_hint"
             android:inputType="textMultiLine" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btn_rating_submit"
+        android:id="@+id/btn_feedback_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -84,6 +84,6 @@
         android:text="@string/submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tf_rate_feedback" />
+        app:layout_constraintTop_toBottomOf="@+id/tf_feedback_feedback" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

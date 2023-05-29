@@ -1,4 +1,4 @@
-package com.dicoding.mentoring.ui.rating
+package com.dicoding.mentoring.ui.feedback
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -11,7 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RatingViewModel : ViewModel() {
+class FeedbackViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -53,6 +53,6 @@ class RatingViewModel : ViewModel() {
     }
 
     companion object {
-        private const val TAG = "RatingViewModel"
+        private const val TAG = "FeedbackViewModel"
     }
 }

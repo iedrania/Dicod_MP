@@ -1,4 +1,4 @@
-package com.dicoding.mentoring.ui.rating
+package com.dicoding.mentoring.ui.feedback
 
 import android.content.Context
 import android.content.Intent
@@ -9,29 +9,29 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.mentoring.R
-import com.dicoding.mentoring.databinding.ActivityRatingBinding
+import com.dicoding.mentoring.databinding.ActivityFeedbackBinding
 import com.dicoding.mentoring.ui.login.LoginActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class RatingActivity : AppCompatActivity() {
+class FeedbackActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityRatingBinding
-    private lateinit var ratingViewModel: RatingViewModel
+    private lateinit var binding: ActivityFeedbackBinding
+    private lateinit var feedbackViewModel: FeedbackViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRatingBinding.inflate(layoutInflater)
+        binding = ActivityFeedbackBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar?.hide()
 
         getCurrentUser()
 
-        ratingViewModel = ViewModelProvider(this)[RatingViewModel::class.java]
-        ratingViewModel.isLoading.observe(this) { showLoading(it) }
-        ratingViewModel.isError.observe(this) { showError(it) }
-        ratingViewModel.isSuccess.observe(this) {
+        feedbackViewModel = ViewModelProvider(this)[FeedbackViewModel::class.java]
+        feedbackViewModel.isLoading.observe(this) { showLoading(it) }
+        feedbackViewModel.isError.observe(this) { showError(it) }
+        feedbackViewModel.isSuccess.observe(this) {
             finish()
         }
     }
@@ -40,10 +40,10 @@ class RatingActivity : AppCompatActivity() {
         val user = Firebase.auth.currentUser
         if (user !== null) {
             user.getIdToken(false).addOnSuccessListener {
-                binding.btnRatingSubmit.setOnClickListener { it1 ->
-                    ratingViewModel.postFeedback(
+                binding.btnFeedbackSubmit.setOnClickListener { it1 ->
+                    feedbackViewModel.postFeedback(
                         it.token, "9999", // TODO get mentoring id
-                        binding.rbRateStars.rating, binding.edRateFeedback.text.toString()
+                        binding.rbFeedbackStars.rating, binding.edFeedbackFeedback.text.toString()
                     )
                     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(it1.windowToken, 0)
@@ -66,7 +66,7 @@ class RatingActivity : AppCompatActivity() {
     private fun showError(isError: Boolean) {
         if (isError) {
             Toast.makeText(
-                this@RatingActivity, getString(R.string.feedback_failed), Toast.LENGTH_SHORT
+                this@FeedbackActivity, getString(R.string.feedback_failed), Toast.LENGTH_SHORT
             ).show()
         }
         finish()

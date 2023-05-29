@@ -4,19 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".`MainActivity.old`">
+    tools:context=".MainActivityOld">
 
     <Button
         android:id="@+id/btn_main_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_home"
-        app:layout_constraintBottom_toTopOf="@id/btn_main_rating"
+        app:layout_constraintBottom_toTopOf="@id/btn_main_feedback"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btn_main_rating"
+        android:id="@+id/btn_main_feedback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/rating_bar"

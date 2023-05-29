@@ -23,7 +23,7 @@
             android:name=".ui.timepicker.TimePickerActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.rating.RatingActivity"
+            android:name=".ui.feedback.FeedbackActivity"
             android:exported="false" />
         <activity
             android:name=".ui.register.RegisterActivity"

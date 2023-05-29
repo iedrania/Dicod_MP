@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.mentoring.ui.login.LoginActivity
-import com.dicoding.mentoring.ui.rating.RatingActivity
+import com.dicoding.mentoring.ui.feedback.FeedbackActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -32,9 +32,9 @@ class MainActivityOld : AppCompatActivity() {
             finish()
         }
 
-        val btnMainRating = findViewById<Button>(R.id.btn_main_rating)
-        btnMainRating.setOnClickListener {
-            startActivity(Intent(this@MainActivityOld, RatingActivity::class.java))
+        val btnMainFeedback = findViewById<Button>(R.id.btn_main_feedback)
+        btnMainFeedback.setOnClickListener {
+            startActivity(Intent(this@MainActivityOld, FeedbackActivity::class.java))
         }
     }
 }
