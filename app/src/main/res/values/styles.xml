@@ -31,4 +31,11 @@
         <item name="android:textSize">28sp</item>
     </style>
 
+    <!--Used for Chat time-->
+    <style name="Small">
+        <item name="android:fontFamily">@font/quicksand_light</item>
+        <item name="android:textColor">@color/secondary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

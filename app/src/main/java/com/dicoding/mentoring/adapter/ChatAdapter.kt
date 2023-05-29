@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.data.local.Chat
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class ChatAdapter(private val chats: List<Chat>, private val currentUser: String) :
     RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
@@ -35,18 +37,30 @@ class ChatAdapter(private val chats: List<Chat>, private val currentUser: String
     override fun getItemCount() = chats.size
 
     inner class MyChatViewHolder(view: View) : ChatViewHolder(view) {
-        private var chatText: TextView = view.findViewById(R.id.tv_item_chat_text_me)
+        private var chatText: TextView = view.findViewById(R.id.tv_item_chat_text)
+        private var timeText: TextView = view.findViewById(R.id.tv_item_chat_time)
 
         override fun bind(chat: Chat) {
             chatText.text = chat.messageText
+
+            val locale = Locale("id", "ID")
+            val outputFormat = SimpleDateFormat("dd/MM HH:mm", locale)
+            val formattedDate: String = outputFormat.format(chat.sentAt?.toDate()!!)
+            timeText.text = formattedDate
         }
     }
 
     inner class OtherChatViewHolder(view: View) : ChatViewHolder(view) {
-        private var chatText: TextView = view.findViewById(R.id.tv_item_chat_text_them)
+        private var chatText: TextView = view.findViewById(R.id.tv_item_chat_text)
+        private var timeText: TextView = view.findViewById(R.id.tv_item_chat_time)
 
         override fun bind(chat: Chat) {
             chatText.text = chat.messageText
+
+            val locale = Locale("id", "ID")
+            val outputFormat = SimpleDateFormat("HH:mm dd/MM ", locale)
+            val formattedDate: String = outputFormat.format(chat.sentAt?.toDate()!!)
+            timeText.text = formattedDate
         }
     }
 

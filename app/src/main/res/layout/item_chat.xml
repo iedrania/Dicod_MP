@@ -7,7 +7,7 @@
     android:layout_marginVertical="12dp">
 
     <TextView
-        android:id="@+id/tv_item_chat_text_me"
+        android:id="@+id/tv_item_chat_text"
         style="@style/Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,5 +19,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="This is my message" />
+
+    <TextView
+        android:id="@+id/tv_item_chat_time"
+        style="@style/Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_item_chat_text"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="14.03" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
