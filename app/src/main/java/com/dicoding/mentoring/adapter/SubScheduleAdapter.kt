@@ -1,5 +1,8 @@
 package com.dicoding.mentoring.adapter
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +34,41 @@ class SubScheduleAdapter(private val schedules: List<Schedule>) :
         val toDate = inputFormat.parse(schedule.toDate!!)
         val formattedToTime = outputFormat.format(toDate!!)
         "$formattedFromTime - $formattedToTime".also { holder.binding.tvItemScheduleTime.text = it }
+
+        holder.itemView.setOnClickListener {
+            schedule.meetingId?.let { meetingId ->
+                startGoogleMeet(meetingId, holder.itemView.context)
+            }
+        }
+    }
+
+    private fun startGoogleMeetInBrowser(meetingId: String, context: Context) {
+        val googleMeetUrl = "https://meet.google.com/$meetingId"
+
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(googleMeetUrl))
+        context.startActivity(intent)
+    }
+
+    private fun startGoogleMeet(meetingId: String, context: Context) {
+        val googleMeetPackage = "com.google.android.apps.tachyon"
+        val googleMeetUrl = "https://meet.google.com/$meetingId"
+
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.addCategory(Intent.CATEGORY_BROWSABLE)
+
+        val packageManager = context.packageManager
+        val resolveInfo = packageManager.resolveActivity(intent, 0)
+        val isAppInstalled =
+            resolveInfo != null && resolveInfo.activityInfo.packageName == googleMeetPackage
+
+        if (isAppInstalled) {
+            intent.`package` = googleMeetPackage
+            intent.data = Uri.parse("https://meet.google.com/$meetingId")
+        } else {
+            intent.data = Uri.parse(googleMeetUrl)
+        }
+
+        context.startActivity(intent)
     }
 
     override fun getItemCount() = schedules.size
