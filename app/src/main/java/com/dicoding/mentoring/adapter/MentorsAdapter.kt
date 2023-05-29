@@ -5,8 +5,10 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.dicoding.mentoring.R
 import com.dicoding.mentoring.data.local.Mentors
 import com.dicoding.mentoring.databinding.ItemMentorBinding
 import com.dicoding.mentoring.ui.chat.ChatActivity
@@ -31,34 +33,36 @@ class MentorsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mentor = mentorsResponse[position]
 
-        holder.binding.tvItemName.text = mentor.User.name
-        holder.binding.tvItemBio.text = mentor.User.bio
+        holder.binding.tvItemName.text = mentor.user.name
+        holder.binding.tvItemBio.text = mentor.user.bio
         holder.binding.rbItemRating.rating = mentor.averageRating ?: 0.toFloat()
 
+        setGenderIcon(mentor.user.genderId, holder.binding.ivItemIcon)
+
         val listInterest = ArrayList<String>()
-        if (mentor.User.isPathAndroid == true) listInterest.add("Android")
-        if (mentor.User.isPathWeb == true) listInterest.add("Web")
-        if (mentor.User.isPathIos == true) listInterest.add("iOS")
-        if (mentor.User.isPathMl == true) listInterest.add("ML")
-        if (mentor.User.isPathFlutter == true) listInterest.add("Flutter")
-        if (mentor.User.isPathFe == true) listInterest.add("FE")
-        if (mentor.User.isPathBe == true) listInterest.add("BE")
-        if (mentor.User.isPathReact == true) listInterest.add("React")
-        if (mentor.User.isPathDevops == true) listInterest.add("DevOps")
-        if (mentor.User.isPathGcp == true) listInterest.add("GCP")
+        if (mentor.user.isPathAndroid == true) listInterest.add("Android")
+        if (mentor.user.isPathWeb == true) listInterest.add("Web")
+        if (mentor.user.isPathIos == true) listInterest.add("iOS")
+        if (mentor.user.isPathMl == true) listInterest.add("ML")
+        if (mentor.user.isPathFlutter == true) listInterest.add("Flutter")
+        if (mentor.user.isPathFe == true) listInterest.add("FE")
+        if (mentor.user.isPathBe == true) listInterest.add("BE")
+        if (mentor.user.isPathReact == true) listInterest.add("React")
+        if (mentor.user.isPathDevops == true) listInterest.add("DevOps")
+        if (mentor.user.isPathGcp == true) listInterest.add("GCP")
         listInterest.forEach { holder.binding.cgItemInterests.addChip(it) }
 
         val listDays = ArrayList<String>()
-        if (mentor.User.is_monday_available == true) listDays.add("Senin")
-        if (mentor.User.is_tuesday_available == true) listDays.add("Selasa")
-        if (mentor.User.is_wednesday_available == true) listDays.add("Rabu")
-        if (mentor.User.is_thursday_available == true) listDays.add("Kamis")
-        if (mentor.User.is_friday_available == true) listDays.add("Jumat")
-        if (mentor.User.is_saturday_available == true) listDays.add("Sabtu")
-        if (mentor.User.is_sunday_available == true) listDays.add("Minggu")
+        if (mentor.user.isMondayAvailable == true) listDays.add("Senin")
+        if (mentor.user.isTuesdayAvailable == true) listDays.add("Selasa")
+        if (mentor.user.isWednesdayAvailable == true) listDays.add("Rabu")
+        if (mentor.user.isThursdayAvailable == true) listDays.add("Kamis")
+        if (mentor.user.isFridayAvailable == true) listDays.add("Jumat")
+        if (mentor.user.isSaturdayAvailable == true) listDays.add("Sabtu")
+        if (mentor.user.isSundayAvailable == true) listDays.add("Minggu")
         listDays.forEach { holder.binding.cgItemDays.addChip(it) }
 
-        Glide.with(holder.itemView.context).load(mentor.User.profile_picture_url)
+        Glide.with(holder.itemView.context).load(mentor.user.profilePictureUrl)
             .into(holder.binding.ivItemPhoto)
 
         // onclick: redirect to messages
@@ -81,7 +85,7 @@ class MentorsAdapter(
                     // get groups for this user that contains this mentor
                     for ((id, data) in listGroup) {
                         val members = data["members"] as ArrayList<String>
-                        if (members.contains(mentor.User.id.toString())) {
+                        if (members.contains(mentor.user.id.toString())) {
                             groupId = id
                             groupData = data
                             break
@@ -96,18 +100,18 @@ class MentorsAdapter(
                             "createdBy" to user.uid,
                             "displayName" to hashMapOf(
                                 "group" to "",
-                                "mentor" to mentor.User.name,
+                                "mentor" to mentor.user.name,
                                 "mentee" to user.displayName,
                             ),
                             "isPrivate" to true,
                             "members" to hashMapOf(
                                 user.uid to true,
-                                mentor.User.id.toString() to true,
+                                mentor.user.id.toString() to true,
                             ),
                             "modifiedAt" to Timestamp.now(),
                             "photoUrl" to hashMapOf(
                                 "mentee" to user.photoUrl.toString(),
-                                "mentor" to mentor.User.profile_picture_url.toString(),
+                                "mentor" to mentor.user.profilePictureUrl.toString(),
                             ),
                             "recentMessage" to hashMapOf(
                                 "messageText" to null,
@@ -132,7 +136,7 @@ class MentorsAdapter(
                                         Log.d(TAG, "group added to user")
 
                                         // update mentor
-                                        db.collection("users").document(mentor.User.id.toString())
+                                        db.collection("users").document(mentor.user.id.toString())
                                             .update("groups", FieldValue.arrayUnion(groupId))
                                             .addOnSuccessListener {
                                                 Log.d(TAG, "group added to mentor")
@@ -163,6 +167,14 @@ class MentorsAdapter(
                 }.addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting groups documents: ", exception)
                 }
+        }
+    }
+
+    private fun setGenderIcon(genderId: Int?, ivItemIcon: ImageView) {
+        if (genderId == 1) {
+            ivItemIcon.setImageResource(R.drawable.baseline_male_24)
+        } else if (genderId == 2) {
+            ivItemIcon.setImageResource(R.drawable.baseline_female_24)
         }
     }
 

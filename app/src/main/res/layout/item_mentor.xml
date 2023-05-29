@@ -28,16 +28,36 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@tools:sample/avatars" />
 
-            <TextView
-                android:id="@+id/tv_item_name"
-                style="@style/Title"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_item_photo"
-                app:layout_constraintTop_toTopOf="@id/iv_item_photo"
-                tools:text="Kim Namjoon" />
+                app:layout_constraintTop_toTopOf="@id/iv_item_photo">
+
+                <TextView
+                    android:id="@+id/tv_item_name"
+                    style="@style/Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toStartOf="@id/iv_item_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Kim Namjoon" />
+
+                <ImageView
+                    android:id="@+id/iv_item_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/gender"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/baseline_male_24" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <RatingBar
                 android:id="@+id/rb_item_rating"
@@ -45,8 +65,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_item_photo"
-                app:layout_constraintStart_toStartOf="@+id/tv_item_name"
-                app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
+                app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
