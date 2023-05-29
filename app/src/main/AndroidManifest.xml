@@ -32,13 +32,13 @@
             android:name=".ui.profile.ListInterestActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.BottomNavigationActivity"
+            android:name=".MainActivityOld"
             android:exported="false" />
         <activity
             android:name=".ui.login.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

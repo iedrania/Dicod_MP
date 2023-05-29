@@ -1,41 +1,42 @@
 package com.dicoding.mentoring
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.dicoding.mentoring.ui.BottomNavigationActivity
-import com.dicoding.mentoring.ui.login.LoginActivity
-import com.dicoding.mentoring.ui.rating.RatingActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.dicoding.mentoring.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        auth = Firebase.auth
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val btnMainMain = findViewById<Button>(R.id.btn_main_main)
-        btnMainMain.setOnClickListener {
-            startActivity(Intent(this@MainActivity, BottomNavigationActivity::class.java))
-        }
+        val navView: BottomNavigationView = binding.navView
 
-        val btnMainLogout = findViewById<Button>(R.id.btn_main_logout)
-        btnMainLogout.setOnClickListener {
-            Firebase.auth.signOut()
-            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-            finish()
-        }
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_bottom_navigation) as NavHostFragment
+        val navController = navHostFragment.navController
+//         val navController = findNavController(R.id.nav_host_fragment_activity_bottom_navigation)
 
-        val btnMainRating = findViewById<Button>(R.id.btn_main_rating)
-        btnMainRating.setOnClickListener {
-            startActivity(Intent(this@MainActivity, RatingActivity::class.java))
-        }
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_home,
+                R.id.navigation_message,
+                R.id.navigation_schedule,
+                R.id.navigation_profile
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
     }
 }
