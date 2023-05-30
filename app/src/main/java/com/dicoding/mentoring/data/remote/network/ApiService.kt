@@ -1,6 +1,7 @@
 package com.dicoding.mentoring.data.remote.network
 
 import com.dicoding.mentoring.data.local.*
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.http.*
@@ -77,9 +78,11 @@ interface ApiService {
     ) : Call<PostUserProfileResponse>
 
 
-    @FormUrlEncoded
-    @POST("user/avatar")
+    @Multipart
+    @PUT("user/avatar")
     fun updateUserProfilePicture(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Part file: MultipartBody.Part
     ): Callback<GetUserProfileResponse>
+
 }

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="30dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_profile_pic"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_gravity="center"
+                android:src="@drawable/sample_images"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_change_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="36dp"
+                android:text="Change Image"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_profile_pic"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            style="@style/Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:fontFamily="@font/quicksand_semibold"
+            android:text="@string/tvFullname" />
+
+        <EditText
+            android:id="@+id/edit_text_fullname"
+            style="@style/Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/quicksand_regular"
+            android:hint="Insert fullname"
+            android:paddingHorizontal="16dp" />
+
+        <TextView
+            style="@style/Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:fontFamily="@font/quicksand_semibold"
+            android:text="@string/tvRole" />
+
+        <RadioGroup
+            android:id="@+id/radio_role"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:enabled="false"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_mentee"
+                style="@style/Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/quicksand_semibold"
+                android:text="Mentee" />
+
+            <RadioButton
+                android:id="@+id/radio_mentor"
+                style="@style/Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/quicksand_semibold"
+                android:text="Mentor" />
+
+        </RadioGroup>
+
+        <TextView
+            style="@style/Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:fontFamily="@font/quicksand_semibold"
+            android:text="Phone" />
+
+        <com.dicoding.mentoring.ui.customview.PhoneNumberEditText
+            android:id="@+id/edit_text_phone"
+            style="@style/Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="+62..."
+            android:paddingHorizontal="16dp" />
+
+        <TextView
+            style="@style/Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:fontFamily="@font/quicksand_semibold"
+            android:text="@string/tvEmail" />
+
+        <com.dicoding.mentoring.ui.customview.EmailEditText
+            android:id="@+id/edit_text_email"
+            style="@style/Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/quicksand_regular"
+            android:hint="Insert email"
+            android:inputType="textEmailAddress"
+            android:paddingHorizontal="16dp" />
+
+        <TextView
+            style="@style/Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:fontFamily="@font/quicksand_semibold"
+            android:text="@string/tvGender" />
+
+
+        <RadioGroup
+            android:id="@+id/radio_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_male"
+                style="@style/Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/quicksand_semibold"
+                android:text="Male" />
+
+            <RadioButton
+                android:id="@+id/radio_female"
+                style="@style/Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/quicksand_semibold"
+                android:text="Female" />
+
+        </RadioGroup>
+
+        <TextView
+            style="@style/Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:fontFamily="@font/quicksand_semibold"
+            android:text="@string/tvBiography" />
+
+        <EditText
+            android:id="@+id/edit_text_biography"
+            style="@style/Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:minLines="2"
+            android:scrollbars="vertical" />
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/quicksand_semibold"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+</ScrollView>

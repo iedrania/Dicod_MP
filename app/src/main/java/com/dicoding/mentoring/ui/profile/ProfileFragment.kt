@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -13,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.FragmentProfileBinding
 import com.google.firebase.auth.FirebaseAuth
-import java.io.File
 
 class ProfileFragment : Fragment() {
 
@@ -41,22 +41,17 @@ class ProfileFragment : Fragment() {
             getUserDataProfile(token)
         }
 
-        binding.chipChangePicture.setOnClickListener {
-            openGallery()
+        binding.btnEditProfile.setOnClickListener{
+            val intent = Intent(activity, ProfileActivity::class.java)
+            activity?.startActivity(intent)
         }
 
         //action when click Add Interest
-        binding.chipAddInterest.setOnClickListener {
+        binding.btnEditInterest.setOnClickListener {
             val intent = Intent(activity, ListInterestActivity::class.java)
             activity?.startActivity(intent)
         }
 
-        //Update profile when save button clicked
-        binding.btnSave.setOnClickListener {
-            if (token != null) {
-                updateUserDataProfile(token)
-            }
-        }
         return binding.root
     }
 
@@ -114,30 +109,5 @@ class ProfileFragment : Fragment() {
 
         }
     }
-
-    private fun updateUserDataProfile(token: String) {
-        var gender_id: Int? = null
-        profileViewModel.userProfile.observe(viewLifecycleOwner) {
-
-            if (binding.radioMale.isChecked) {
-                it.genderID = 1
-            } else if (binding.radioFemale.isChecked) {
-                it.genderID = 2
-            }
-            gender_id = it.genderID
-            println(gender_id)
-
-        }
-        profileViewModel.updateProfile(
-            token,
-            binding.editTextFullname.text.toString(),
-            gender_id,
-            binding.editTextPhone.text.toString(),
-            binding.editTextBiography.text.toString(),
-            binding.editTextEmail.text.toString()
-        )
-        Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
-    }
-
 }
 
