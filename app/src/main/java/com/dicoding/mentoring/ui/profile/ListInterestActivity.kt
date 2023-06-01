@@ -119,4 +119,7 @@ class ListInterestActivity : AppCompatActivity() {
             interests[itemIndex].isChecked = newValue
         }
     }
+
+    private fun showLoading(isLoading : Boolean){
+    }
 }
