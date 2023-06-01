@@ -12,14 +12,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.FragmentProfileBinding
+import com.dicoding.mentoring.ui.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
-import java.io.File
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
     private val PICK_IMAGE_REQUEST = 1
     private lateinit var profileViewModel: ProfileViewModel
+
+    companion object{
+        const val REQUEST_CODE_EDIT_PROFILE = 222
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,30 +37,31 @@ class ProfileFragment : Fragment() {
         // get list of all mentors for adapter
         val token = user?.getIdToken(false)?.result?.token
 
+        validateToken(token)
+
         //Obtain ViewModel
         profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
+
+        profileViewModel.isLoading.observe(viewLifecycleOwner){
+            showLoading(it)
+        }
 
         //Get User Profile Data
         if (token != null) {
             getUserDataProfile(token)
         }
 
-        binding.chipChangePicture.setOnClickListener {
-            openGallery()
+        binding.btnEditProfile.setOnClickListener{
+            val intent = Intent(activity, ProfileActivity::class.java)
+            activity?.startActivityForResult(intent,256)
         }
 
         //action when click Add Interest
-        binding.chipAddInterest.setOnClickListener {
+        binding.btnEditInterest.setOnClickListener {
             val intent = Intent(activity, ListInterestActivity::class.java)
             activity?.startActivity(intent)
         }
 
-        //Update profile when save button clicked
-        binding.btnSave.setOnClickListener {
-            if (token != null) {
-                updateUserDataProfile(token)
-            }
-        }
         return binding.root
     }
 
@@ -83,10 +88,11 @@ class ProfileFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            val imageUri = data.data
-            binding.imgProfilePic.setImageURI(imageUri)
-            // Save the imageUri for further use, such as updating user profile
+        if (requestCode == REQUEST_CODE_EDIT_PROFILE && resultCode == Activity.RESULT_OK && data != null) {
+            val fragmentTransaction = fragmentManager?.beginTransaction()
+            fragmentTransaction?.detach(this)
+            fragmentTransaction?.attach(this)
+            fragmentTransaction?.commit()
         }
     }
 
@@ -102,42 +108,27 @@ class ProfileFragment : Fragment() {
             binding.editTextEmail.setText(it.email)
             binding.editTextBiography.setText(it.bio)
             if (it.roleID == 2) {
-                binding.radioMentor.isChecked = true
+                binding.radioRole.text = "Mentor"
             } else {
-                binding.radioMentee.isChecked = true
+                binding.radioRole.text = "Mentee"
             }
             if (it.genderID == 1) {
-                binding.radioMale.isChecked = true
+                binding.radioGender.text = "Male"
             } else {
-                binding.radioFemale.isChecked = true
+                binding.radioGender.text = "Female"
             }
-
         }
     }
 
-    private fun updateUserDataProfile(token: String) {
-        var gender_id: Int? = null
-        profileViewModel.userProfile.observe(viewLifecycleOwner) {
-
-            if (binding.radioMale.isChecked) {
-                it.genderID = 1
-            } else if (binding.radioFemale.isChecked) {
-                it.genderID = 2
-            }
-            gender_id = it.genderID
-            println(gender_id)
-
-        }
-        profileViewModel.updateProfile(
-            token,
-            binding.editTextFullname.text.toString(),
-            gender_id,
-            binding.editTextPhone.text.toString(),
-            binding.editTextBiography.text.toString(),
-            binding.editTextEmail.text.toString()
-        )
-        Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
+    private fun showLoading(isLoading : Boolean){
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
+    private fun validateToken(token: String?){
+        if (token == null){
+            val intent = Intent(activity, LoginActivity::class.java)
+            activity?.startActivity(intent)
+        }
+    }
 }
 

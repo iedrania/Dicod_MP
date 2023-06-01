@@ -29,12 +29,12 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
+        getCurrentUser()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getCurrentUser()
 
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeViewModel.isLoading.observe(viewLifecycleOwner) { showLoading(it) }

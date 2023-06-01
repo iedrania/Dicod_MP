@@ -28,6 +28,23 @@
     <string name="tvInterest">Interest</string>
     <string name="tvBiography">Biography</string>
     <string name="btnSave">Save</string>
+    <string name="gender">Gender</string>
+    <string name="insert_fullname_null">Insert fullname</string>
+    <string name="role_null">You haven\'t edit your role</string>
+    <string name="phone_number_null">You haven\'t edit your phone number</string>
+    <string name="gender_null">You haven\'t edit your gender</string>
+    <string name="biography_null">You haven\'t edit your biography</string>
+    <string name="edit_text_phone">Phone</string>
+    <string name="edit_profile_button">Edit Profile</string>
+    <string name="edit_interest_button">Edit Interest</string>
+    <string name="edit_days">Edit Days</string>
+    <string name="change_image">Change Image</string>
+    <string name="radio_mentee">Mentee</string>
+    <string name="radio_mentor">Mentor</string>
+    <string name="hint_email">Insert email</string>
+    <string name="hint_biography">Insert your biography</string>
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
 
     <!--Feedback Page-->
     <string name="feedback_prompt">Bagaimana pengalaman mentoring Anda bersama Mentor?</string>
@@ -51,5 +68,4 @@
     <string name="home_intro_mentor">Siap untuk berbagi ilmu?</string>
     <string name="interests_label">Bidang ketertarikan:</string>
     <string name="days_label">Hari tersedia:</string>
-    <string name="gender">Gender</string>
 </resources>
