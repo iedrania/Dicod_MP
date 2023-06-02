@@ -14,6 +14,8 @@ import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.FragmentProfileBinding
 import com.dicoding.mentoring.ui.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class ProfileFragment : Fragment() {
 
@@ -21,14 +23,13 @@ class ProfileFragment : Fragment() {
     private val PICK_IMAGE_REQUEST = 1
     private lateinit var profileViewModel: ProfileViewModel
 
-    companion object{
+    companion object {
         const val REQUEST_CODE_EDIT_PROFILE = 222
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
 
         //Obtain Firebase user token
@@ -42,7 +43,7 @@ class ProfileFragment : Fragment() {
         //Obtain ViewModel
         profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
 
-        profileViewModel.isLoading.observe(viewLifecycleOwner){
+        profileViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
 
@@ -51,15 +52,21 @@ class ProfileFragment : Fragment() {
             getUserDataProfile(token)
         }
 
-        binding.btnEditProfile.setOnClickListener{
+        binding.btnEditProfile.setOnClickListener {
             val intent = Intent(activity, ProfileActivity::class.java)
-            activity?.startActivityForResult(intent,256)
+            activity?.startActivityForResult(intent, 256)
         }
 
         //action when click Add Interest
         binding.btnEditInterest.setOnClickListener {
             val intent = Intent(activity, ListInterestActivity::class.java)
             activity?.startActivity(intent)
+        }
+
+        binding.btnProfileLogout.setOnClickListener {
+            Firebase.auth.signOut()
+            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            activity?.finish()
         }
 
         return binding.root
@@ -120,12 +127,12 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun showLoading(isLoading : Boolean){
+    private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun validateToken(token: String?){
-        if (token == null){
+    private fun validateToken(token: String?) {
+        if (token == null) {
             val intent = Intent(activity, LoginActivity::class.java)
             activity?.startActivity(intent)
         }
