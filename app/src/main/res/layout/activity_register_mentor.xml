@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    tools:context=".ui.register.RegisterActivity">
+    tools:context=".ui.authmentor.RegisterMentorActivity">
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:text="@string/register"
+        android:text="@string/register_mentor"
         android:textColor="@color/primary"
         android:textSize="32sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -128,23 +128,23 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_register_already" />
 
     <TextView
-        android:id="@+id/tv_register_as_mentor"
+        android:id="@+id/tv_register_as_mentee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="@string/register_as_mentor"
+        android:text="@string/register_as_mentee"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_register_login" />
 
     <Button
-        android:id="@+id/btn_register_as_mentor"
+        android:id="@+id/btn_register_as_mentee"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/primary"
-        android:text="@string/register_mentor"
+        android:text="@string/register_mentee"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_register_as_mentor" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_register_as_mentee" />
 </androidx.constraintlayout.widget.ConstraintLayout>

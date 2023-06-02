@@ -1,4 +1,4 @@
-package com.dicoding.mentoring.ui.login
+package com.dicoding.mentoring.ui.authmentor
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,21 +9,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.dicoding.mentoring.MainActivity
 import com.dicoding.mentoring.R
-import com.dicoding.mentoring.databinding.ActivityLoginBinding
-import com.dicoding.mentoring.ui.authmentor.LoginMentorActivity
-import com.dicoding.mentoring.ui.register.RegisterActivity
+import com.dicoding.mentoring.databinding.ActivityLoginMentorBinding
+import com.dicoding.mentoring.ui.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class LoginActivity : AppCompatActivity() {
+class LoginMentorActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityLoginBinding
+    private lateinit var binding: ActivityLoginMentorBinding
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityLoginMentorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar?.hide()
@@ -45,12 +44,12 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnLoginRegister.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+            startActivity(Intent(this, RegisterMentorActivity::class.java))
             finish()
         }
 
-        binding.btnLoginAsMentor.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, LoginMentorActivity::class.java))
+        binding.btnLoginAsMentee.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
     }
@@ -59,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
         super.onStart()
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }
@@ -68,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
                 Log.d(TAG, "signInWithEmail:success")
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } else {
                 Log.w(TAG, "signInWithEmail:failure", task.exception)
@@ -87,6 +86,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "LoginActivity"
+        private const val TAG = "LoginMentorActivity"
     }
 }
