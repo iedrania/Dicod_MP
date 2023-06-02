@@ -35,7 +35,9 @@ class ScheduleViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (response.isSuccessful && responseBody != null) {
-                        _listGroupedSchedule.value = groupSchedulesByDate(responseBody.listSchedule)
+                        _listGroupedSchedule.value = groupScheduleByDate(responseBody.listSchedule)
+                        // Uncomment this line to use dummy schedule list
+//                        useDummySchedule()
                     }
                 } else {
                     Log.e(TAG, "getSchedule onError: ${response.message()}")
@@ -50,18 +52,28 @@ class ScheduleViewModel : ViewModel() {
         })
     }
 
-    private fun groupSchedulesByDate(schedules: List<Schedule>): List<GroupedSchedule> {
-        val groupedSchedulesMap = mutableMapOf<String, MutableList<Schedule>>()
+    private fun groupScheduleByDate(listSchedule: List<Schedule>): List<GroupedSchedule> {
+        val groupedScheduleMap = mutableMapOf<String, MutableList<Schedule>>()
 
-        for (schedule in schedules) {
+        for (schedule in listSchedule) {
             val date = schedule.fromDate?.substringBefore("T")
-            val scheduleList = groupedSchedulesMap.getOrPut(date!!) { mutableListOf() }
+            val scheduleList = groupedScheduleMap.getOrPut(date!!) { mutableListOf() }
             scheduleList.add(schedule)
         }
 
-        return groupedSchedulesMap.map { (date, scheduleList) ->
+        return groupedScheduleMap.map { (date, scheduleList) ->
             GroupedSchedule(date, scheduleList)
         }
+    }
+
+    private fun useDummySchedule() {
+        _listGroupedSchedule.value = groupScheduleByDate(
+            listOf(
+                Schedule("Andy John", "2023-12-12T12:00:00.000Z", "2023-12-12T13:00:00.000Z", "id"),
+                Schedule("Dodo Bird", "2023-12-12T13:00:00.000Z", "2023-12-12T14:00:00.000Z", "id"),
+                Schedule("Bob Dylan", "2023-12-13T13:00:00.000Z", "2023-12-13T14:00:00.000Z", "id"),
+            )
+        )
     }
 
     companion object {
