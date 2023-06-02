@@ -3,8 +3,9 @@ package com.dicoding.mentoring.data.remote.network
 import com.dicoding.mentoring.data.local.*
 import okhttp3.MultipartBody
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.http.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 interface ApiService {
     @FormUrlEncoded
@@ -49,12 +50,12 @@ interface ApiService {
     @PUT("user")
     fun updateUserProfile(
         @Header("Authorization") token: String?,
-        @Field("name") name : String?,
-        @Field("gender_id") gender_id : Int?,
-        @Field("phone") phone : String?,
-        @Field("bio") bio : String?,
-        @Field("email") email : String?
-    ) : Call<PostUserProfileResponse>
+        @Field("name") name: String?,
+        @Field("gender_id") gender_id: Int?,
+        @Field("phone") phone: String?,
+        @Field("bio") bio: String?,
+        @Field("email") email: String?
+    ): Call<PostUserProfileResponse>
 
 
     @GET("user/interest")
@@ -66,23 +67,30 @@ interface ApiService {
     @PUT("user/interest")
     fun updateUserInterest(
         @Header("Authorization") token: String,
-        @Field("is_path_android") is_path_android : Boolean?,
-        @Field("is_path_ios") is_path_ios :  Boolean?,
-        @Field("is_path_flutter") is_path_flutter:  Boolean?,
-        @Field("is_path_ml") is_path_ml :  Boolean?,
-        @Field("is_path_fe") is_path_fe:  Boolean?,
-        @Field("is_path_be") is_path_be :  Boolean?,
-        @Field("is_path_react") is_path_react:  Boolean?,
-        @Field("is_path_devops") is_path_devops:  Boolean?,
-        @Field("is_path_gcp") is_path_gcp :  Boolean?
-    ) : Call<PostUserProfileResponse>
-
+        @Field("is_path_android") is_path_android: Boolean?,
+        @Field("is_path_ios") is_path_ios: Boolean?,
+        @Field("is_path_flutter") is_path_flutter: Boolean?,
+        @Field("is_path_ml") is_path_ml: Boolean?,
+        @Field("is_path_fe") is_path_fe: Boolean?,
+        @Field("is_path_be") is_path_be: Boolean?,
+        @Field("is_path_react") is_path_react: Boolean?,
+        @Field("is_path_devops") is_path_devops: Boolean?,
+        @Field("is_path_gcp") is_path_gcp: Boolean?
+    ): Call<PostUserProfileResponse>
 
     @Multipart
     @PUT("user/avatar")
     fun updateUserProfilePicture(
         @Header("Authorization") token: String,
         @Part file: MultipartBody.Part
-    ): Callback<GetUserProfileResponse>
+    ): Call<PostUserProfileResponse>
+
+    @FormUrlEncoded
+    @POST("/mentoring/create")
+    fun uploadMentoringTime(
+        @Header("Authorization") token: String,
+        @Field("mentees_id") mentees_id: ArrayList<String>,
+        @Field("start_time") start_time: String
+    ): Call<MentoringResponse>
 
 }

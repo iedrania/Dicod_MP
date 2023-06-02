@@ -77,18 +77,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_choose_time" />
 
+    <TextView
+        android:id="@+id/tv_mentoring_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Waktu mentoring"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chip_set_time" />
+
+    <TextView
+        android:id="@+id/tv_mentoring_time_choose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/tv_hint_havent_set_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.114"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mentoring_time" />
+
     <Button
         android:id="@+id/btn_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/primary"
         android:text="@string/btnSave"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chip_set_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mentoring_time_choose"
         app:layout_constraintVertical_bias="0.396" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
