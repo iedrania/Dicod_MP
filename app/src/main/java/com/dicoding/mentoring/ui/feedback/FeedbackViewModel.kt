@@ -21,12 +21,12 @@ class FeedbackViewModel : ViewModel() {
     private val _isSuccess = MutableLiveData<Boolean>()
     val isSuccess: LiveData<Boolean> = _isSuccess
 
-    fun postFeedback(token: String?, mentoringId: String, rating: Float, feedback: String) {
+    fun postFeedback(token: String?, mentoringId: String, feedback: String, rating: Float) {
         _isSuccess.value = false
         _isError.value = false
         _isLoading.value = true
         val client =
-            ApiConfig.getApiService().postFeedback("Bearer $token", mentoringId, rating, feedback)
+            ApiConfig.getApiService().postFeedback("Bearer $token", mentoringId, feedback, rating)
         client.enqueue(object : Callback<FeedbackResponse> {
             override fun onResponse(
                 call: Call<FeedbackResponse>, response: Response<FeedbackResponse>

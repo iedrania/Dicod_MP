@@ -19,6 +19,8 @@ class FeedbackActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFeedbackBinding
     private lateinit var feedbackViewModel: FeedbackViewModel
 
+    private lateinit var mentoringId: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFeedbackBinding.inflate(layoutInflater)
@@ -26,7 +28,8 @@ class FeedbackActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        getCurrentUser()
+        mentoringId = intent.getStringExtra(EXTRA_MENTORING).toString()
+        if (mentoringId.isBlank()) finish() else getCurrentUser()
 
         feedbackViewModel = ViewModelProvider(this)[FeedbackViewModel::class.java]
         feedbackViewModel.isLoading.observe(this) { showLoading(it) }
@@ -42,8 +45,10 @@ class FeedbackActivity : AppCompatActivity() {
             user.getIdToken(false).addOnSuccessListener {
                 binding.btnFeedbackSubmit.setOnClickListener { it1 ->
                     feedbackViewModel.postFeedback(
-                        it.token, "9999", // TODO get mentoring id
-                        binding.rbFeedbackStars.rating, binding.edFeedbackFeedback.text.toString()
+                        it.token,
+                        mentoringId,
+                        binding.edFeedbackFeedback.text.toString(),
+                        binding.rbFeedbackStars.rating,
                     )
                     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(it1.windowToken, 0)
@@ -69,6 +74,9 @@ class FeedbackActivity : AppCompatActivity() {
                 this@FeedbackActivity, getString(R.string.feedback_failed), Toast.LENGTH_SHORT
             ).show()
         }
-        finish()
+    }
+
+    companion object {
+        private const val EXTRA_MENTORING = "extra_mentoring"
     }
 }
