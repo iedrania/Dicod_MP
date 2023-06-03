@@ -15,7 +15,7 @@ data class PostUserProfileResponse(
 )
 
 data class UserResponse (
-    val id: Long?,
+    val id: String?,
     val name: String?,
     val roleID: Int?,
     var genderID: Int?,
