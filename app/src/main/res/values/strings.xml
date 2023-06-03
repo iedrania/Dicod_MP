@@ -78,4 +78,5 @@
     <string name="register_mentor">Daftar sebagai Mentor</string>
     <string name="register_as_mentee">Daftar sebagai mentee?</string>
     <string name="register_mentee">Daftar sebagai Mentee</string>
+    <string name="tv_hint_havent_set_time">You haven\'t set mentoring time</string>
 </resources>

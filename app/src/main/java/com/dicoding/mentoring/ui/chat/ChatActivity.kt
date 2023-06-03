@@ -9,6 +9,7 @@ import com.dicoding.mentoring.adapter.ChatAdapter
 import com.dicoding.mentoring.data.local.Chat
 import com.dicoding.mentoring.databinding.ActivityChatBinding
 import com.dicoding.mentoring.ui.login.LoginActivity
+import com.dicoding.mentoring.ui.timepicker.TimePickerActivity
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ListenerRegistration
@@ -31,6 +32,11 @@ class ChatActivity : AppCompatActivity() {
         val pageTitle = intent.getStringExtra(EXTRA_TITLE)
         supportActionBar?.title = pageTitle
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        binding.ivChatCalendar.setOnClickListener {
+            val intent = Intent(this@ChatActivity,TimePickerActivity::class.java)
+            startActivity(intent)
+        }
 
         if (groupId != null) {
             getCurrentUser(groupId)

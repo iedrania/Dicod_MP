@@ -49,7 +49,7 @@ class InterestViewModel : ViewModel() {
 
             override fun onFailure(call: Call<InterestResponse>, t: Throwable) {
                 _isLoading.value = false
-                Log.e(ProfileViewModel.TAG, "OnFailure : ${t.message}")
+                Log.e(TAG, "OnFailure : ${t.message}")
             }
         })
     }

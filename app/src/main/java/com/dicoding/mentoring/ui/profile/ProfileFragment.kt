@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.FragmentProfileBinding
-import com.dicoding.mentoring.ui.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -35,10 +34,7 @@ class ProfileFragment : Fragment() {
         //Obtain Firebase user token
         val user = FirebaseAuth.getInstance().currentUser
         user?.getIdToken(false)
-        // get list of all mentors for adapter
         val token = user?.getIdToken(false)?.result?.token
-
-        validateToken(token)
 
         //Obtain ViewModel
         profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
@@ -129,13 +125,6 @@ class ProfileFragment : Fragment() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
-    private fun validateToken(token: String?) {
-        if (token == null) {
-            val intent = Intent(activity, LoginActivity::class.java)
-            activity?.startActivity(intent)
-        }
     }
 }
 

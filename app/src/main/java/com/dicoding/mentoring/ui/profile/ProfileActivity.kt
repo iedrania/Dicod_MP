@@ -14,8 +14,8 @@ class ProfileActivity : AppCompatActivity() {
 
     private lateinit var profileViewModel: ProfileViewModel
     private lateinit var binding: ActivityProfileBinding
-//    private lateinit var currPhotoPath: String
-//    private lateinit var getFile: File
+    private lateinit var currPhotoPath: String
+    private lateinit var getFile: File
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,14 +40,14 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         binding.chipChangePicture.setOnClickListener {
-//            galleryAction()
+            galleryAction()
         }
 
         //Update profile when save button clicked
         binding.btnSave.setOnClickListener {
             if (token != null) {
                 updateUserDataProfile(token)
-//                uploadImage(token)
+                uploadImage(token)
                 val resultIntent = Intent()
                 setResult(Activity.RESULT_OK, resultIntent)
                 finish()
@@ -107,60 +107,59 @@ class ProfileActivity : AppCompatActivity() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
+    //Fungsi membuka gallery
+    private fun galleryAction() {
+        val intent = Intent()
+        intent.action = Intent.ACTION_GET_CONTENT
+        intent.type = "image/*"
+        val chooser = Intent.createChooser(intent, "Choose a picture")
+        launcherIntentGallery.launch(chooser)
+    }
 
+    private val launcherIntentGallery = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == RESULT_OK) {
+            val selectedImage: Uri = it.data?.data as Uri
+            val myFile = convUriToFile(selectedImage, this@ProfileActivity)
+            getFile = myFile
+            binding.imgProfilePic.setImageURI(selectedImage)
+        }
+    }
 
-//    //Fungsi membuka gallery
-//    private fun galleryAction() {
-//        val intent = Intent()
-//        intent.action = Intent.ACTION_GET_CONTENT
-//        intent.type = "image/*"
-//        val chooser = Intent.createChooser(intent, "Choose a picture")
-//        launcherIntentGallery.launch(chooser)
-//    }
-//
-//    private val launcherIntentGallery = registerForActivityResult(
-//        ActivityResultContracts.StartActivityForResult()
-//    ) {
-//        if (it.resultCode == RESULT_OK) {
-//            val selectedImage: Uri = it.data?.data as Uri
-//            val myFile = convUriToFile(selectedImage, this@ProfileActivity)
-//            getFile = myFile
-//            binding.imgProfilePic.setImageURI(selectedImage)
-//        }
-//    }
-//
-//    private fun uploadImage(token: String) {
-//        if (getFile != null) {
-//            val file = reduceFileImage(getFile)
-//            val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-//            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-//                "photo",
-//                file.name,
-//                requestImageFile
-//            )
-//
-//            val client = ApiConfig.getApiService().updateUserProfilePicture(token, imageMultipart)
-//            client.enqueue(object : Callback<PostUserProfileResponse> {
-//                override fun onResponse(
-//                    call: Call<PostUserProfileResponse>,
-//                    response: Response<PostUserProfileResponse>
-//                ) {
-//                    Log.d("uploadImage", "response adalah : $response")
-//                    if (response.isSuccessful) {
-//                        Log.d("uploadImage", "Rersponse sukses, response body: ${response.body()}")
-//                    } else {
-//                        Log.e("uploadImage", "Ada response namun tidak sukses. response body :  ${response.body()}")
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<PostUserProfileResponse>, t: Throwable) {
-//                    Log.d("uploadImage",t.message.toString())
-//                }
-//
-//            })
-//
-//        }
-//    }
+    private fun uploadImage(token: String) {
+        if (getFile != null) {
+
+            val file = reduceFileImage(getFile)
+            val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+                "photo",
+                file.name,
+                requestImageFile
+            )
+
+            val client = ApiConfig.getApiService().updateUserProfilePicture(token, imageMultipart)
+            client.enqueue(object : Callback<PostUserProfileResponse> {
+                override fun onResponse(
+                    call: Call<PostUserProfileResponse>,
+                    response: Response<PostUserProfileResponse>
+                ) {
+                    Log.d("uploadImage", "response adalah : $response")
+                    if (response.isSuccessful) {
+                        Log.d("uploadImage", "Rersponse sukses, response body: ${response.body()}")
+                    } else {
+                        Log.e("uploadImage", "Ada response namun tidak sukses. response body :  ${response.body()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<PostUserProfileResponse>, t: Throwable) {
+                    Log.d("uploadImage",t.message.toString())
+                }
+
+            })
+
+        }
+    }
 
 
 }
