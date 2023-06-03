@@ -59,7 +59,7 @@ class HomeFragment : Fragment() {
                     homeViewModel.listMentor.observe(viewLifecycleOwner) {
                         if (document.data?.get("groups") !== null) {
                             binding.rvMentors.layoutManager = LinearLayoutManager(requireContext())
-                            binding.rvMentors.adapter = MentorsAdapter(user, db, it.mentors)
+                            binding.rvMentors.adapter = MentorsAdapter(user, db, it)
                         } else {
                             Log.d(TAG, "User's groups field does not exist")
                         }
