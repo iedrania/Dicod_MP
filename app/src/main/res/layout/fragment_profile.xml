@@ -5,7 +5,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="60dp">
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -86,8 +87,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:text="@string/phone_number_null"
-                    android:paddingHorizontal="16dp" />
+                    android:paddingHorizontal="16dp"
+                    android:text="@string/phone_number_null" />
 
                 <TextView
                     style="@style/Body"
@@ -103,9 +104,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/quicksand_regular"
-                    android:text="Insert email"
                     android:inputType="textEmailAddress"
-                    android:paddingHorizontal="16dp" />
+                    android:paddingHorizontal="16dp"
+                    android:text="Insert email" />
 
                 <TextView
                     style="@style/Body"
@@ -147,8 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="60dp">
+                    android:paddingTop="20dp">
 
                     <Button
                         android:id="@+id/btn_edit_profile"
@@ -186,6 +186,15 @@
                         android:textAllCaps="false"
                         android:textSize="14sp" />
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_profile_logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/logout"
+                    android:textAllCaps="false" />
+
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

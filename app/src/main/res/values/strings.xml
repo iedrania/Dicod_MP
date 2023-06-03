@@ -68,6 +68,16 @@
     <string name="home_intro_mentor">Siap untuk berbagi ilmu?</string>
     <string name="interests_label">Bidang ketertarikan:</string>
     <string name="days_label">Hari tersedia:</string>
+
+    <!--Auth Mentor-->
+    <string name="login_as_mentor">Masuk sebagai mentor?</string>
+    <string name="login_mentor">Masuk sebagai Mentor</string>
+    <string name="login_as_mentee">Masuk sebagai mentee?</string>
+    <string name="login_mentee">Masuk sebagai Mentee</string>
+    <string name="register_as_mentor">Daftar sebagai Mentor?</string>
+    <string name="register_mentor">Daftar sebagai Mentor</string>
+    <string name="register_as_mentee">Daftar sebagai mentee?</string>
+    <string name="register_mentee">Daftar sebagai Mentee</string>
     <string name="tv_hint_havent_set_time">You haven\'t set mentoring time</string>
     <string name="checkbox_senin">Senin</string>
     <string name="checkbox_selasa">Selasa</string>

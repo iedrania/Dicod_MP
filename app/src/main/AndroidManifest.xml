@@ -15,6 +15,15 @@
         android:theme="@style/Theme.Mentoring"
         tools:targetApi="31">
         <activity
+            android:name=".ui.authmentor.RegisterMentorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.authmentor.LoginMentorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.home.ListDayActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.chat.ChatActivity"
             android:exported="false" />
         <activity
@@ -46,6 +55,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

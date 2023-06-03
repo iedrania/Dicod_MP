@@ -1,4 +1,4 @@
-package com.dicoding.mentoring.ui.register
+package com.dicoding.mentoring.ui.authmentor
 
 import android.content.Context
 import android.content.Intent
@@ -11,24 +11,24 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.mentoring.MainActivity
 import com.dicoding.mentoring.R
-import com.dicoding.mentoring.databinding.ActivityRegisterBinding
+import com.dicoding.mentoring.databinding.ActivityRegisterMentorBinding
 import com.dicoding.mentoring.helper.ViewModelFactory
-import com.dicoding.mentoring.ui.authmentor.RegisterMentorActivity
-import com.dicoding.mentoring.ui.login.LoginActivity
+import com.dicoding.mentoring.ui.register.RegisterActivity
+import com.dicoding.mentoring.ui.register.UserViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterMentorActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityRegisterBinding
+    private lateinit var binding: ActivityRegisterMentorBinding
     private lateinit var userViewModel: UserViewModel
     private lateinit var auth: FirebaseAuth
     private lateinit var authStateListener: FirebaseAuth.AuthStateListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        binding = ActivityRegisterMentorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar?.hide()
@@ -70,12 +70,12 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         binding.btnRegisterLogin.setOnClickListener {
-            startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+            startActivity(Intent(this@RegisterMentorActivity, LoginMentorActivity::class.java))
             finish()
         }
 
-        binding.btnRegisterAsMentor.setOnClickListener {
-            startActivity(Intent(this@RegisterActivity, RegisterMentorActivity::class.java))
+        binding.btnRegisterAsMentee.setOnClickListener {
+            startActivity(Intent(this@RegisterMentorActivity, RegisterActivity::class.java))
             finish()
         }
     }
@@ -101,7 +101,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun showError(isError: Boolean) {
         if (isError) {
             Toast.makeText(
-                this@RegisterActivity, getString(R.string.register_failed), Toast.LENGTH_SHORT
+                this@RegisterMentorActivity, getString(R.string.register_failed), Toast.LENGTH_SHORT
             ).show()
         }
     }
