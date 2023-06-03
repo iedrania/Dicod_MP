@@ -57,7 +57,6 @@ interface ApiService {
         @Field("email") email: String?
     ): Call<PostUserProfileResponse>
 
-
     @GET("user/interest")
     fun getUserInterest(
         @Header("Authorization") token: String
@@ -92,5 +91,10 @@ interface ApiService {
         @Field("mentees_id") mentees_id: ArrayList<String>,
         @Field("start_time") start_time: String
     ): Call<MentoringResponse>
+
+    @GET("/user/days")
+    fun getAvailableDays(
+        @Header("Authorization") token: String
+    )
 
 }
