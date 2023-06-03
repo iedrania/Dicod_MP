@@ -7,10 +7,10 @@ import com.dicoding.mentoring.data.local.Days
 import com.dicoding.mentoring.databinding.ActivityListDayBinding
 import com.google.firebase.auth.FirebaseAuth
 
-class ListDayActivity: AppCompatActivity() {
+class ListDayActivity : AppCompatActivity() {
 
-    private lateinit var dayViewModel : DayViewModel
-    private lateinit var binding : ActivityListDayBinding
+    private lateinit var dayViewModel: DayViewModel
+    private lateinit var binding: ActivityListDayBinding
 
     private val days: MutableList<Days> = mutableListOf(
         Days(0, "Senin", false),
@@ -51,21 +51,16 @@ class ListDayActivity: AppCompatActivity() {
         }
     }
 
-    private fun getAvailableDays(token: String){
+    private fun getAvailableDays(token: String) {
         dayViewModel.getDaysAvailability(token)
-        dayViewModel.daysAvailable.observe(this){
-            if (it.isMondayAvailable) binding.checkboxMonday.isChecked = true
-            if (it.isTuesdayAvailable) binding.checkboxTuesday.isChecked = true
-            if (it.isWednesdayAvailable) binding.checkboxWednesday.isChecked = true
-            if (it.isThursdayAvailable) binding.checkboxThursday.isChecked = true
-            if (it.isFridayAvailable) binding.checkboxFriday.isChecked = true
-            if (it.isSaturdayAvailable) binding.checkboxSaturday.isChecked = true
-            if (it.isSundayAvailable) binding.checkboxSunday.isChecked = true
+        dayViewModel.daysAvailable.observe(this) {
+//            if (it.isMondayAvailable) binding.checkboxMonday.isChecked = true
+//            if (it.isTuesdayAvailable) binding.checkboxTuesday.isChecked = true
+//            if (it.isWednesdayAvailable) binding.checkboxWednesday.isChecked = true
+//            if (it.isThursdayAvailable) binding.checkboxThursday.isChecked = true
+//            if (it.isFridayAvailable) binding.checkboxFriday.isChecked = true
+//            if (it.isSaturdayAvailable) binding.checkboxSaturday.isChecked = true
+//            if (it.isSundayAvailable) binding.checkboxSunday.isChecked = true
         }
     }
-
-
-
-
-
 }

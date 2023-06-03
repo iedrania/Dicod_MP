@@ -64,7 +64,8 @@ class ProfileFragment : Fragment() {
         binding.btnEditDays.setOnClickListener {
             val intent = Intent(activity, ListDayActivity::class.java)
             activity?.startActivity(intent)
-            
+        }
+
         binding.btnProfileLogout.setOnClickListener {
             Firebase.auth.signOut()
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
