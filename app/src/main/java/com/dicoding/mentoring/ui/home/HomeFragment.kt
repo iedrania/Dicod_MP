@@ -29,12 +29,12 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
-        getCurrentUser()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getCurrentUser()
 
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeViewModel.isLoading.observe(viewLifecycleOwner) { showLoading(it) }
@@ -59,7 +59,7 @@ class HomeFragment : Fragment() {
                     homeViewModel.listMentor.observe(viewLifecycleOwner) {
                         if (document.data?.get("groups") !== null) {
                             binding.rvMentors.layoutManager = LinearLayoutManager(requireContext())
-                            binding.rvMentors.adapter = MentorsAdapter(user, db, it.mentors)
+                            binding.rvMentors.adapter = MentorsAdapter(user, db, it)
                         } else {
                             Log.d(TAG, "User's groups field does not exist")
                         }

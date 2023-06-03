@@ -17,22 +17,17 @@ interface ApiService {
     ): Call<RegisterResponse>
 
     @FormUrlEncoded
-    @POST("post-feedback")
+    @POST("mentee/feedback")
     fun postFeedback(
         @Header("Authorization") token: String,
         @Field("mentoring_id") mentoringId: String,
-        @Field("rating") rating: Float,
-        @Field("feedback") feedback: String
+        @Field("feedback") feedback: String,
+        @Field("rating") rating: Float
     ): Call<FeedbackResponse>
 
     @GET("mentor/all")
     fun getMentors(
         @Header("Authorization") token: String,
-    ): Call<MentorsResponse>
-
-    @GET("mentors-by-interest")
-    fun getMentorsByInterest(
-        @Header("Authorization") token: String, @Query("list_interest") listInterest: List<String>
     ): Call<MentorsResponse>
 
     @GET("mentoring/schedule")
@@ -57,6 +52,7 @@ interface ApiService {
         @Field("email") email: String?
     ): Call<PostUserProfileResponse>
 
+
     @GET("user/interest")
     fun getUserInterest(
         @Header("Authorization") token: String
@@ -80,21 +76,7 @@ interface ApiService {
     @Multipart
     @PUT("user/avatar")
     fun updateUserProfilePicture(
-        @Header("Authorization") token: String,
-        @Part file: MultipartBody.Part
-    ): Call<PostUserProfileResponse>
-
-    @FormUrlEncoded
-    @POST("/mentoring/create")
-    fun uploadMentoringTime(
-        @Header("Authorization") token: String,
-        @Field("mentees_id") mentees_id: ArrayList<String>,
-        @Field("start_time") start_time: String
-    ): Call<MentoringResponse>
-
-    @GET("/user/days")
-    fun getAvailableDays(
-        @Header("Authorization") token: String
-    )
+        @Header("Authorization") token: String, @Part file: MultipartBody.Part
+    ): Callback<GetUserProfileResponse>
 
 }
