@@ -25,13 +25,19 @@ interface ApiService {
         @Field("rating") rating: Float
     ): Call<FeedbackResponse>
 
-    @GET("mentor/all")
+    @GET("mentee/mentors")
     fun getMentors(
         @Header("Authorization") token: String,
     ): Call<MentorsResponse>
 
-    @GET("mentoring/schedule")
-    fun getSchedule(
+    @GET("mentee/schedule")
+    fun getScheduleMentee(
+        @Header("Authorization") token: String,
+        @Query("from_date") fromDate: String,
+    ): Call<ScheduleResponse>
+
+    @GET("mentor/schedule")
+    fun getScheduleMentor(
         @Header("Authorization") token: String,
         @Query("from_date") fromDate: String,
     ): Call<ScheduleResponse>
@@ -104,5 +110,4 @@ interface ApiService {
         @Field("mentees_id") mentees_id: ArrayList<String>,
         @Field("start_time") start_time: String
     ): Call<MentoringResponse>
-
 }

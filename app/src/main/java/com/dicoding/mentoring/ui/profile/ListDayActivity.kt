@@ -99,5 +99,4 @@ class ListDayActivity : AppCompatActivity() {
             statSunday
         )
     }
-
 }

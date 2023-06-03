@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,9 +19,6 @@
             android:exported="false" />
         <activity
             android:name=".ui.authmentor.LoginMentorActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.home.ListDayActivity"
             android:exported="false" />
         <activity
             android:name=".ui.chat.ChatActivity"
@@ -40,16 +37,16 @@
             android:exported="false" />
         <activity
             android:name=".MainActivityOld"
-            android:exported="true">
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".ui.login.LoginActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".ui.profile.ProfileActivity"
-            android:exported="false"/>
-        <activity android:name=".ui.profile.ListDayActivity"
-            android:exported="false"/>
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.ListDayActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
