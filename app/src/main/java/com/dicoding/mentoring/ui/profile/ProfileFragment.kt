@@ -47,14 +47,20 @@ class ProfileFragment : Fragment() {
             getUserDataProfile(token)
         }
 
+        //action when click Edit Profile Button
         binding.btnEditProfile.setOnClickListener{
             val intent = Intent(activity, ProfileActivity::class.java)
             activity?.startActivityForResult(intent,256)
         }
 
-        //action when click Add Interest
+        //action when click Edit Interest Button
         binding.btnEditInterest.setOnClickListener {
             val intent = Intent(activity, ListInterestActivity::class.java)
+            activity?.startActivity(intent)
+        }
+
+        binding.btnEditDays.setOnClickListener {
+            val intent = Intent(activity, ListDayActivity::class.java)
             activity?.startActivity(intent)
         }
 
