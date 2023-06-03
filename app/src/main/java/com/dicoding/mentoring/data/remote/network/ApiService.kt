@@ -73,10 +73,23 @@ interface ApiService {
         @Field("is_path_gcp") is_path_gcp: Boolean?
     ): Call<PostUserProfileResponse>
 
+    @GET("/user/days")
+    fun getAvailableDays(
+        @Header("Authorization") token: String
+    )
+
     @Multipart
     @PUT("user/avatar")
     fun updateUserProfilePicture(
         @Header("Authorization") token: String, @Part file: MultipartBody.Part
-    ): Callback<GetUserProfileResponse>
+    ): Call<GetUserProfileResponse>
+
+    @FormUrlEncoded
+    @POST("/mentoring/create")
+    fun uploadMentoringTime(
+        @Header("Authorization") token: String,
+        @Field("mentees_id") mentees_id: ArrayList<String>,
+        @Field("start_time") start_time: String
+    ): Call<MentoringResponse>
 
 }
