@@ -23,10 +23,14 @@ class ScheduleViewModel : ViewModel() {
     private val _listGroupedSchedule = MutableLiveData<List<GroupedSchedule>>()
     val listGroupedSchedule: LiveData<List<GroupedSchedule>> = _listGroupedSchedule
 
-    fun getSchedule(token: String?, fromDate: String?) {
+    fun getSchedule(token: String?, fromDate: String, role: String) {
         _isError.value = false
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getSchedule("Bearer $token", fromDate ?: "")
+        val client = if (role == "mentor") {
+            ApiConfig.getApiService().getScheduleMentor("Bearer $token", fromDate)
+        } else {
+            ApiConfig.getApiService().getScheduleMentee("Bearer $token", fromDate)
+        }
         client.enqueue(object : Callback<ScheduleResponse> {
             override fun onResponse(
                 call: Call<ScheduleResponse>, response: Response<ScheduleResponse>
@@ -40,7 +44,7 @@ class ScheduleViewModel : ViewModel() {
 //                        useDummySchedule()
                     }
                 } else {
-                    Log.e(TAG, "getSchedule onError: ${response.message()}")
+                    Log.e(TAG, "getSchedule onError: $response")
                 }
             }
 

@@ -2,6 +2,7 @@ package com.dicoding.mentoring.ui.schedule
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.dicoding.mentoring.R
 import com.dicoding.mentoring.adapter.ScheduleAdapter
 import com.dicoding.mentoring.databinding.FragmentScheduleBinding
 import com.dicoding.mentoring.ui.login.LoginActivity
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import java.util.Date
@@ -27,7 +29,6 @@ class ScheduleFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        scheduleViewModel = ViewModelProvider(this)[ScheduleViewModel::class.java]
         _binding = FragmentScheduleBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -35,8 +36,9 @@ class ScheduleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getCurrentUser()
+        checkCurrentUser()
 
+        scheduleViewModel = ViewModelProvider(this)[ScheduleViewModel::class.java]
         scheduleViewModel.isLoading.observe(viewLifecycleOwner) { showLoading(it) }
         scheduleViewModel.isError.observe(viewLifecycleOwner) { showError(it) }
         scheduleViewModel.listGroupedSchedule.observe(viewLifecycleOwner) {
@@ -45,18 +47,27 @@ class ScheduleFragment : Fragment() {
         }
     }
 
-    private fun getCurrentUser() {
+    private fun checkCurrentUser() {
         val user = Firebase.auth.currentUser
-        if (user !== null) {
-            val currentDate = Date()
-            user.getIdToken(false).addOnSuccessListener {
-                scheduleViewModel.getSchedule(
-                    it.token, currentDate.toString()
-                )
-            }
+        if (user != null) {
+            renderSchedulePage(user)
         } else {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
             activity?.finish()
+        }
+    }
+
+    private fun renderSchedulePage(user: FirebaseUser) {
+        val currentDate = Date()
+        user.getIdToken(false).addOnSuccessListener {
+            val claims = it.claims
+            val role = if (claims["role"] == "mentor") "mentor" else "mentee"
+
+            scheduleViewModel.getSchedule(
+                it.token, currentDate.toString(), role
+            )
+        }.addOnFailureListener { e ->
+            Log.d(TAG, "get token failed with ", e)
         }
     }
 
@@ -75,5 +86,9 @@ class ScheduleFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val TAG = "ScheduleFragment"
     }
 }

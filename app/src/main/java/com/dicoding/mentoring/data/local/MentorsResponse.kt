@@ -12,9 +12,8 @@ data class Mentors(
 )
 
 data class Mentor(
-    @field:SerializedName("id") val id: Long?,
-    @field:SerializedName("name") val name: String?,
-    @field:SerializedName("role_id") val roleId: Int?,
+    @field:SerializedName("id") val id: String,
+    @field:SerializedName("name") val name: String,
     @field:SerializedName("gender_id") val genderId: Int?,
     @field:SerializedName("bio") val bio: String?,
     @field:SerializedName("profile_picture_url") val profilePictureUrl: String?,

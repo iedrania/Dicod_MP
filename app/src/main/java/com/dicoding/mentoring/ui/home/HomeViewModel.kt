@@ -57,9 +57,8 @@ class HomeViewModel : ViewModel() {
         _listMentor.value = listOf(
             Mentors(
                 4.6.toFloat(), Mentor(
-                    1,
+                    "1",
                     "Anton",
-                    1,
                     1,
                     "Mobile Enthusiast",
                     "https://duckduckgo.com/i/7072e50d.png",
@@ -84,9 +83,8 @@ class HomeViewModel : ViewModel() {
             ),
             Mentors(
                 4.6.toFloat(), Mentor(
-                    2,
+                    "2",
                     "Lady",
-                    1,
                     2,
                     "HMU! :D",
                     "https://duckduckgo.com/i/7072e50d.png",

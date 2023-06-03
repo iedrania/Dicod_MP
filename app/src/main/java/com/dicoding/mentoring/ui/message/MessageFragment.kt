@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mentoring.adapter.MessagesAdapter
 import com.dicoding.mentoring.databinding.FragmentMessageBinding
 import com.dicoding.mentoring.ui.login.LoginActivity
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
@@ -21,6 +22,7 @@ class MessageFragment : Fragment() {
 
     private var _binding: FragmentMessageBinding? = null
     private val binding get() = _binding!!
+
     private lateinit var registration: ListenerRegistration
 
     override fun onCreateView(
@@ -33,20 +35,24 @@ class MessageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getCurrentUser()
+        checkCurrentUser()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    private fun getCurrentUser() {
+    private fun checkCurrentUser() {
         val user = Firebase.auth.currentUser
-        if (user !== null) {
-            val userRole = user.getIdToken(false).result.claims["role"] as String
+        if (user != null) {
+            renderMessagesPage(user)
+        } else {
+            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            activity?.finish()
+        }
+    }
 
-            // get list of all groups for this user
+    private fun renderMessagesPage(user: FirebaseUser) {
+        user.getIdToken(false).addOnSuccessListener {
+            val claims = it.claims
+            val role = if (claims["role"] == "mentor") "mentor" else "mentee"
+
             val db = Firebase.firestore
             registration = db.collection("groups").whereArrayContains("members", user.uid)
                 .orderBy("recentMessage.sentAt", Query.Direction.DESCENDING)
@@ -64,12 +70,16 @@ class MessageFragment : Fragment() {
                         messages.add(tuple)
                     }
                     binding.rvMessages.layoutManager = LinearLayoutManager(requireContext())
-                    binding.rvMessages.adapter = MessagesAdapter(userRole, messages)
+                    binding.rvMessages.adapter = MessagesAdapter(role, messages)
                 }
-        } else {
-            startActivity(Intent(requireActivity(), LoginActivity::class.java))
-            activity?.finish()
+        }.addOnFailureListener { e ->
+            Log.d(TAG, "get token failed with ", e)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

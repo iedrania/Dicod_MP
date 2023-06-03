@@ -13,6 +13,7 @@ import com.dicoding.mentoring.R
 import com.dicoding.mentoring.adapter.MentorsAdapter
 import com.dicoding.mentoring.databinding.FragmentHomeBinding
 import com.dicoding.mentoring.ui.login.LoginActivity
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -34,35 +35,61 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getCurrentUser()
+        checkCurrentUser()
 
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeViewModel.isLoading.observe(viewLifecycleOwner) { showLoading(it) }
         homeViewModel.isError.observe(viewLifecycleOwner) { showError(it) }
+        homeViewModel.listMentor.observe(viewLifecycleOwner) {
+            val db = Firebase.firestore
+            val user = Firebase.auth.currentUser
+
+            binding.rvMentors.layoutManager = LinearLayoutManager(requireContext())
+            if (user != null) {
+                binding.rvMentors.adapter = MentorsAdapter(user, db, it)
+            }
+        }
     }
 
-    private fun getCurrentUser() {
+    private fun checkCurrentUser() {
         val user = Firebase.auth.currentUser
-        if (user !== null) {
+        if (user != null) {
+            renderHomePage(user)
+        } else {
+            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            activity?.finish()
+        }
+    }
+
+    private fun renderHomePage(user: FirebaseUser) {
+        user.let {
             "Halo, ${user.displayName}".also { binding.tvMainWelcome.text = it }
-            if (user.getIdToken(false).result.claims["role"] == "mentor") {
-                binding.tvMainIntro.text = getString(R.string.home_intro_mentor)
-            } else {
-                binding.tvMainIntro.text = getString(R.string.home_intro_mentee)
+
+            user.getIdToken(false).addOnSuccessListener {
+                val claims = it.claims
+                if (claims["role"] == "mentor") {
+                    binding.tvMainIntro.text = getString(R.string.home_intro_mentor)
+                } else {
+                    binding.tvMainIntro.text = getString(R.string.home_intro_mentee)
+                }
+
+                homeViewModel.findMentors(it.token)
+            }.addOnFailureListener { e ->
+                Log.d(TAG, "get token failed with ", e)
             }
+        }
+    }
 
-            user.getIdToken(false).addOnSuccessListener { homeViewModel.findMentors(it.token) }
-
-            val db = Firebase.firestore
-            db.collection("users").document(user.uid).get().addOnSuccessListener { document ->
+    private fun getUserGroups() {
+        val db = Firebase.firestore
+        val user = Firebase.auth.currentUser
+        user?.uid?.let {
+            db.collection("users").document(it).get().addOnSuccessListener { document ->
                 if (document != null) {
-                    homeViewModel.listMentor.observe(viewLifecycleOwner) {
-                        if (document.data?.get("groups") !== null) {
-                            binding.rvMentors.layoutManager = LinearLayoutManager(requireContext())
-                            binding.rvMentors.adapter = MentorsAdapter(user, db, it)
-                        } else {
-                            Log.d(TAG, "User's groups field does not exist")
-                        }
+                    if (document.data?.get("groups") != null) {
+                        Log.d(TAG, "User's groups field exists, process OK")
+                    } else {
+                        Log.d(TAG, "User's groups field does not exist")
                     }
                 } else {
                     Log.d(TAG, "User's document does not exist")
@@ -70,9 +97,6 @@ class HomeFragment : Fragment() {
             }.addOnFailureListener { exception ->
                 Log.d(TAG, "get user's document failed with ", exception)
             }
-        } else {
-            startActivity(Intent(requireActivity(), LoginActivity::class.java))
-            activity?.finish()
         }
     }
 
