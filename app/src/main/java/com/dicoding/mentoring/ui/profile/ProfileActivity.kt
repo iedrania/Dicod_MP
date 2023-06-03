@@ -2,13 +2,26 @@ package com.dicoding.mentoring.ui.profile
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.dicoding.mentoring.data.local.PostUserProfileResponse
+import com.dicoding.mentoring.data.remote.network.ApiConfig
 import com.dicoding.mentoring.databinding.ActivityProfileBinding
+import com.dicoding.mentoring.utils.convUriToFile
+import com.dicoding.mentoring.utils.reduceFileImage
 import com.google.firebase.auth.FirebaseAuth
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -31,7 +44,7 @@ class ProfileActivity : AppCompatActivity() {
         //Obtain ViewModel
         profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
 
-        profileViewModel.isLoading.observe(this){
+        profileViewModel.isLoading.observe(this) {
             showLoading(it)
         }
 
@@ -47,7 +60,7 @@ class ProfileActivity : AppCompatActivity() {
         binding.btnSave.setOnClickListener {
             if (token != null) {
                 updateUserDataProfile(token)
-                uploadImage(token)
+//                uploadImage(token)
                 val resultIntent = Intent()
                 setResult(Activity.RESULT_OK, resultIntent)
                 finish()
@@ -103,7 +116,7 @@ class ProfileActivity : AppCompatActivity() {
         println(gender_id)
     }
 
-    private fun showLoading(isLoading : Boolean){
+    private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
@@ -127,39 +140,39 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadImage(token: String) {
-        if (getFile != null) {
-
-            val file = reduceFileImage(getFile)
-            val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                "photo",
-                file.name,
-                requestImageFile
-            )
-
-            val client = ApiConfig.getApiService().updateUserProfilePicture(token, imageMultipart)
-            client.enqueue(object : Callback<PostUserProfileResponse> {
-                override fun onResponse(
-                    call: Call<PostUserProfileResponse>,
-                    response: Response<PostUserProfileResponse>
-                ) {
-                    Log.d("uploadImage", "response adalah : $response")
-                    if (response.isSuccessful) {
-                        Log.d("uploadImage", "Rersponse sukses, response body: ${response.body()}")
-                    } else {
-                        Log.e("uploadImage", "Ada response namun tidak sukses. response body :  ${response.body()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<PostUserProfileResponse>, t: Throwable) {
-                    Log.d("uploadImage",t.message.toString())
-                }
-
-            })
-
-        }
-    }
+//    private fun uploadImage(token: String) {
+//        if (getFile != null) {
+//
+//            val file = reduceFileImage(getFile)
+//            val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+//            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+//                "photo",
+//                file.name,
+//                requestImageFile
+//            )
+//
+//            val client = ApiConfig.getApiService().updateUserProfilePicture(token, imageMultipart)
+//            client.enqueue(object : Callback<PostUserProfileResponse> {
+//                override fun onResponse(
+//                    call: Call<PostUserProfileResponse>,
+//                    response: Response<PostUserProfileResponse>
+//                ) {
+//                    Log.d("uploadImage", "response adalah : $response")
+//                    if (response.isSuccessful) {
+//                        Log.d("uploadImage", "Rersponse sukses, response body: ${response.body()}")
+//                    } else {
+//                        Log.e("uploadImage", "Ada response namun tidak sukses. response body :  ${response.body()}")
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<PostUserProfileResponse>, t: Throwable) {
+//                    Log.d("uploadImage",t.message.toString())
+//                }
+//
+//            })
+//
+//        }
+//    }
 
 
 }
