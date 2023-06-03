@@ -79,18 +79,17 @@ interface ApiService {
     ): Call<AvailableDaysResponse>
 
     @FormUrlEncoded
-    @POST("/user/days")
+    @PUT("/user/days")
     fun postAvailableDays(
         @Header("Authorization") token: String,
-        @Field("is_monday_available") is_monday_available : Boolean,
+        @Field("is_monday_available") is_monday_available: Boolean,
         @Field("is_tuesday_available") is_tuesday_available: Boolean,
         @Field("is_wednesday_available") is_wednesday_available: Boolean,
         @Field("is_thursday_available") is_thursday_available: Boolean,
         @Field("is_friday_available") is_friday_available: Boolean,
         @Field("is_saturday_available") is_saturday_available: Boolean,
         @Field("is_sunday_available") is_sunday_available: Boolean,
-    )
-
+    ): Call<PostUserProfileResponse>
 
     @Multipart
     @PUT("user/avatar")
