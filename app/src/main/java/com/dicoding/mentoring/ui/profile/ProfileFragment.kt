@@ -16,6 +16,8 @@ import com.dicoding.mentoring.ui.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import android.net.Uri
+import com.bumptech.glide.Glide
 
 class ProfileFragment : Fragment() {
 
@@ -113,16 +115,27 @@ class ProfileFragment : Fragment() {
         )
         profileViewModel.getProfile(token)
         profileViewModel.userProfile.observe(viewLifecycleOwner) {
+
+            if (it.profile_picture_url.isNullOrEmpty()) {
+                Glide.with(this)
+                    .load("https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg")
+                    .into(binding.imgProfilePic)
+            } else {
+                Glide.with(this)
+                    .load(it.profile_picture_url)
+                    .into(binding.imgProfilePic)
+            }
             binding.editTextFullname.setText(it.name)
             binding.editTextPhone.setText(it.phone)
             binding.editTextEmail.setText(it.email)
             binding.editTextBiography.setText(it.bio)
-            if (it.roleID == 2) {
+
+            if (it.is_mentor) {
                 binding.radioRole.text = "Mentor"
             } else {
                 binding.radioRole.text = "Mentee"
             }
-            if (it.genderID == 1) {
+            if (it.gender_id == 1) {
                 binding.radioGender.text = "Male"
             } else {
                 binding.radioGender.text = "Female"
@@ -132,6 +145,12 @@ class ProfileFragment : Fragment() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    fun convertStringToUri(stringUri: String?): Uri? {
+        return stringUri?.let {
+            Uri.parse(it)
+        }
     }
 }
 

@@ -100,8 +100,9 @@ interface ApiService {
     @Multipart
     @PUT("user/avatar")
     fun updateUserProfilePicture(
-        @Header("Authorization") token: String, @Part file: MultipartBody.Part
-    ): Call<GetUserProfileResponse>
+        @Header("Authorization") token: String,
+        @Part file: MultipartBody.Part
+    ): Call<PostUserProfileResponse>
 
     @FormUrlEncoded
     @POST("/mentoring/create")
