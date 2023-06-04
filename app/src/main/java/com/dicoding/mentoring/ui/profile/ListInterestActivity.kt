@@ -2,16 +2,12 @@ package com.dicoding.mentoring.ui.profile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.Button
-import android.widget.CheckBox
-import android.widget.LinearLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.adapter.InterestAdapter
-import com.dicoding.mentoring.data.local.Interest
 import com.dicoding.mentoring.data.local.InterestItem
 import com.dicoding.mentoring.databinding.ActivityListInterestBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -43,6 +39,9 @@ class ListInterestActivity : AppCompatActivity() {
 
         //obtain viewmodel
         interestViewModel = ViewModelProvider(this).get(InterestViewModel::class.java)
+        interestViewModel.isLoading.observe(this){
+            showLoading(it)
+        }
 
         //Obtain Firebase user token
         val user = FirebaseAuth.getInstance().currentUser
@@ -73,10 +72,6 @@ class ListInterestActivity : AppCompatActivity() {
 
             setRecyclerView(interests)
         }
-    }
-
-    fun isBool(value: Any): Boolean {
-        return value is Boolean
     }
 
     private fun updateInterest(token: String?) {
@@ -121,5 +116,6 @@ class ListInterestActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading : Boolean){
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }

@@ -55,7 +55,7 @@ class InterestViewModel : ViewModel() {
     }
 
     fun updateInterest(token: String?, isPathAndroid : Boolean, isPathWeb : Boolean, isPathIos : Boolean, isPathMl : Boolean, isPathFlutter: Boolean, isPathFe: Boolean, isPathBe: Boolean, isPathReact: Boolean, isPathDevops: Boolean){
-        _isLoading.value = false
+        _isLoading.value = true
         val client = ApiConfig.getApiService().updateUserInterest("Bearer $token", isPathAndroid, isPathWeb, isPathIos, isPathMl,isPathFlutter, isPathFe, isPathBe, isPathReact, isPathDevops)
         client.enqueue(object : Callback<PostUserProfileResponse>{
             override fun onResponse(
