@@ -1,28 +1,25 @@
 package com.dicoding.mentoring.ui.profile
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.mentoring.R
-import com.dicoding.mentoring.databinding.FragmentProfileBinding
 import com.dicoding.mentoring.ui.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import android.net.Uri
 import com.bumptech.glide.Glide
+import com.dicoding.mentoring.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
-    private val PICK_IMAGE_REQUEST = 1
     private lateinit var profileViewModel: ProfileViewModel
 
     companion object {
@@ -32,7 +29,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         //Obtain Firebase user token
         val user = FirebaseAuth.getInstance().currentUser
@@ -74,6 +71,13 @@ class ProfileFragment : Fragment() {
             activity?.finish()
         }
 
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            if (token != null) {
+                getUserDataProfile(token)
+            }
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
         return binding.root
     }
 
@@ -91,11 +95,6 @@ class ProfileFragment : Fragment() {
         return super.onContextItemSelected(item)
     }
 
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
-    }
-
     @Suppress
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -108,6 +107,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getUserDataProfile(token: String) {
         Log.d(
             "ProfileFragment",
@@ -125,10 +125,10 @@ class ProfileFragment : Fragment() {
                     .load(it.profile_picture_url)
                     .into(binding.imgProfilePic)
             }
-            binding.editTextFullname.setText(it.name)
-            binding.editTextPhone.setText(it.phone)
-            binding.editTextEmail.setText(it.email)
-            binding.editTextBiography.setText(it.bio)
+            binding.editTextFullname.text = it.name
+            binding.editTextPhone.text = it.phone
+            binding.editTextEmail.text = it.email
+            binding.editTextBiography.text = it.bio
 
             if (it.is_mentor) {
                 binding.radioRole.text = "Mentor"
@@ -145,12 +145,6 @@ class ProfileFragment : Fragment() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
-    fun convertStringToUri(stringUri: String?): Uri? {
-        return stringUri?.let {
-            Uri.parse(it)
-        }
     }
 }
 

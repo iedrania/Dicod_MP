@@ -28,7 +28,9 @@ class ProfileActivity : AppCompatActivity() {
 
     private lateinit var profileViewModel: ProfileViewModel
     private lateinit var binding: ActivityProfileBinding
-    private lateinit var getFile: File
+
+    //set getFile into null to prevent error when update profile
+    private var getFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +62,7 @@ class ProfileActivity : AppCompatActivity() {
         binding.btnSave.setOnClickListener {
             if (token != null) {
                 updateUserDataProfile(token)
-                uploadImage(token)
+                if (getFile != null) uploadImage(token)
                 val resultIntent = Intent()
                 setResult(Activity.RESULT_OK, resultIntent)
                 finish()
@@ -152,7 +154,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun uploadImage(token: String) {
         if (getFile != null) {
-            val file = reduceFileImage(getFile)
+            val file = reduceFileImage(getFile!!)
             val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
             val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
                 "file",

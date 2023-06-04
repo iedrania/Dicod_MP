@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginHorizontal="5dp"
-    android:layout_height="match_parent"
     tools:context=".ui.profile.ListDayActivity">
 
     <androidx.cardview.widget.CardView
@@ -112,7 +111,4 @@
         android:backgroundTint="@color/primary"
         android:fontFamily="@font/quicksand_semibold"
         android:text="@string/btnSave"/>
-
-
-
 </LinearLayout>
