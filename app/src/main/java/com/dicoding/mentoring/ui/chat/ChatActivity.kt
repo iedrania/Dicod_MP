@@ -3,6 +3,7 @@ package com.dicoding.mentoring.ui.chat
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mentoring.adapter.ChatAdapter
@@ -11,6 +12,7 @@ import com.dicoding.mentoring.databinding.ActivityChatBinding
 import com.dicoding.mentoring.ui.login.LoginActivity
 import com.dicoding.mentoring.ui.timepicker.TimePickerActivity
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
@@ -34,79 +36,108 @@ class ChatActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding.ivChatCalendar.setOnClickListener {
-            val intent = Intent(this@ChatActivity,TimePickerActivity::class.java)
+            val intent = Intent(this@ChatActivity, TimePickerActivity::class.java)
             startActivity(intent)
         }
 
         if (groupId != null) {
-            getCurrentUser(groupId)
+            checkCurrentUser(groupId)
         } else {
             finish()
         }
     }
 
-    private fun getCurrentUser(groupId: String) {
+    private fun checkCurrentUser(groupId: String) {
         val user = Firebase.auth.currentUser
         if (user != null) {
-            val db = Firebase.firestore
-
-            binding.btnChatSend.setOnClickListener {
-                if (binding.edChatInput.text.isNotBlank()) {
-                    val data = hashMapOf(
-                        "messageText" to binding.edChatInput.text.toString(),
-                        "sentBy" to user.uid,
-                        "sentAt" to Timestamp.now(),
-                        "imageUrl" to null, // TODO image chat
-                    )
-
-                    db.collection("messages/$groupId/texts").add(data)
-                        .addOnSuccessListener { documentReference ->
-                            Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
-                        }.addOnFailureListener { e ->
-                            Log.w(TAG, "Error adding document", e)
-                        }
-
-                    val recent = hashMapOf(
-                        "messageText" to binding.edChatInput.text.toString(),
-                        "sentAt" to Timestamp.now(),
-                        "sentBy" to user.uid,
-                    )
-
-                    db.collection("groups").document(groupId).update("recentMessage", recent)
-                        .addOnSuccessListener {
-                            Log.d(
-                                TAG, "DocumentSnapshot successfully updated!"
-                            )
-                        }.addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
-
-                    binding.edChatInput.text.clear()
-                }
-            }
-
-            registration = db.collection("messages/$groupId/texts").orderBy("sentAt")
-                .addSnapshotListener { value, e ->
-                    if (e != null) {
-                        Log.w(TAG, "Listen failed.", e)
-                        return@addSnapshotListener
-                    }
-
-                    val chats = ArrayList<Chat>()
-
-                    for (doc in value!!) {
-                        doc.toObject<Chat>().let {
-                            chats.add(it)
-                        }
-                    }
-                    Log.d(TAG, "Current chats for user: $chats")
-                    binding.rvChats.layoutManager = LinearLayoutManager(this)
-                    chatAdapter = ChatAdapter(chats, user.uid)
-                    binding.rvChats.adapter = chatAdapter
-                    scrollToBottom()
-                }
+            checkUserRole(user, groupId)
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
+    }
+
+    private fun renderChatPage(user: FirebaseUser, groupId: String) {
+        val db = Firebase.firestore
+
+        binding.btnChatSend.setOnClickListener {
+            if (binding.edChatInput.text.isNotBlank()) {
+                val data = hashMapOf(
+                    "messageText" to binding.edChatInput.text.toString(),
+                    "sentBy" to user.uid,
+                    "sentAt" to Timestamp.now(),
+                    "imageUrl" to null,
+                )
+
+                db.collection("messages/$groupId/texts").add(data)
+                    .addOnSuccessListener { documentReference ->
+                        Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+
+                        val recent = hashMapOf(
+                            "messageText" to binding.edChatInput.text.toString(),
+                            "sentAt" to Timestamp.now(),
+                            "sentBy" to user.uid,
+                        )
+
+                        db.collection("groups").document(groupId).update("recentMessage", recent)
+                            .addOnSuccessListener {
+                                Log.d(TAG, "DocumentSnapshot successfully updated!")
+                            }.addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+
+                        binding.edChatInput.text.clear()
+                    }.addOnFailureListener { e ->
+                        Log.w(TAG, "Error adding document", e)
+                    }
+            }
+        }
+
+        registration = db.collection("messages/$groupId/texts").orderBy("sentAt")
+            .addSnapshotListener { value, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+
+                val chats = ArrayList<Chat>()
+
+                for (doc in value!!) {
+                    doc.toObject<Chat>().let {
+                        chats.add(it)
+                    }
+                }
+
+                Log.d(TAG, "Current chats for user: $chats")
+                binding.rvChats.layoutManager = LinearLayoutManager(this)
+                chatAdapter = ChatAdapter(chats, user.uid)
+                binding.rvChats.adapter = chatAdapter
+                scrollToBottom()
+            }
+    }
+
+    private fun checkUserRole(user: FirebaseUser, groupId: String) {
+        user.getIdToken(false).addOnSuccessListener {
+            val claims = it.claims
+            if (claims["role"] == "mentor") {
+                renderChatMentorPage(user, groupId)
+            } else {
+                renderChatMenteePage(user, groupId)
+            }
+        }.addOnFailureListener { e ->
+            Log.d(TAG, "get token failed with ", e)
+        }
+    }
+
+    private fun renderChatMentorPage(user: FirebaseUser, groupId: String) {
+        binding.ivChatCalendar.visibility = View.VISIBLE
+        binding.ivChatCalendar.setOnClickListener {
+            TODO("Intent to Session Page")
+        }
+        renderChatPage(user, groupId)
+    }
+
+    private fun renderChatMenteePage(user: FirebaseUser, groupId: String) {
+        binding.ivChatCalendar.visibility = View.GONE
+        renderChatPage(user, groupId)
     }
 
     private fun scrollToBottom() {
