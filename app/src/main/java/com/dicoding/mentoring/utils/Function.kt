@@ -5,9 +5,13 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
+import androidx.annotation.RequiresApi
 import java.io.*
 import java.text.SimpleDateFormat
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 private const val FILENAME_FORMAT = "dd-mm-yyyy"
@@ -55,4 +59,19 @@ fun reduceFileImage(file: File): File {
     bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
 
     return file
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun convertDateToISOString(date: Date): String {
+    // Define the input pattern
+    val inputPattern = "EEE MMM dd HH:mm:ss 'GMT'XXX yyyy"
+
+    // Parse the input string with the defined pattern
+    val dateTime =
+        OffsetDateTime.parse(date.toString(), DateTimeFormatter.ofPattern(inputPattern))
+
+    // Format the parsed date/time to ISO 8601 string
+    val isoDate = dateTime.format(DateTimeFormatter.ISO_DATE_TIME)
+
+    return isoDate
 }

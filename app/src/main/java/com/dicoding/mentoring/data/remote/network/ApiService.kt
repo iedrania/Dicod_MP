@@ -105,7 +105,7 @@ interface ApiService {
     ): Call<PostUserProfileResponse>
 
     @FormUrlEncoded
-    @POST("/mentoring/create")
+    @POST("/mentor/mentoring")
     fun uploadMentoringTime(
         @Header("Authorization") token: String,
         @Field("mentees_id") mentees_id: ArrayList<String>,
