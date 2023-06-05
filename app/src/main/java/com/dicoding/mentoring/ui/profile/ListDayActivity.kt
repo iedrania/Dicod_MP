@@ -41,12 +41,17 @@ class ListDayActivity : AppCompatActivity() {
             getAvailableDays(token)
         }
 
-
+        binding.btnSave.setOnClickListener {
+            if (token != null) {
+                updateAvailableDays(token)
+                finish()
+            }
+        }
     }
 
-    private fun updateItemValue(idInterest: Int, newValue: Boolean) {
-        val itemIndex = days.indexOfFirst { it.id == idInterest }
-        if (idInterest > 0) {
+    private fun updateItemValue(idDays: Int, newValue: Boolean) {
+        val itemIndex = days.indexOfFirst { it.id == idDays }
+        if (idDays > 0) {
             days[itemIndex].isSelected = newValue
         }
     }
@@ -54,13 +59,44 @@ class ListDayActivity : AppCompatActivity() {
     private fun getAvailableDays(token: String) {
         dayViewModel.getDaysAvailability(token)
         dayViewModel.daysAvailable.observe(this) {
-//            if (it.isMondayAvailable) binding.checkboxMonday.isChecked = true
-//            if (it.isTuesdayAvailable) binding.checkboxTuesday.isChecked = true
-//            if (it.isWednesdayAvailable) binding.checkboxWednesday.isChecked = true
-//            if (it.isThursdayAvailable) binding.checkboxThursday.isChecked = true
-//            if (it.isFridayAvailable) binding.checkboxFriday.isChecked = true
-//            if (it.isSaturdayAvailable) binding.checkboxSaturday.isChecked = true
-//            if (it.isSundayAvailable) binding.checkboxSunday.isChecked = true
+            if (it.isMondayAvailable) binding.checkboxMonday.isChecked = true
+            if (it.isTuesdayAvailable) binding.checkboxTuesday.isChecked = true
+            if (it.isWednesdayAvailable) binding.checkboxWednesday.isChecked = true
+            if (it.isThursdayAvailable) binding.checkboxThursday.isChecked = true
+            if (it.isFridayAvailable) binding.checkboxFriday.isChecked = true
+            if (it.isSaturdayAvailable) binding.checkboxSaturday.isChecked = true
+            if (it.isSundayAvailable) binding.checkboxSunday.isChecked = true
         }
+    }
+
+    private fun updateAvailableDays(token: String) {
+        //update days value
+        if(binding.checkboxMonday.isChecked) updateItemValue(0,true) else updateItemValue(0,false)
+        if(binding.checkboxTuesday.isChecked)updateItemValue(1,true) else updateItemValue(1,false)
+        if(binding.checkboxWednesday.isChecked)updateItemValue(2,true) else updateItemValue(2,false)
+        if(binding.checkboxThursday.isChecked)updateItemValue(3,true) else updateItemValue(3,false)
+        if(binding.checkboxFriday.isChecked)updateItemValue(4,true) else updateItemValue(4,false)
+        if(binding.checkboxSaturday.isChecked)updateItemValue(5,true) else updateItemValue(5,false)
+        if(binding.checkboxSunday.isChecked)updateItemValue(6,true) else updateItemValue(6,false)
+
+        //get days value
+        var statMonday = days[0].isSelected
+        var statTuesday = days[1].isSelected
+        var statWednesday = days[2].isSelected
+        var statThursday = days[3].isSelected
+        var statFriday = days[4].isSelected
+        var statSaturday = days[5].isSelected
+        var statSunday = days[6].isSelected
+
+        dayViewModel.postDayAvailibility(
+            token,
+            statMonday,
+            statTuesday,
+            statWednesday,
+            statThursday,
+            statFriday,
+            statSaturday,
+            statSunday
+        )
     }
 }

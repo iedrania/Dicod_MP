@@ -7,11 +7,15 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.mentoring.databinding.ActivitySetTimeDateBinding
+import com.dicoding.mentoring.utils.convertDateToISOString
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import java.text.SimpleDateFormat
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class TimePickerActivity : AppCompatActivity() {
@@ -19,6 +23,9 @@ class TimePickerActivity : AppCompatActivity() {
     private lateinit var timePickerViewModel: TimePickerViewModel
     private lateinit var binding: ActivitySetTimeDateBinding
     private val calendar: Calendar = Calendar.getInstance()
+
+    private var menteeId: String? = null
+    private var userIds = ArrayList<String>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,23 +38,11 @@ class TimePickerActivity : AppCompatActivity() {
         user?.getIdToken(false)
         val token = user?.getIdToken(false)?.result?.token
 
-        //Obtaiun Firebase user UID
-        val userId = user?.uid
-        val userIds = arrayListOf<String>()
-        if (userId != null) {
-            userIds.add("5")
-        }
-
-        println(userIds)
-        for(userId in userIds){
-            println(userId)
-        }
-
-        timePickerViewModel = ViewModelProvider(this).get(TimePickerViewModel::class.java)
+        timePickerViewModel = ViewModelProvider(this)[TimePickerViewModel::class.java]
 
 
         //update selected calendar date
-        binding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
+        binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             // Update the calendar with the selected date
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, month)
@@ -59,14 +54,8 @@ class TimePickerActivity : AppCompatActivity() {
             showTimePickerDialog()
         }
 
-
         binding.btnSave.setOnClickListener {
             val selectedDate = calendar.time
-
-            val selectedTime = getTimeFromTimePicker()
-
-            // combine the date and time
-//            val combinedDateTime = combineDateAndTime(selectedDate, selectedTime)
 
             // format the combined date and time
             val isoDate = convertDateToISOString(selectedDate)
@@ -74,9 +63,9 @@ class TimePickerActivity : AppCompatActivity() {
             binding.tvMentoringTime.text = isoDate
 
             if (token != null) {
-                timePickerViewModel.postMentoringTime(token, userIds, isoDate)
+                postMentoringTime(token, isoDate)
+                finish()
             }
-
         }
     }
 
@@ -95,39 +84,27 @@ class TimePickerActivity : AppCompatActivity() {
         timePickerDialog.show()
     }
 
-    private fun getTimeFromTimePicker(): Date {
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
-        val time = "$hour:$minute"
-        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-        return timeFormat.parse(time) ?: Date()
+    private fun postMentoringTime(token: String, isoDate: String): Task<QuerySnapshot> {
+        val db = Firebase.firestore
+        val user = Firebase.auth.currentUser
+
+        val dbRef = db.collection("groups").whereArrayContains("members", user?.uid!!)
+        return dbRef.get().addOnSuccessListener { result ->
+            for (document in result) {
+                val membersArray = document.data["members"] as List<String>
+                if (membersArray.isNotEmpty()) {
+                    menteeId = membersArray[1]
+                    println("nilai menteeId adalah : $menteeId")
+                    userIds.add(menteeId!!)
+                    println("Array userIds: $userIds")
+                    //upload data
+                    timePickerViewModel.postMentoringTime(token, userIds, isoDate)
+                    println("Token: $token")
+                    println("isoDate: $isoDate")
+                    println("PostMentoring sudah tereksekusi. Array userIds: $userIds")
+                    break
+                }
+            }
+        }
     }
-//
-//    private fun combineDateAndTime(date: Date, time: Date): Date{
-//        val calendar = Calendar.getInstance()
-//        calendar.time = date
-//
-//        val timeCalendar = Calendar.getInstance()
-//        timeCalendar.time = time
-//        calendar.set(Calendar.HOUR_OF_DAY, timeCalendar.get(Calendar.HOUR_OF_DAY))
-//        calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE))
-//
-//        return calendar.time
-//    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun convertDateToISOString(date: Date): String {
-        val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.getDefault())
-        // Define the input pattern
-        val inputPattern = "EEE MMM dd HH:mm:ss 'GMT'XXX yyyy"
-
-        // Parse the input string with the defined pattern
-        val dateTime = OffsetDateTime.parse(date.toString(), DateTimeFormatter.ofPattern(inputPattern))
-
-        // Format the parsed date/time to ISO 8601 string
-        val isoDate = dateTime.format(DateTimeFormatter.ISO_DATE_TIME)
-
-        return isoDate
-    }
-
 }
