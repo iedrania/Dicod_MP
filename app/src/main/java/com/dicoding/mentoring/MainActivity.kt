@@ -53,6 +53,10 @@ class MainActivity : AppCompatActivity() {
                 )
                 setupActionBarWithNavController(navController, appBarConfiguration)
                 navView.setupWithNavController(navController)
+
+                val fragmentType = intent.getStringExtra("fragment")
+                if (fragmentType == "schedule") navController.navigate(R.id.navigation_schedule)
+                
             }
 
         }
