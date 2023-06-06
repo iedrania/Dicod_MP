@@ -90,4 +90,11 @@
     <string name="checkbox_jum_at">Jum\'at</string>
     <string name="checkbox_sabtu">Sabtu</string>
     <string name="checkbox_minggu">Minggu</string>
+
+
+    <!--Home Mentor-->
+    <string name="rating_value">%1$s/5</string>
+    <string name="sentiment_value">%1$s%%</string>
+
+
 </resources>

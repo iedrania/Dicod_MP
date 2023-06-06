@@ -111,4 +111,9 @@ interface ApiService {
         @Field("mentees_id") mentees_id: ArrayList<String>,
         @Field("start_time") start_time: String
     ): Call<MentoringResponse>
+
+    @GET("/mentor/dashboard")
+    fun getDashboardMentor(
+        @Header("Authorization") token: String
+    ) : Call<HomeMentorResponse>
 }

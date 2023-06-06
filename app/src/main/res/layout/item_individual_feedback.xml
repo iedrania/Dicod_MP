@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/tv_mentee_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            style="@style/Title"
+            android:text="Mentee Name" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_rating"
+                android:contentDescription="Star"
+                android:layout_marginEnd="5dp"/>
+
+            <TextView
+                style="@style/Body"
+                android:id="@+id/tv_rating_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/rating_value" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/Body"
+            android:id="@+id/tv_feedback_mentee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mentee Feedback" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
