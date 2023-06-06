@@ -40,32 +40,32 @@ class MentorsAdapter(
         setGenderIcon(mentor.user.genderId, holder.binding.ivItemIcon)
 
         val listInterest = ArrayList<String>()
-        if (mentor.user.isPathAndroid == true) listInterest.add("Android")
-        if (mentor.user.isPathWeb == true) listInterest.add("Web")
-        if (mentor.user.isPathIos == true) listInterest.add("iOS")
-        if (mentor.user.isPathMl == true) listInterest.add("ML")
-        if (mentor.user.isPathFlutter == true) listInterest.add("Flutter")
-        if (mentor.user.isPathFe == true) listInterest.add("FE")
-        if (mentor.user.isPathBe == true) listInterest.add("BE")
-        if (mentor.user.isPathReact == true) listInterest.add("React")
-        if (mentor.user.isPathDevops == true) listInterest.add("DevOps")
-        if (mentor.user.isPathGcp == true) listInterest.add("GCP")
+        if (mentor.user.isPathAndroid) listInterest.add("Android")
+        if (mentor.user.isPathWeb) listInterest.add("Web")
+        if (mentor.user.isPathIos) listInterest.add("iOS")
+        if (mentor.user.isPathMl) listInterest.add("ML")
+        if (mentor.user.isPathFlutter) listInterest.add("Flutter")
+        if (mentor.user.isPathFe) listInterest.add("FE")
+        if (mentor.user.isPathBe) listInterest.add("BE")
+        if (mentor.user.isPathReact) listInterest.add("React")
+        if (mentor.user.isPathDevops) listInterest.add("DevOps")
+        if (mentor.user.isPathGcp) listInterest.add("GCP")
         listInterest.forEach { holder.binding.cgItemInterests.addChip(it) }
 
         val listDays = ArrayList<String>()
-        if (mentor.user.isMondayAvailable == true) listDays.add("Senin")
-        if (mentor.user.isTuesdayAvailable == true) listDays.add("Selasa")
-        if (mentor.user.isWednesdayAvailable == true) listDays.add("Rabu")
-        if (mentor.user.isThursdayAvailable == true) listDays.add("Kamis")
-        if (mentor.user.isFridayAvailable == true) listDays.add("Jumat")
-        if (mentor.user.isSaturdayAvailable == true) listDays.add("Sabtu")
-        if (mentor.user.isSundayAvailable == true) listDays.add("Minggu")
+        if (mentor.user.isMondayAvailable) listDays.add("Senin")
+        if (mentor.user.isTuesdayAvailable) listDays.add("Selasa")
+        if (mentor.user.isWednesdayAvailable) listDays.add("Rabu")
+        if (mentor.user.isThursdayAvailable) listDays.add("Kamis")
+        if (mentor.user.isFridayAvailable) listDays.add("Jumat")
+        if (mentor.user.isSaturdayAvailable) listDays.add("Sabtu")
+        if (mentor.user.isSundayAvailable) listDays.add("Minggu")
         listDays.forEach { holder.binding.cgItemDays.addChip(it) }
 
         Glide.with(holder.itemView.context).load(mentor.user.profilePictureUrl)
             .into(holder.binding.ivItemPhoto)
 
-        // onclick: redirect to messages
+        // onclick: redirect to chat
         holder.itemView.setOnClickListener {
             var groupId: String? = null
             var groupData: Map<String, Any>? = null
@@ -85,7 +85,7 @@ class MentorsAdapter(
                     // get groups for this user that contains this mentor
                     for ((id, data) in listGroup) {
                         val members = data["members"] as ArrayList<String>
-                        if (members.contains(mentor.user.id.toString())) {
+                        if (members.contains(mentor.user.id)) {
                             groupId = id
                             groupData = data
                             break
@@ -104,9 +104,9 @@ class MentorsAdapter(
                                 "mentee" to user.displayName,
                             ),
                             "isPrivate" to true,
-                            "members" to hashMapOf(
-                                user.uid to true,
-                                mentor.user.id.toString() to true,
+                            "members" to arrayListOf(
+                                user.uid,
+                                mentor.user.id,
                             ),
                             "modifiedAt" to Timestamp.now(),
                             "photoUrl" to hashMapOf(
@@ -136,7 +136,7 @@ class MentorsAdapter(
                                         Log.d(TAG, "group added to user")
 
                                         // update mentor
-                                        db.collection("users").document(mentor.user.id.toString())
+                                        db.collection("users").document(mentor.user.id)
                                             .update("groups", FieldValue.arrayUnion(groupId))
                                             .addOnSuccessListener {
                                                 Log.d(TAG, "group added to mentor")
@@ -185,12 +185,20 @@ class MentorsAdapter(
             // TODO move activity fragment to messages
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra("extra_group", groupId)
-            if (user.getIdToken(false).result.claims["mentor"] as Boolean) {
-                intent.putExtra("extra_title", mapDisplayName["mentee"])
-            } else {
-                intent.putExtra("extra_title", mapDisplayName["mentor"])
+
+            user.getIdToken(false).addOnSuccessListener {
+                val claims = it.claims
+                val role = if (claims["role"] == "mentor") "mentor" else "mentee"
+
+                if (role == "mentor") {
+                    intent.putExtra("extra_title", mapDisplayName["mentee"])
+                } else {
+                    intent.putExtra("extra_title", mapDisplayName["mentor"])
+                }
+                context.startActivity(intent)
+            }.addOnFailureListener { e ->
+                Log.d(TAG, "get token failed with ", e)
             }
-            context.startActivity(intent)
         } else {
             Log.d(TAG, "groupId empty")
         }

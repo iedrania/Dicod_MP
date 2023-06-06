@@ -57,7 +57,7 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun renderChatPage(user: FirebaseUser, userRole: String, groupId: String) {
+    private fun renderChatPage(user: FirebaseUser, groupId: String, userRole: String) {
         val db = Firebase.firestore
 
         binding.btnChatSend.setOnClickListener {

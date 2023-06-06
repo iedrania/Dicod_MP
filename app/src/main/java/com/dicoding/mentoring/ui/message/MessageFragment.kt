@@ -32,10 +32,14 @@ class MessageFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onStart() {
+        super.onStart()
         checkCurrentUser()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        registration.remove() // Unregister the snapshot listener
     }
 
     private fun checkCurrentUser() {
