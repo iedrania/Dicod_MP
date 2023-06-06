@@ -17,7 +17,8 @@ import com.dicoding.mentoring.ui.login.LoginActivity
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import java.util.Date
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ScheduleFragment : Fragment() {
 
@@ -59,12 +60,16 @@ class ScheduleFragment : Fragment() {
 
     private fun renderSchedulePage(user: FirebaseUser) {
         val currentDate = Date()
+        val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+        isoFormat.timeZone = TimeZone.getTimeZone("UTC")
+        val formattedDate = isoFormat.format(currentDate)
+
         user.getIdToken(false).addOnSuccessListener {
             val claims = it.claims
             val role = if (claims["role"] == "mentor") "mentor" else "mentee"
 
             scheduleViewModel.getSchedule(
-                it.token, currentDate.toString(), role
+                it.token, formattedDate, role
             )
         }.addOnFailureListener { e ->
             Log.d(TAG, "get token failed with ", e)

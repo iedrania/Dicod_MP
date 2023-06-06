@@ -39,6 +39,7 @@ class ScheduleViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (response.isSuccessful && responseBody != null) {
+                        Log.d(TAG,"response body : $responseBody")
                         _listGroupedSchedule.value = groupScheduleByDate(responseBody.listSchedule)
                         // Uncomment this line to use dummy schedule list
 //                        useDummySchedule()
