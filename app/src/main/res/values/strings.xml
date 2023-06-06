@@ -62,6 +62,9 @@
     <!--Chat-->
     <string name="say_something">Katakan sesuatu…</string>
     <string name="get_schedule_failed">Get schedule failed</string>
+    <string name="chat_rate_mentor">Beri nilai mentor</string>
+    <string name="chat_open_schedule">Klik untuk membuka Jadwal</string>
+    <string name="session_scheduled">Sesi terjadwal!</string>
 
     <!--Home-->
     <string name="home_intro_mentee">Siap untuk mempelajari sesuatu yang baru?</string>
@@ -78,6 +81,7 @@
     <string name="register_mentor">Daftar sebagai Mentor</string>
     <string name="register_as_mentee">Daftar sebagai mentee?</string>
     <string name="register_mentee">Daftar sebagai Mentee</string>
+
     <string name="tv_hint_havent_set_time">You haven\'t set mentoring time</string>
     <string name="checkbox_senin">Senin</string>
     <string name="checkbox_selasa">Selasa</string>

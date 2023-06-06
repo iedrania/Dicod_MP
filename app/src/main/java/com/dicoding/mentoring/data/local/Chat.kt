@@ -7,4 +7,6 @@ data class Chat(
     val imageUrl: String? = null,
     val sentAt: Timestamp? = null,
     val sentBy: String? = null,
+    val isSpecial: Boolean? = null,
+    val mentoringId: String? = null,
 )

@@ -57,7 +57,7 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun renderChatPage(user: FirebaseUser, groupId: String) {
+    private fun renderChatPage(user: FirebaseUser, userRole: String, groupId: String) {
         val db = Firebase.firestore
 
         binding.btnChatSend.setOnClickListener {
@@ -108,7 +108,7 @@ class ChatActivity : AppCompatActivity() {
 
                 Log.d(TAG, "Current chats for user: $chats")
                 binding.rvChats.layoutManager = LinearLayoutManager(this)
-                chatAdapter = ChatAdapter(chats, user.uid)
+                chatAdapter = ChatAdapter(chats, user.uid, userRole)
                 binding.rvChats.adapter = chatAdapter
                 scrollToBottom()
             }
@@ -132,12 +132,12 @@ class ChatActivity : AppCompatActivity() {
         binding.ivChatCalendar.setOnClickListener {
             TODO("Intent to Session Page")
         }
-        renderChatPage(user, groupId)
+        renderChatPage(user, groupId, "mentor")
     }
 
     private fun renderChatMenteePage(user: FirebaseUser, groupId: String) {
         binding.ivChatCalendar.visibility = View.GONE
-        renderChatPage(user, groupId)
+        renderChatPage(user, groupId, "mentee")
     }
 
     private fun scrollToBottom() {

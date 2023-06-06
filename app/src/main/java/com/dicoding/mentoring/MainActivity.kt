@@ -24,10 +24,7 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_bottom_navigation) as NavHostFragment
         val navController = navHostFragment.navController
-//         val navController = findNavController(R.id.nav_host_fragment_activity_bottom_navigation)
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
@@ -38,5 +35,8 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        val fragmentType = intent.getStringExtra("fragment")
+        if (fragmentType == "schedule") navController.navigate(R.id.navigation_schedule)
     }
 }
