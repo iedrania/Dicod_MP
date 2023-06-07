@@ -55,6 +55,7 @@ class TimePickerViewModel : ViewModel() {
             "sentAt" to Timestamp.now(),
             "specialChat" to true,
             "mentoringId" to mentoringId,
+            "feedbackGiven" to false,
         )
 
         val db = Firebase.firestore

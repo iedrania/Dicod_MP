@@ -63,6 +63,7 @@
     <string name="chat_rate_mentor">Beri nilai mentor</string>
     <string name="chat_open_schedule">Klik untuk membuka Jadwal</string>
     <string name="session_scheduled">Sesi terjadwal!</string>
+    <string name="chat_rate_given">Feedback sudah diberikan</string>
 
     <!--Home-->
     <string name="home_intro_mentee">Siap untuk mempelajari sesuatu yang baru?</string>

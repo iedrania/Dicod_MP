@@ -68,6 +68,7 @@ class ChatActivity : AppCompatActivity() {
                     "sentAt" to Timestamp.now(),
                     "specialChat" to false,
                     "mentoringId" to -1,
+                    "feedbackGiven" to null,
                 )
 
                 db.collection("messages/$groupId/texts").add(data)
@@ -103,13 +104,14 @@ class ChatActivity : AppCompatActivity() {
 
                 for (doc in value!!) {
                     doc.toObject<Chat>().let {
+                        it.id = doc.id
                         chats.add(it)
                     }
                 }
 
                 Log.d(TAG, "Current chats for user: $chats")
                 binding.rvChats.layoutManager = LinearLayoutManager(this)
-                chatAdapter = ChatAdapter(chats, user.uid, userRole)
+                chatAdapter = ChatAdapter(chats, user.uid, userRole, groupId)
                 binding.rvChats.adapter = chatAdapter
                 scrollToBottom()
             }

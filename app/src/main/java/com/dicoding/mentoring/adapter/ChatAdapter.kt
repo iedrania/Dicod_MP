@@ -16,7 +16,10 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class ChatAdapter(
-    private val chats: List<Chat>, private val currentUser: String, private val userRole: String
+    private val chats: List<Chat>,
+    private val currentUser: String,
+    private val userRole: String,
+    private val groupId: String
 ) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
@@ -35,6 +38,11 @@ class ChatAdapter(
                     .inflate(R.layout.item_chat_feedback, parent, false)
             )
 
+            VIEW_TYPE_FEEDBACK_DONE -> FeedbackGivenChatViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_chat_feedback_given, parent, false)
+            )
+
             else -> OtherChatViewHolder(
                 LayoutInflater.from(parent.context).inflate(R.layout.item_chat_them, parent, false)
             )
@@ -47,7 +55,15 @@ class ChatAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return if (chats[position].specialChat == true) {
-            if (userRole == "mentor") VIEW_TYPE_MEETING_MESSAGE else VIEW_TYPE_FEEDBACK_MESSAGE
+            if (userRole == "mentor") {
+                VIEW_TYPE_MEETING_MESSAGE
+            } else {
+                if (chats[position].feedbackGiven == true) {
+                    VIEW_TYPE_FEEDBACK_DONE
+                } else {
+                    VIEW_TYPE_FEEDBACK_MESSAGE
+                }
+            }
         } else if (currentUser == chats[position].sentBy) {
             VIEW_TYPE_MY_MESSAGE
         } else {
@@ -116,8 +132,21 @@ class ChatAdapter(
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, FeedbackActivity::class.java)
                 intent.putExtra("extra_mentoring", chat.mentoringId)
+                intent.putExtra("extra_group", groupId)
+                intent.putExtra("extra_text", chat.id)
                 itemView.context.startActivity(intent)
             }
+        }
+    }
+
+    inner class FeedbackGivenChatViewHolder(view: View) : ChatViewHolder(view) {
+        private var timeText: TextView = view.findViewById(R.id.tv_item_chat_time)
+
+        override fun bind(chat: Chat) {
+            val locale = Locale("id", "ID")
+            val outputFormat = SimpleDateFormat("HH:mm", locale)
+            val formattedDate: String = outputFormat.format(chat.sentAt?.toDate()!!)
+            timeText.text = formattedDate
         }
     }
 
@@ -130,5 +159,6 @@ class ChatAdapter(
         private const val VIEW_TYPE_MEETING_MESSAGE = 2
         private const val VIEW_TYPE_FEEDBACK_MESSAGE = 3
         private const val VIEW_TYPE_OTHER_MESSAGE = 4
+        private const val VIEW_TYPE_FEEDBACK_DONE = 5
     }
 }
