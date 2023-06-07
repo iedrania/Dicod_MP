@@ -19,8 +19,10 @@ class ReviewAdapter(private val reviews: List<Review>) : RecyclerView.Adapter<Re
         val currentReview = reviews[position]
 
         holder.binding.tvMenteeName.text = currentReview.menteeName
+        holder.binding.ratingBarFeedback.rating = currentReview.rating
         holder.binding.tvRatingValue.text = currentReview.rating.toString()
         holder.binding.tvFeedbackMentee.text = currentReview.feedback
+
     }
 
     override fun getItemCount(): Int = reviews.size

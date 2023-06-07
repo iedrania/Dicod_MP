@@ -1,5 +1,6 @@
 package com.dicoding.mentoring
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
@@ -7,6 +8,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dicoding.mentoring.databinding.ActivityMainBinding
+import com.dicoding.mentoring.ui.login.LoginActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -19,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        checkCurrentUser()
         val navView: BottomNavigationView = binding.navView
 
         val user = Firebase.auth.currentUser
@@ -61,6 +65,14 @@ class MainActivity : AppCompatActivity() {
 
         }
         setContentView(binding.root)
+    }
+
+    private fun checkCurrentUser() {
+        val user = Firebase.auth.currentUser
+        if (user == null) {
+            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 }

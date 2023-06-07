@@ -181,24 +181,24 @@
                         android:textAllCaps="false"
                         android:textSize="14sp" />
 
+                </LinearLayout>
                     <Button
                         android:id="@+id/btn_edit_days"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
                         android:backgroundTint="@color/primary"
                         android:fontFamily="@font/quicksand_semibold"
                         android:text="@string/edit_days"
                         android:textAllCaps="false"
                         android:textSize="14sp" />
-                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_profile_logout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:backgroundTint="@color/red"
                     android:text="@string/logout"
                     android:textAllCaps="false" />
 
