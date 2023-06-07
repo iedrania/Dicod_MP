@@ -42,6 +42,8 @@ class HomeMentorFragment : Fragment() {
         homeMentorViewModel = ViewModelProvider(this)[HomeMentorViewModel::class.java]
         homeMentorViewModel.isLoading.observe(viewLifecycleOwner){showLoading(it)}
         homeMentorViewModel.dashboardMentorData.observe(viewLifecycleOwner) {
+
+            binding.ratingBar.rating = it.averageRating.toFloat()
             binding.tvAverageRating.text =
                 getString(R.string.rating_value, it.averageRating.toString())
             binding.tvPercentagePositive.text =

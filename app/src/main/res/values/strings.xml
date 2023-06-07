@@ -8,6 +8,7 @@
     <string name="full_name">Nama Lengkap</string>
     <string name="tvFullname">Full Name</string>
     <string name="logout">Keluar</string>
+    <string name="gender">Jenis Kelamin</string>
     <string name="general_error_message">Ups! Terjadi kesalahan.\nMohon coba lagi nanti.</string>
 
     <!--Auth-->
@@ -23,28 +24,25 @@
     <string name="tvRole">Role</string>
     <string name="tvUsername">Username</string>
     <string name="hintFullname">Insert your name</string>
-    <string name="hintRole">Insert your name</string>
-    <string name="tvGender">Gender</string>
+    <string name="tvGender">Jenis Kelamin</string>
     <string name="tvInterest">Interest</string>
-    <string name="tvBiography">Biography</string>
-    <string name="btnSave">Save</string>
-    <string name="gender">Gender</string>
-    <string name="insert_fullname_null">Insert fullname</string>
-    <string name="role_null">You haven\'t edit your role</string>
-    <string name="phone_number_null">You haven\'t edit your phone number</string>
-    <string name="gender_null">You haven\'t edit your gender</string>
-    <string name="biography_null">You haven\'t edit your biography</string>
-    <string name="edit_text_phone">Phone</string>
-    <string name="edit_profile_button">Edit Profile</string>
-    <string name="edit_interest_button">Edit Interest</string>
-    <string name="edit_days">Edit Days</string>
-    <string name="change_image">Change Image</string>
+    <string name="tvBiography">Tentang Anda</string>
+    <string name="btnSave">Simpan</string>
+    <string name="insert_fullname_null">Masukkan nama Anda</string>
+    <string name="phone_number_null">Anda belum mengisi nomor telepon</string>
+    <string name="gender_null">Anda belum mengisi jenis kelamin</string>
+    <string name="biography_null">Anda belum mengisi tentang Anda</string>
+    <string name="edit_text_phone">Nomor Telepon</string>
+    <string name="edit_profile_button">Ubah Data Profile</string>
+    <string name="edit_interest_button">Ubah Bidang Anda</string>
+    <string name="edit_days">Ubah Hari</string>
+    <string name="change_image">Ganti Foto</string>
     <string name="radio_mentee">Mentee</string>
     <string name="radio_mentor">Mentor</string>
-    <string name="hint_email">Insert email</string>
-    <string name="hint_biography">Insert your biography</string>
-    <string name="radio_male">Male</string>
-    <string name="radio_female">Female</string>
+    <string name="hint_email">Masukkan Email</string>
+    <string name="hint_biography">Ceritakan tentang Anda</string>
+    <string name="radio_male">Laki-laki</string>
+    <string name="radio_female">Perempuan</string>
 
     <!--Feedback Page-->
     <string name="feedback_prompt">Bagaimana pengalaman mentoring Anda bersama Mentor?</string>
@@ -95,6 +93,7 @@
     <!--Home Mentor-->
     <string name="rating_value">%1$s/5</string>
     <string name="sentiment_value">%1$s%%</string>
+    <string name="role_null">Anda belum mengisi data jenis kelamin</string>
 
 
 </resources>

@@ -12,11 +12,12 @@
 
         <TextView
             android:id="@+id/tv_mentee_name"
+            style="@style/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            style="@style/Title"
             android:text="Mentee Name" />
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -24,25 +25,27 @@
             android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <RatingBar
+                android:id="@+id/rating_bar_feedback"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_rating"
-                android:contentDescription="Star"
-                android:layout_marginEnd="5dp"/>
+                android:layout_width="wrap_content"
+                style="?android:attr/ratingBarStyleSmall"
+                />
 
             <TextView
-                style="@style/Body"
                 android:id="@+id/tv_rating_value"
+                style="@style/Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="5dp"
                 android:text="@string/rating_value" />
+
         </LinearLayout>
 
         <TextView
-            style="@style/Body"
             android:id="@+id/tv_feedback_mentee"
+            style="@style/Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mentee Feedback" />

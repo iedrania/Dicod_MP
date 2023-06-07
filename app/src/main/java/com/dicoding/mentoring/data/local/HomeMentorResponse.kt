@@ -24,11 +24,11 @@ data class Dashboard(
 
 data class Sentiment(
     @SerializedName("negative")
-    val negative: Int,
+    val negative: Float,
     @SerializedName("neutral")
-    val neutral: Int,
+    val neutral: Float,
     @SerializedName("positive")
-    val positive: Int
+    val positive: Float
 )
 
 data class Review(
@@ -43,7 +43,7 @@ data class Review(
     @SerializedName("mentoring_id")
     val mentoringId: Int,
     @SerializedName("rating")
-    val rating: Double,
+    val rating: Float,
     @SerializedName("feedback")
     val feedback: String,
     @SerializedName("sentiment")
