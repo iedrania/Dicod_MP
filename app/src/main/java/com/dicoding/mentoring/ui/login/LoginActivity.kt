@@ -10,7 +10,7 @@ import androidx.core.widget.doOnTextChanged
 import com.dicoding.mentoring.MainActivity
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.ActivityLoginBinding
-import com.dicoding.mentoring.ui.authmentor.LoginMentorActivity
+import com.dicoding.mentoring.ui.authmentor.RegisterMentorActivity
 import com.dicoding.mentoring.ui.register.RegisterActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -49,8 +49,8 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.btnLoginAsMentor.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, LoginMentorActivity::class.java))
+        binding.btnLoginRegisterMentor.setOnClickListener {
+            startActivity(Intent(this@LoginActivity, RegisterMentorActivity::class.java))
             finish()
         }
     }

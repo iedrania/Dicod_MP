@@ -3,6 +3,8 @@ package com.dicoding.mentoring.ui.authmentor
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -13,7 +15,9 @@ import com.dicoding.mentoring.MainActivity
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.ActivityRegisterMentorBinding
 import com.dicoding.mentoring.helper.ViewModelFactory
+import com.dicoding.mentoring.ui.login.LoginActivity
 import com.dicoding.mentoring.ui.register.RegisterActivity
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -53,9 +57,11 @@ class RegisterMentorActivity : AppCompatActivity() {
         }
         binding.edRegisterEmail.doOnTextChanged { _, _, _, _ ->
             setRegisterButtonEnable()
+            setEmailFieldError()
         }
         binding.edRegisterPassword.doOnTextChanged { _, _, _, _ ->
             setRegisterButtonEnable()
+            setPasswordFieldError()
         }
 
         binding.btnRegisterSubmit.setOnClickListener {
@@ -69,7 +75,7 @@ class RegisterMentorActivity : AppCompatActivity() {
         }
 
         binding.btnRegisterLogin.setOnClickListener {
-            startActivity(Intent(this@RegisterMentorActivity, LoginMentorActivity::class.java))
+            startActivity(Intent(this@RegisterMentorActivity, LoginActivity::class.java))
             finish()
         }
 
@@ -105,12 +111,36 @@ class RegisterMentorActivity : AppCompatActivity() {
         }
     }
 
+    private fun setEmailFieldError() {
+        if (TextUtils.isEmpty(binding.edRegisterEmail.text.toString()) || !Patterns.EMAIL_ADDRESS.matcher(
+                binding.edRegisterEmail.text.toString()
+            ).matches()
+        ) {
+            binding.edRegisterEmail.error = getString(R.string.email_error)
+        } else {
+            binding.edRegisterEmail.error = null
+        }
+    }
+
+    private fun setPasswordFieldError() {
+        if (binding.edRegisterPassword.text.toString().length < 6) {
+            binding.tfRegisterPassword.endIconMode = TextInputLayout.END_ICON_NONE
+            binding.edRegisterPassword.error = getString(R.string.password_error)
+        } else {
+            binding.tfRegisterPassword.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
+            binding.edRegisterPassword.error = null
+        }
+    }
+
     private fun setRegisterButtonEnable() {
         val nameResult = binding.edRegisterName.text
         val emailResult = binding.edRegisterEmail.text
         val passwordResult = binding.edRegisterPassword.text
         binding.btnRegisterSubmit.isEnabled = nameResult != null && nameResult.toString()
             .isNotBlank() && emailResult != null && emailResult.toString()
-            .isNotBlank() && passwordResult != null && passwordResult.toString().isNotBlank()
+            .isNotBlank() && passwordResult != null && passwordResult.toString()
+            .isNotBlank() && passwordResult.toString().length >= 6 && Patterns.EMAIL_ADDRESS.matcher(
+            emailResult.toString()
+        ).matches()
     }
 }

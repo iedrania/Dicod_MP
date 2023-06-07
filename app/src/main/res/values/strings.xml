@@ -7,18 +7,27 @@
     <string name="tvEmail">Email</string>
     <string name="full_name">Nama Lengkap</string>
     <string name="tvFullname">Full Name</string>
-    <string name="logout">Keluar</string>
     <string name="gender">Jenis Kelamin</string>
     <string name="general_error_message">Ups! Terjadi kesalahan.\nMohon coba lagi nanti.</string>
 
     <!--Auth-->
     <string name="login">Masuk</string>
     <string name="register">Daftar</string>
+    <string name="logout">Keluar</string>
     <string name="account_not_yet">Belum punya akun?</string>
     <string name="account_already">Sudah punya akun?</string>
+
+    <!--Auth Errors-->
     <string name="login_failed">Login gagal</string>
     <string name="register_failed">Register gagal</string>
-    <string name="password_error">Password minimal 8 karakter</string>
+    <string name="email_error">Format email tidak sesuai</string>
+    <string name="password_error">Password minimal 6 karakter</string>
+
+    <!--Auth Roles-->
+    <string name="register_as_mentor">Daftar sebagai Mentor?</string>
+    <string name="register_mentor">Daftar sebagai Mentor</string>
+    <string name="register_as_mentee">Daftar sebagai mentee?</string>
+    <string name="register_mentee">Daftar sebagai Mentee</string>
 
     <!--Profile Page-->
     <string name="tvRole">Role</string>
@@ -70,16 +79,6 @@
     <string name="home_intro_mentor">Siap untuk berbagi ilmu?</string>
     <string name="interests_label">Bidang ketertarikan:</string>
     <string name="days_label">Hari tersedia:</string>
-
-    <!--Auth Mentor-->
-    <string name="login_as_mentor">Masuk sebagai mentor?</string>
-    <string name="login_mentor">Masuk sebagai Mentor</string>
-    <string name="login_as_mentee">Masuk sebagai mentee?</string>
-    <string name="login_mentee">Masuk sebagai Mentee</string>
-    <string name="register_as_mentor">Daftar sebagai Mentor?</string>
-    <string name="register_mentor">Daftar sebagai Mentor</string>
-    <string name="register_as_mentee">Daftar sebagai mentee?</string>
-    <string name="register_mentee">Daftar sebagai Mentee</string>
 
     <string name="tv_hint_havent_set_time">You haven\'t set mentoring time</string>
     <string name="checkbox_senin">Senin</string>
