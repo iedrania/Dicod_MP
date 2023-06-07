@@ -46,10 +46,13 @@ class ChatAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (chats[position].isSpecial == true) {
+        return if (chats[position].specialChat == true) {
             if (userRole == "mentor") VIEW_TYPE_MEETING_MESSAGE else VIEW_TYPE_FEEDBACK_MESSAGE
-        } else if (currentUser == chats[position].sentBy) VIEW_TYPE_MY_MESSAGE
-        else VIEW_TYPE_OTHER_MESSAGE
+        } else if (currentUser == chats[position].sentBy) {
+            VIEW_TYPE_MY_MESSAGE
+        } else {
+            VIEW_TYPE_OTHER_MESSAGE
+        }
     }
 
     override fun getItemCount() = chats.size

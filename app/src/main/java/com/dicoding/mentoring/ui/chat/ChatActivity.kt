@@ -66,7 +66,8 @@ class ChatActivity : AppCompatActivity() {
                     "messageText" to binding.edChatInput.text.toString(),
                     "sentBy" to user.uid,
                     "sentAt" to Timestamp.now(),
-                    "imageUrl" to null,
+                    "specialChat" to false,
+                    "mentoringId" to -1,
                 )
 
                 db.collection("messages/$groupId/texts").add(data)
@@ -130,7 +131,9 @@ class ChatActivity : AppCompatActivity() {
     private fun renderChatMentorPage(user: FirebaseUser, groupId: String) {
         binding.ivChatCalendar.visibility = View.VISIBLE
         binding.ivChatCalendar.setOnClickListener {
-            TODO("Intent to Session Page")
+            val intent = Intent(this, TimePickerActivity::class.java)
+            intent.putExtra(EXTRA_GROUP, groupId)
+            startActivity(intent)
         }
         renderChatPage(user, groupId, "mentor")
     }
