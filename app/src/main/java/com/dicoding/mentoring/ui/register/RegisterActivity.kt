@@ -22,7 +22,7 @@ import com.google.firebase.ktx.Firebase
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var userViewModel: UserViewModel
+    private lateinit var registerViewModel: RegisterViewModel
     private lateinit var auth: FirebaseAuth
     private lateinit var authStateListener: FirebaseAuth.AuthStateListener
 
@@ -42,11 +42,11 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        userViewModel = ViewModelProvider(
+        registerViewModel = ViewModelProvider(
             this, ViewModelFactory(auth)
-        )[UserViewModel::class.java]
-        userViewModel.isLoading.observe(this) { showLoading(it) }
-        userViewModel.isError.observe(this) { showError(it) }
+        )[RegisterViewModel::class.java]
+        registerViewModel.isLoading.observe(this) { showLoading(it) }
+        registerViewModel.isError.observe(this) { showError(it) }
 
         setRegisterButtonEnable()
         binding.edRegisterName.doOnTextChanged { _, _, _, _ ->
@@ -60,7 +60,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         binding.btnRegisterSubmit.setOnClickListener {
-            userViewModel.postRegister(
+            registerViewModel.postRegister(
                 binding.edRegisterName.text.toString(),
                 binding.edRegisterEmail.text.toString(),
                 binding.edRegisterPassword.text.toString()

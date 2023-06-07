@@ -36,9 +36,6 @@
             android:name=".ui.profile.ListInterestActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivityOld"
-            android:exported="false" />
-        <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false" />
         <activity

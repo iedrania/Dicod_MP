@@ -14,7 +14,6 @@ import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.ActivityRegisterMentorBinding
 import com.dicoding.mentoring.helper.ViewModelFactory
 import com.dicoding.mentoring.ui.register.RegisterActivity
-import com.dicoding.mentoring.ui.register.UserViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -22,7 +21,7 @@ import com.google.firebase.ktx.Firebase
 class RegisterMentorActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterMentorBinding
-    private lateinit var userViewModel: UserViewModel
+    private lateinit var registerMentorViewModel: RegisterMentorViewModel
     private lateinit var auth: FirebaseAuth
     private lateinit var authStateListener: FirebaseAuth.AuthStateListener
 
@@ -42,11 +41,11 @@ class RegisterMentorActivity : AppCompatActivity() {
             }
         }
 
-        userViewModel = ViewModelProvider(
+        registerMentorViewModel = ViewModelProvider(
             this, ViewModelFactory(auth)
-        )[UserViewModel::class.java]
-        userViewModel.isLoading.observe(this) { showLoading(it) }
-        userViewModel.isError.observe(this) { showError(it) }
+        )[RegisterMentorViewModel::class.java]
+        registerMentorViewModel.isLoading.observe(this) { showLoading(it) }
+        registerMentorViewModel.isError.observe(this) { showError(it) }
 
         setRegisterButtonEnable()
         binding.edRegisterName.doOnTextChanged { _, _, _, _ ->
@@ -60,7 +59,7 @@ class RegisterMentorActivity : AppCompatActivity() {
         }
 
         binding.btnRegisterSubmit.setOnClickListener {
-            userViewModel.postRegister(
+            registerMentorViewModel.postRegister(
                 binding.edRegisterName.text.toString(),
                 binding.edRegisterEmail.text.toString(),
                 binding.edRegisterPassword.text.toString()

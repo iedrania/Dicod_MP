@@ -17,6 +17,15 @@ interface ApiService {
     ): Call<RegisterResponse>
 
     @FormUrlEncoded
+    @POST("auth/register")
+    fun postRegisterMentor(
+        @Field("name") name: String,
+        @Field("email") email: String,
+        @Field("password") password: String,
+        @Field("role") role: String = "mentor",
+    ): Call<RegisterResponse>
+
+    @FormUrlEncoded
     @POST("mentee/feedback")
     fun postFeedback(
         @Header("Authorization") token: String,
