@@ -18,8 +18,8 @@ data class Dashboard(
     val feedbackSummary: String?,
     @SerializedName("sentiment")
     val sentiment: Sentiment,
-    @SerializedName("reviews")
-    val reviews: List<Review>
+    @SerializedName("feedbacks")
+    val feedbacks: List<Feedback>
 )
 
 data class Sentiment(
@@ -31,7 +31,7 @@ data class Sentiment(
     val positive: Float
 )
 
-data class Review(
+data class Feedback(
     @SerializedName("start_time")
     val startTime: String,
     @SerializedName("end_time")

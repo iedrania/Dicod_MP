@@ -3,10 +3,10 @@ package com.dicoding.mentoring.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.dicoding.mentoring.data.local.Review
+import com.dicoding.mentoring.data.local.Feedback
 import com.dicoding.mentoring.databinding.ItemIndividualFeedbackBinding
 
-class ReviewAdapter(private val reviews: List<Review>) : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
+class ReviewAdapter(private val feedbacks: List<Feedback>) : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -16,7 +16,7 @@ class ReviewAdapter(private val reviews: List<Review>) : RecyclerView.Adapter<Re
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentReview = reviews[position]
+        val currentReview = feedbacks[position]
 
         holder.binding.tvMenteeName.text = currentReview.menteeName
         holder.binding.ratingBarFeedback.rating = currentReview.rating
@@ -25,7 +25,7 @@ class ReviewAdapter(private val reviews: List<Review>) : RecyclerView.Adapter<Re
 
     }
 
-    override fun getItemCount(): Int = reviews.size
+    override fun getItemCount(): Int = feedbacks.size
 
     class ViewHolder(var binding: ItemIndividualFeedbackBinding) : RecyclerView.ViewHolder(binding.root)
 

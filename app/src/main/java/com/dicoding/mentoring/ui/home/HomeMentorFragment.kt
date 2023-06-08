@@ -48,12 +48,11 @@ class HomeMentorFragment : Fragment() {
                 getString(R.string.rating_value, it.averageRating.toString())
             binding.tvPercentagePositive.text =
                 getString(R.string.sentiment_value, it.sentiment.positive.toString())
-            binding.tvPercentageNeutral.text =
-                getString(R.string.sentiment_value, it.sentiment.neutral.toString())
             binding.tvPercentageNegative.text =
                 getString(R.string.sentiment_value, it.sentiment.negative.toString())
+            binding.tvMenteeFeedbackSummarizer.text = it.feedbackSummary
 
-            val adapter = ReviewAdapter(it.reviews)
+            val adapter = ReviewAdapter(it.feedbacks)
             binding.rvReviews.layoutManager = LinearLayoutManager(context)
             binding.rvReviews.adapter = adapter
         }
