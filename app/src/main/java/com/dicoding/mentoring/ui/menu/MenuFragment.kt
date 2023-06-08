@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.dicoding.mentoring.databinding.FragmentMenuBinding
-import com.dicoding.mentoring.ui.login.LoginActivity
+import com.dicoding.mentoring.ui.onboard.OnboardActivity
 import com.dicoding.mentoring.ui.profile.EditProfileActivity
 import com.dicoding.mentoring.ui.profile.ListDayActivity
 import com.dicoding.mentoring.ui.profile.ListInterestActivity
@@ -48,7 +48,7 @@ class MenuFragment : Fragment() {
                 .setMessage("Apakah kamu yakin ingin logout dari akunmu?")
                 .setPositiveButton("Ya") { _, _ ->
                     Firebase.auth.signOut()
-                    startActivity(Intent(requireActivity(), LoginActivity::class.java))
+                    startActivity(Intent(requireActivity(), OnboardActivity::class.java))
                     requireActivity().finish()
                 }
                 .setNegativeButton("Tidak", null)

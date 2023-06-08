@@ -15,7 +15,7 @@ import com.dicoding.mentoring.MainActivity
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.ActivityRegisterBinding
 import com.dicoding.mentoring.helper.ViewModelFactory
-import com.dicoding.mentoring.ui.authmentor.RegisterMentorActivity
+import com.dicoding.mentoring.ui.registerMentor.RegisterMentorActivity
 import com.dicoding.mentoring.ui.login.LoginActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -34,7 +34,8 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.hide()
+        supportActionBar?.title = ""
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         auth = Firebase.auth
 
@@ -142,5 +143,10 @@ class RegisterActivity : AppCompatActivity() {
             .isNotBlank() && passwordResult.toString().length >= 6 && Patterns.EMAIL_ADDRESS.matcher(
             emailResult.toString()
         ).matches()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }

@@ -1,4 +1,4 @@
-package com.dicoding.mentoring.ui.authmentor
+package com.dicoding.mentoring.ui.registerMentor
 
 import android.content.Context
 import android.content.Intent
@@ -34,7 +34,8 @@ class RegisterMentorActivity : AppCompatActivity() {
         binding = ActivityRegisterMentorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.hide()
+        supportActionBar?.title = ""
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         auth = Firebase.auth
 
@@ -142,5 +143,10 @@ class RegisterMentorActivity : AppCompatActivity() {
             .isNotBlank() && passwordResult.toString().length >= 6 && Patterns.EMAIL_ADDRESS.matcher(
             emailResult.toString()
         ).matches()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }

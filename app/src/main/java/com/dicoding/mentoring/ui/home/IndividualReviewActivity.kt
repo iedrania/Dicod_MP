@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mentoring.adapter.ReviewAdapter
 import com.dicoding.mentoring.databinding.ActivityIndividualReviewBinding
-import com.dicoding.mentoring.ui.login.LoginActivity
+import com.dicoding.mentoring.ui.onboard.OnboardActivity
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -44,7 +44,7 @@ class IndividualReviewActivity : AppCompatActivity() {
         if (user != null) {
             renderIndividualReviewPage(user)
         } else {
-            startActivity(Intent(this@IndividualReviewActivity, LoginActivity::class.java))
+            startActivity(Intent(this@IndividualReviewActivity, OnboardActivity::class.java))
         }
     }
 

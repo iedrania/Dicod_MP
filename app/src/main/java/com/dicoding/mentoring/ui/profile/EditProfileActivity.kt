@@ -19,7 +19,7 @@ import com.bumptech.glide.Glide
 import com.dicoding.mentoring.data.local.PostUserProfileResponse
 import com.dicoding.mentoring.data.remote.network.ApiConfig
 import com.dicoding.mentoring.databinding.ActivityEditProfileBinding
-import com.dicoding.mentoring.ui.login.LoginActivity
+import com.dicoding.mentoring.ui.onboard.OnboardActivity
 import com.dicoding.mentoring.utils.convUriToFile
 import com.dicoding.mentoring.utils.reduceFileImage
 import com.google.firebase.auth.FirebaseUser
@@ -87,7 +87,7 @@ class EditProfileActivity : AppCompatActivity() {
         if (user != null) {
             renderProfilePage(user)
         } else {
-            val intent = Intent(this@EditProfileActivity, LoginActivity::class.java)
+            val intent = Intent(this@EditProfileActivity, OnboardActivity::class.java)
             startActivity(intent)
             finish()
         }

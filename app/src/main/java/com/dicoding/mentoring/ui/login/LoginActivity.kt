@@ -10,7 +10,7 @@ import androidx.core.widget.doOnTextChanged
 import com.dicoding.mentoring.MainActivity
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.ActivityLoginBinding
-import com.dicoding.mentoring.ui.authmentor.RegisterMentorActivity
+import com.dicoding.mentoring.ui.registerMentor.RegisterMentorActivity
 import com.dicoding.mentoring.ui.register.RegisterActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -26,7 +26,8 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.hide()
+        supportActionBar?.title = ""
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         auth = Firebase.auth
 
@@ -84,6 +85,11 @@ class LoginActivity : AppCompatActivity() {
         val passwordResult = binding.edLoginPassword.text
         binding.btnLoginSubmit.isEnabled = emailResult != null && emailResult.toString()
             .isNotBlank() && passwordResult != null && passwordResult.toString().isNotBlank()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     companion object {

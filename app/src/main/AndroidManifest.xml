@@ -15,10 +15,13 @@
         android:theme="@style/Theme.Mentoring"
         tools:targetApi="31">
         <activity
+            android:name=".ui.onboard.OnboardActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.home.IndividualReviewActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.authmentor.RegisterMentorActivity"
+            android:name=".ui.registerMentor.RegisterMentorActivity"
             android:exported="false" />
         <activity
             android:name=".ui.chat.ChatActivity"

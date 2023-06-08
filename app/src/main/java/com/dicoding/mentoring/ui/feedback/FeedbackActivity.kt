@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.ActivityFeedbackBinding
-import com.dicoding.mentoring.ui.login.LoginActivity
+import com.dicoding.mentoring.ui.onboard.OnboardActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -61,7 +61,7 @@ class FeedbackActivity : AppCompatActivity() {
                 }
             }
         } else {
-            startActivity(Intent(this, LoginActivity::class.java))
+            startActivity(Intent(this, OnboardActivity::class.java))
             finish()
         }
     }

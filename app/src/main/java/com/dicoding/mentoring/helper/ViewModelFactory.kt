@@ -2,7 +2,7 @@ package com.dicoding.mentoring.helper
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dicoding.mentoring.ui.authmentor.RegisterMentorViewModel
+import com.dicoding.mentoring.ui.registerMentor.RegisterMentorViewModel
 import com.dicoding.mentoring.ui.register.RegisterViewModel
 import com.google.firebase.auth.FirebaseAuth
 

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.adapter.ScheduleAdapter
 import com.dicoding.mentoring.databinding.FragmentScheduleBinding
-import com.dicoding.mentoring.ui.login.LoginActivity
+import com.dicoding.mentoring.ui.onboard.OnboardActivity
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -53,7 +53,7 @@ class ScheduleFragment : Fragment() {
         if (user != null) {
             renderSchedulePage(user)
         } else {
-            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            startActivity(Intent(requireActivity(), OnboardActivity::class.java))
             activity?.finish()
         }
     }
