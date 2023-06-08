@@ -250,9 +250,9 @@ class EditProfileActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {
                 val input = s.toString()
-                val isValid = input.matches(Regex("^(\\+62)\\d*$")) && input.length >= 10
+                val isValid = input.matches(Regex("^(\\+62)\\d*$")) && input.length >= 13
                 editText.error =
-                    if (isValid) null else "Input salah. Angka harus diawali dengan +62 dan minimal 14 angka"
+                    if (isValid) null else "Input salah. Angka harus diawali dengan +62 dan setelahnya diikuti minimal 10 angka"
             }
 
         })
