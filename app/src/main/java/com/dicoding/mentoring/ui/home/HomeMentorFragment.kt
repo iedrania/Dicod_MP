@@ -45,17 +45,29 @@ class HomeMentorFragment : Fragment() {
         checkCurrentUser()
 
         homeMentorViewModel = ViewModelProvider(this)[HomeMentorViewModel::class.java]
-        homeMentorViewModel.isLoading.observe(viewLifecycleOwner){showLoading(it)}
+        homeMentorViewModel.isLoading.observe(viewLifecycleOwner) { showLoading(it) }
         homeMentorViewModel.dashboardMentorData.observe(viewLifecycleOwner) {
 
             binding.ratingBar.rating = it.averageRating.toFloat()
-            binding.tvAverageRating.text =
-                getString(R.string.rating_value, it.averageRating.toString())
+
+            if (it.averageRating == 0.0) {
+                binding.tvAverageRating.text = "Anda belum pernah melakukan mentoring"
+            } else {
+                binding.tvAverageRating.text =
+                    getString(R.string.rating_value, it.averageRating.toString())
+            }
+
             binding.tvPercentagePositive.text =
                 getString(R.string.sentiment_value, it.sentiment.positive.toString())
             binding.tvPercentageNegative.text =
                 getString(R.string.sentiment_value, it.sentiment.negative.toString())
-            binding.tvMenteeFeedbackSummarizer.text = it.feedbackSummary
+
+
+            if (it.feedbackSummary == ".") {
+                binding.tvMenteeFeedbackSummarizer.text = "-"
+            } else {
+                binding.tvMenteeFeedbackSummarizer.text = it.feedbackSummary
+            }
         }
     }
 

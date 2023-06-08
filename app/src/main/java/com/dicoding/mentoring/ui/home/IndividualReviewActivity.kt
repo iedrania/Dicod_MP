@@ -25,6 +25,9 @@ class IndividualReviewActivity : AppCompatActivity() {
         binding = ActivityIndividualReviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Ulasan Individu"
+
         checkCurrentUser()
 
         homeMentorViewModel = ViewModelProvider(this)[HomeMentorViewModel::class.java]
