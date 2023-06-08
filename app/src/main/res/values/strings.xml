@@ -113,4 +113,7 @@
     <string name="feedback_summary_mentee">Rangkuman Ulasan Mentee</string>
 
     <string name="mentoring_time_unchosen">Anda belum mengisi waktu mentoring</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="logout_confirmation">Apakah Anda yakin ingin logout?</string>
 </resources>
