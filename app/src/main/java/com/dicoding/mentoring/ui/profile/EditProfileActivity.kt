@@ -48,14 +48,18 @@ class EditProfileActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Profil")
-
-
+        
         checkCurrentUser()
+
+        //validate the save button
         attachPhoneValidation(binding.editTextPhone)
         attachNameValidation(binding.editTextFullname)
-
         setSaveButtonEnable()
-        binding.btnSave.doOnTextChanged { _, _, _, _ ->
+        binding.editTextFullname.doOnTextChanged { _, _, _, _ ->
+            setSaveButtonEnable()
+        }
+
+        binding.editTextPhone.doOnTextChanged { _, _, _, _ ->
             setSaveButtonEnable()
         }
 
@@ -230,7 +234,10 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun setSaveButtonEnable() {
         val nameResult = binding.editTextFullname.text
-        binding.btnSave.isEnabled = nameResult != null && nameResult.toString().isNotBlank()
+        val phoneResult = binding.editTextPhone.text.toString().trim()
+        val isPhoneValid = phoneResult.matches(Regex("^(\\+62)\\d*$")) && phoneResult.length >= 10
+        binding.btnSave.isEnabled =
+            nameResult != null && nameResult.toString().isNotBlank() && isPhoneValid
     }
 
     private fun attachPhoneValidation(editText: EditText) {
