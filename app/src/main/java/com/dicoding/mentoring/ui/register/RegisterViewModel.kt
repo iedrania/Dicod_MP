@@ -12,7 +12,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserViewModel(private val auth: FirebaseAuth) : ViewModel() {
+class RegisterViewModel(private val auth: FirebaseAuth) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -30,8 +30,7 @@ class UserViewModel(private val auth: FirebaseAuth) : ViewModel() {
                 _isLoading.value = false
                 val responseBody = response.body()
                 if (response.isSuccessful && responseBody != null) {
-                    auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener { task ->
+                    auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 Log.d(TAG, "signInFromRegister:success")
                             } else {
@@ -40,7 +39,6 @@ class UserViewModel(private val auth: FirebaseAuth) : ViewModel() {
                         }
                 } else {
                     _isError.value = true
-                    Log.e(TAG, "postRegister ERROR: ${response.message()}")
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = errorBody?.let { JSONObject(it).getString("message") }
                     Log.e(TAG, "postRegister onError: $errorMessage")
@@ -56,6 +54,6 @@ class UserViewModel(private val auth: FirebaseAuth) : ViewModel() {
     }
 
     companion object {
-        private const val TAG = "UserViewModel"
+        private const val TAG = "RegisterViewModel"
     }
 }

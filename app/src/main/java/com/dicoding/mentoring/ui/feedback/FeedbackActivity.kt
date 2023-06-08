@@ -19,7 +19,9 @@ class FeedbackActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFeedbackBinding
     private lateinit var feedbackViewModel: FeedbackViewModel
 
-    private lateinit var mentoringId: String
+    private lateinit var groupId: String
+    private lateinit var textId: String
+    private var mentoringId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +30,10 @@ class FeedbackActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        mentoringId = intent.getStringExtra(EXTRA_MENTORING).toString()
-        if (mentoringId.isBlank()) finish() else getCurrentUser()
+        groupId = intent.getStringExtra(EXTRA_GROUP).toString()
+        textId = intent.getStringExtra(EXTRA_TEXT).toString()
+        mentoringId = intent.getLongExtra(EXTRA_MENTORING, 0)
+        if (mentoringId == 0.toLong()) finish() else getCurrentUser()
 
         feedbackViewModel = ViewModelProvider(this)[FeedbackViewModel::class.java]
         feedbackViewModel.isLoading.observe(this) { showLoading(it) }
@@ -49,6 +53,8 @@ class FeedbackActivity : AppCompatActivity() {
                         mentoringId,
                         binding.edFeedbackFeedback.text.toString(),
                         binding.rbFeedbackStars.rating,
+                        groupId,
+                        textId
                     )
                     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(it1.windowToken, 0)
@@ -78,5 +84,7 @@ class FeedbackActivity : AppCompatActivity() {
 
     companion object {
         private const val EXTRA_MENTORING = "extra_mentoring"
+        private const val EXTRA_GROUP = "extra_group"
+        private const val EXTRA_TEXT = "extra_text"
     }
 }

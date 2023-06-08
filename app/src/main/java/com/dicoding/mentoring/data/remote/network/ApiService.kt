@@ -13,16 +13,25 @@ interface ApiService {
     fun postRegister(
         @Field("name") name: String,
         @Field("email") email: String,
-        @Field("password") password: String
+        @Field("password") password: String,
+    ): Call<RegisterResponse>
+
+    @FormUrlEncoded
+    @POST("auth/register")
+    fun postRegisterMentor(
+        @Field("name") name: String,
+        @Field("email") email: String,
+        @Field("password") password: String,
+        @Field("role") role: String = "mentor",
     ): Call<RegisterResponse>
 
     @FormUrlEncoded
     @POST("mentee/feedback")
     fun postFeedback(
         @Header("Authorization") token: String,
-        @Field("mentoring_id") mentoringId: String,
+        @Field("mentoring_id") mentoringId: Long,
         @Field("feedback") feedback: String,
-        @Field("rating") rating: Float
+        @Field("rating") rating: Float,
     ): Call<FeedbackResponse>
 
     @GET("mentee/mentors")
@@ -55,13 +64,13 @@ interface ApiService {
         @Field("gender_id") gender_id: Int?,
         @Field("phone") phone: String?,
         @Field("bio") bio: String?,
-        @Field("email") email: String?
+        @Field("email") email: String?,
     ): Call<PostUserProfileResponse>
 
 
     @GET("user/interest")
     fun getUserInterest(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
     ): Call<InterestResponse>
 
     @FormUrlEncoded
@@ -76,12 +85,12 @@ interface ApiService {
         @Field("is_path_be") is_path_be: Boolean?,
         @Field("is_path_react") is_path_react: Boolean?,
         @Field("is_path_devops") is_path_devops: Boolean?,
-        @Field("is_path_gcp") is_path_gcp: Boolean?
+        @Field("is_path_gcp") is_path_gcp: Boolean?,
     ): Call<PostUserProfileResponse>
 
     @GET("/user/days")
     fun getAvailableDays(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
     ): Call<AvailableDaysResponse>
 
     @FormUrlEncoded
@@ -101,7 +110,7 @@ interface ApiService {
     @PUT("user/avatar")
     fun updateUserProfilePicture(
         @Header("Authorization") token: String,
-        @Part file: MultipartBody.Part
+        @Part file: MultipartBody.Part,
     ): Call<PostUserProfileResponse>
 
     @FormUrlEncoded
@@ -109,11 +118,11 @@ interface ApiService {
     fun uploadMentoringTime(
         @Header("Authorization") token: String,
         @Field("mentees_id") mentees_id: ArrayList<String>,
-        @Field("start_time") start_time: String
+        @Field("start_time") start_time: String,
     ): Call<MentoringResponse>
 
     @GET("/mentor/dashboard")
     fun getDashboardMentor(
-        @Header("Authorization") token: String
-    ) : Call<HomeMentorResponse>
+        @Header("Authorization") token: String,
+    ): Call<HomeMentorResponse>
 }

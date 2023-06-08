@@ -3,29 +3,24 @@ package com.dicoding.mentoring.ui.timepicker
 import android.app.TimePickerDialog
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.ActivitySetTimeDateBinding
 import com.dicoding.mentoring.utils.convertDateToISOString
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
-import kotlin.collections.ArrayList
-
 
 class TimePickerActivity : AppCompatActivity() {
 
     private lateinit var timePickerViewModel: TimePickerViewModel
     private lateinit var binding: ActivitySetTimeDateBinding
     private val calendar: Calendar = Calendar.getInstance()
-
-    private var menteeId: String? = null
-    private var userIds = ArrayList<String>()
     private var isTimeFilled: Boolean = false
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -34,12 +29,12 @@ class TimePickerActivity : AppCompatActivity() {
         binding = ActivitySetTimeDateBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val groupId = intent.getStringExtra(EXTRA_GROUP)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         timePickerViewModel = ViewModelProvider(this)[TimePickerViewModel::class.java]
 
-
-        //update selected calendar date
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            // Update the calendar with the selected date
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, month)
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -50,24 +45,24 @@ class TimePickerActivity : AppCompatActivity() {
         }
 
         binding.btnSave.setOnClickListener {
-
-            //validate data
             if (isTimeFilled) {
                 val selectedDate = calendar.time
-                // convert to ISOString
                 val isoDate = convertDateToISOString(selectedDate)
-                postMentoringTime(isoDate)
+                if (groupId != null) {
+                    postMentoringTime(isoDate, groupId)
+                } else {
+                    finish()
+                }
                 finish()
             } else {
-                Toast.makeText(this, "Anda belum mengisi waktu mentoring", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(
+                    this, getString(R.string.mentoring_time_unchosen), Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
 
     private fun showTimePickerDialog() {
-
-        //variable for get time data
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
 
@@ -78,7 +73,6 @@ class TimePickerActivity : AppCompatActivity() {
 
                 isTimeFilled = true
 
-                //set text mentoring time
                 binding.tvMentoringTimeChoose.text = calendar.time.toString()
 
             }, hour, minute, false
@@ -86,35 +80,34 @@ class TimePickerActivity : AppCompatActivity() {
         timePickerDialog.show()
     }
 
-    private fun postMentoringTime(isoDate: String): Task<QuerySnapshot> {
+    private fun postMentoringTime(isoDate: String, groupId: String) {
         val db = Firebase.firestore
         val user = Firebase.auth.currentUser
 
-        val dbRef = db.collection("groups").whereArrayContains("members", user?.uid!!)
-        return dbRef.get().addOnSuccessListener { result ->
-            for (document in result) {
-                val membersArray = document.data["members"] as List<String>
-                if (membersArray.isNotEmpty()) {
-                    menteeId = membersArray[1]
-                    println("nilai menteeId adalah : $menteeId")
-                    userIds.add(menteeId!!)
-                    println("Array userIds: $userIds")
-
-                    user.let {
-                        user.getIdToken(false).addOnSuccessListener {
-                            // upload create mentoring data
-                            timePickerViewModel.postMentoringTime(it.token, userIds, isoDate)
-                        }
-                    }
-                    println("isoDate: $isoDate")
-                    println("PostMentoring sudah tereksekusi. Array userIds: $userIds")
-                    break
+        db.collection("groups").document(groupId).get().addOnSuccessListener { document ->
+            if (document != null) {
+                Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                val members = document.data?.get("members") as ArrayList<String>
+                user?.getIdToken(false)?.addOnSuccessListener {
+                    timePickerViewModel.postMentoringTime(
+                        it.token, arrayListOf(members[0]), isoDate, members, groupId
+                    )
                 }
+            } else {
+                Log.d(TAG, "No such document")
             }
+        }.addOnFailureListener { exception ->
+            Log.d(TAG, "get failed with ", exception)
         }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
     companion object {
-        const val TAG = "getMenteeName"
+        private const val EXTRA_GROUP = "extra_group"
+        private const val TAG = "TimePickerActivity"
     }
 }

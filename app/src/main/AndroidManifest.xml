@@ -18,9 +18,6 @@
             android:name=".ui.authmentor.RegisterMentorActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.authmentor.LoginMentorActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.chat.ChatActivity"
             android:exported="false" />
         <activity
@@ -34,9 +31,6 @@
             android:exported="false" />
         <activity
             android:name=".ui.profile.ListInterestActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivityOld"
             android:exported="false" />
         <activity
             android:name=".ui.login.LoginActivity"

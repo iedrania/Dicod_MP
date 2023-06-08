@@ -66,7 +66,9 @@ class ChatActivity : AppCompatActivity() {
                     "messageText" to binding.edChatInput.text.toString(),
                     "sentBy" to user.uid,
                     "sentAt" to Timestamp.now(),
-                    "imageUrl" to null,
+                    "specialChat" to false,
+                    "mentoringId" to -1,
+                    "feedbackGiven" to null,
                 )
 
                 db.collection("messages/$groupId/texts").add(data)
@@ -102,13 +104,14 @@ class ChatActivity : AppCompatActivity() {
 
                 for (doc in value!!) {
                     doc.toObject<Chat>().let {
+                        it.id = doc.id
                         chats.add(it)
                     }
                 }
 
                 Log.d(TAG, "Current chats for user: $chats")
                 binding.rvChats.layoutManager = LinearLayoutManager(this)
-                chatAdapter = ChatAdapter(chats, user.uid, userRole)
+                chatAdapter = ChatAdapter(chats, user.uid, userRole, groupId)
                 binding.rvChats.adapter = chatAdapter
                 scrollToBottom()
             }
@@ -130,7 +133,9 @@ class ChatActivity : AppCompatActivity() {
     private fun renderChatMentorPage(user: FirebaseUser, groupId: String) {
         binding.ivChatCalendar.visibility = View.VISIBLE
         binding.ivChatCalendar.setOnClickListener {
-            TODO("Intent to Session Page")
+            val intent = Intent(this, TimePickerActivity::class.java)
+            intent.putExtra(EXTRA_GROUP, groupId)
+            startActivity(intent)
         }
         renderChatPage(user, groupId, "mentor")
     }
