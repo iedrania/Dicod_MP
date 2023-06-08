@@ -175,7 +175,7 @@
                     android:hint="@string/tvBiography" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.dicoding.mentoring.ui.customview.SubmitButton
+            <com.dicoding.mentoring.ui.customview.SaveButton
                 android:id="@+id/btn_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
