@@ -25,7 +25,8 @@ class ListDayActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityListDayBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Pilih Hari")
 
         //Obtain Viewmodel
@@ -47,6 +48,7 @@ class ListDayActivity : AppCompatActivity() {
                 finish()
             }
         }
+        setContentView(binding.root)
     }
 
     private fun updateItemValue(idDays: Int, newValue: Boolean) {

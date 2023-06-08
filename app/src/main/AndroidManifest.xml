@@ -42,7 +42,7 @@
             android:name=".ui.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.profile.ProfileActivity"
+            android:name=".ui.profile.EditProfileActivity"
             android:exported="false" />
         <activity
             android:name=".ui.profile.ListDayActivity"

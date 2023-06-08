@@ -4,111 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_marginHorizontal="5dp"
+    android:orientation="vertical"
     tools:context=".ui.profile.ListDayActivity">
 
-    <androidx.cardview.widget.CardView
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Headline"
+        android:text="@string/intro_select_days_interest"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"
+        />
+
+    <CheckBox
+        android:layout_marginTop="10dp"
+        android:id="@+id/checkbox_monday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp">
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/checkbox_senin"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
-        <CheckBox
-            android:id="@+id/checkbox_monday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/checkbox_senin"
-            android:textColor="@color/black" />
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
+    <CheckBox
+        android:id="@+id/checkbox_tuesday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp">
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/checkbox_selasa" />
 
-        <CheckBox
-            android:id="@+id/checkbox_tuesday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/checkbox_selasa" />
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
+    <CheckBox
+        android:id="@+id/checkbox_wednesday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp">
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/checkbox_rabu"
+        android:textSize="16sp" />
 
-        <CheckBox
-            android:id="@+id/checkbox_wednesday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/checkbox_rabu" />
-
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
+    <CheckBox
+        android:id="@+id/checkbox_thursday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp">
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/checkbox_kamis"
+        android:textSize="16sp" />
 
-        <CheckBox
-            android:id="@+id/checkbox_thursday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/checkbox_kamis" />
-
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
+    <CheckBox
+        android:id="@+id/checkbox_friday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp">
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/checkbox_jum_at"
+        android:textSize="16sp" />
 
-        <CheckBox
-            android:id="@+id/checkbox_friday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/checkbox_jum_at" />
-
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
+    <CheckBox
+        android:id="@+id/checkbox_saturday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp">
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/checkbox_sabtu"
+        android:textSize="16sp" />
 
-        <CheckBox
-            android:id="@+id/checkbox_saturday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/checkbox_sabtu" />
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
+    <CheckBox
+        android:id="@+id/checkbox_sunday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp">
-
-        <CheckBox
-            android:id="@+id/checkbox_sunday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/checkbox_minggu" />
-
-    </androidx.cardview.widget.CardView>
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/checkbox_minggu"
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/btn_save"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/primary"
         android:fontFamily="@font/quicksand_semibold"
-        android:text="@string/btnSave"/>
+        android:text="@string/btnSave" />
 </LinearLayout>

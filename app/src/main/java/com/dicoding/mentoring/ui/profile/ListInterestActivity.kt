@@ -2,6 +2,7 @@ package com.dicoding.mentoring.ui.profile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
@@ -43,6 +44,8 @@ class ListInterestActivity : AppCompatActivity() {
             showLoading(it)
         }
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         //Obtain Firebase user token
         val user = FirebaseAuth.getInstance().currentUser
         user?.getIdToken(false)
@@ -54,6 +57,16 @@ class ListInterestActivity : AppCompatActivity() {
         btnSave.setOnClickListener {
             updateInterest(token)
             finish()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

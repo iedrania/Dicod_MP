@@ -1,21 +1,30 @@
 package com.dicoding.mentoring.ui.profile
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.dicoding.mentoring.data.local.PostUserProfileResponse
 import com.dicoding.mentoring.data.remote.network.ApiConfig
-import com.dicoding.mentoring.databinding.ActivityProfileBinding
+import com.dicoding.mentoring.databinding.ActivityEditProfileBinding
+import com.dicoding.mentoring.ui.login.LoginActivity
 import com.dicoding.mentoring.utils.convUriToFile
 import com.dicoding.mentoring.utils.reduceFileImage
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -24,54 +33,75 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-class ProfileActivity : AppCompatActivity() {
+class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var profileViewModel: ProfileViewModel
-    private lateinit var binding: ActivityProfileBinding
+    private lateinit var binding: ActivityEditProfileBinding
 
     //set getFile into null to prevent error when update profile
     private var getFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityProfileBinding.inflate(layoutInflater)
+        binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Obtain Firebase user token
-        val user = FirebaseAuth.getInstance().currentUser
-        user?.getIdToken(false)
-        // get list of all mentors for adapter
-        val token = user?.getIdToken(false)?.result?.token
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle("Profil")
+
+
+        checkCurrentUser()
+        attachPhoneValidation(binding.editTextPhone)
+        attachNameValidation(binding.editTextFullname)
+
+        setSaveButtonEnable()
+        binding.btnSave.doOnTextChanged { _, _, _, _ ->
+            setSaveButtonEnable()
+        }
 
         //Obtain ViewModel
         profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
 
-        profileViewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
+        profileViewModel.isLoading.observe(this) { showLoading(it) }
 
-        if (token != null) {
-            getUserDataProfile(token)
-        }
-
-        binding.chipChangePicture.setOnClickListener {
-            galleryAction()
-        }
+        binding.btnChangePicture.setOnClickListener { galleryAction() }
 
         //Update profile when save button clicked
         binding.btnSave.setOnClickListener {
-            if (token != null) {
-                updateUserDataProfile(token)
-                if (getFile != null) uploadImage(token)
-                val resultIntent = Intent()
-                setResult(Activity.RESULT_OK, resultIntent)
-                finish()
+            val user = Firebase.auth.currentUser
+
+            user.let {
+                user?.getIdToken(false)?.addOnSuccessListener {
+                    if (getFile != null) uploadImage(it.token)
+                    updateUserDataProfile(it.token)
+                    val resultIntent = Intent()
+                    setResult(Activity.RESULT_OK, resultIntent)
+                    finish()
+                }
             }
         }
     }
 
+    private fun checkCurrentUser() {
+        val user = Firebase.auth.currentUser
+        if (user != null) {
+            renderProfilePage(user)
+        } else {
+            val intent = Intent(this@EditProfileActivity, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
 
-    private fun getUserDataProfile(token: String) {
+    private fun renderProfilePage(user: FirebaseUser) {
+        user.let {
+            user.getIdToken(false).addOnSuccessListener {
+                getUserDataProfile(it.token)
+            }
+        }
+    }
+
+    private fun getUserDataProfile(token: String?) {
         Log.d(
             "ProfileFragment",
             "getUserDataProfile : token user pada profile fragment adalah : $token"
@@ -92,20 +122,19 @@ class ProfileActivity : AppCompatActivity() {
             binding.editTextEmail.setText(it.email)
             binding.editTextBiography.setText(it.bio)
             if (it.is_mentor) {
-                binding.radioMentor.isChecked = true
+                binding.editTextRole.setText("Mentor")
             } else {
-                binding.radioMentee.isChecked = true
+                binding.editTextRole.setText("Mentee")
             }
             if (it.gender_id == 1) {
                 binding.radioMale.isChecked = true
-            } else {
+            } else if (it.gender_id == 2) {
                 binding.radioFemale.isChecked = true
             }
         }
     }
 
-
-    private fun updateUserDataProfile(token: String) {
+    private fun updateUserDataProfile(token: String?) {
         var gender_id: Int? = null
         profileViewModel.userProfile.observe(this) {
 
@@ -127,12 +156,22 @@ class ProfileActivity : AppCompatActivity() {
         println(gender_id)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
 
-//    Fungsi membuka gallery
+    //    Fungsi membuka gallery
     private fun galleryAction() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
@@ -146,13 +185,13 @@ class ProfileActivity : AppCompatActivity() {
     ) {
         if (it.resultCode == RESULT_OK) {
             val selectedImage: Uri = it.data?.data as Uri
-            val myFile = convUriToFile(selectedImage, this@ProfileActivity)
+            val myFile = convUriToFile(selectedImage, this@EditProfileActivity)
             getFile = myFile
             binding.imgProfilePic.setImageURI(selectedImage)
         }
     }
 
-    private fun uploadImage(token: String) {
+    private fun uploadImage(token: String?) {
         if (getFile != null) {
             val file = reduceFileImage(getFile!!)
             val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
@@ -162,7 +201,8 @@ class ProfileActivity : AppCompatActivity() {
                 requestImageFile
             )
 
-            val client = ApiConfig.getApiService().updateUserProfilePicture("Bearer $token", imageMultipart)
+            val client =
+                ApiConfig.getApiService().updateUserProfilePicture("Bearer $token", imageMultipart)
             client.enqueue(object : Callback<PostUserProfileResponse> {
                 override fun onResponse(
                     call: Call<PostUserProfileResponse>,
@@ -172,12 +212,15 @@ class ProfileActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         Log.d("uploadImage", "Rersponse sukses, response body: ${response.body()}")
                     } else {
-                        Log.e("uploadImage", "Ada response namun tidak sukses. response body :  ${response.body()}")
+                        Log.e(
+                            "uploadImage",
+                            "Ada response namun tidak sukses. response body :  ${response.body()}"
+                        )
                     }
                 }
 
                 override fun onFailure(call: Call<PostUserProfileResponse>, t: Throwable) {
-                    Log.d("uploadImage",t.message.toString())
+                    Log.d("uploadImage", t.message.toString())
                 }
 
             })
@@ -185,5 +228,43 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    private fun setSaveButtonEnable() {
+        val nameResult = binding.editTextFullname.text
+        binding.btnSave.isEnabled = nameResult != null && nameResult.toString().isNotBlank()
+    }
 
+    private fun attachPhoneValidation(editText: EditText) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val input = s.toString()
+                val isValid = input.matches(Regex("^(\\+62)\\d*$")) && input.length >= 10
+                editText.error =
+                    if (isValid) null else "Input salah. Angka harus diawali dengan +62 dan minimal 14 angka"
+            }
+
+        })
+    }
+
+    private fun attachNameValidation(editText: EditText) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val text = s.toString().trim()
+                if (text.isEmpty()) {
+                    editText.error = "Nama tidak boleh kosong!"
+                }
+            }
+        })
+    }
 }

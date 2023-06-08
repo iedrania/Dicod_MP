@@ -23,10 +23,10 @@
         android:label="@string/title_schedule" />
 
     <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.dicoding.mentoring.ui.profile.ProfileFragment"
-        android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile"/>
+        android:id="@+id/navigation_menu"
+        android:name="com.dicoding.mentoring.ui.menu.MenuFragment"
+        android:label="Menu"
+        tools:layout="@layout/fragment_menu"/>
 
 
 </navigation>
