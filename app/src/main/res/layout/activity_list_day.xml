@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:text="@string/checkbox_senin"
+        android:text="@string/monday"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
@@ -32,14 +32,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:text="@string/checkbox_selasa" />
+        android:text="@string/tuesday" />
 
     <CheckBox
         android:id="@+id/checkbox_wednesday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:text="@string/checkbox_rabu"
+        android:text="@string/wednesday"
         android:textSize="16sp" />
 
     <CheckBox
@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:text="@string/checkbox_kamis"
+        android:text="@string/thursday"
         android:textSize="16sp" />
 
     <CheckBox
@@ -55,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:text="@string/checkbox_jum_at"
+        android:text="@string/friday"
         android:textSize="16sp" />
 
     <CheckBox
@@ -63,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:text="@string/checkbox_sabtu"
+        android:text="@string/saturday"
         android:textSize="16sp" />
 
     <CheckBox
@@ -71,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:text="@string/checkbox_minggu"
+        android:text="@string/sunday"
         android:textSize="16sp" />
 
     <Button

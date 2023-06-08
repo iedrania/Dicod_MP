@@ -3,6 +3,7 @@ package com.dicoding.mentoring.ui.profile
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.dicoding.mentoring.R
 import com.dicoding.mentoring.data.local.Days
 import com.dicoding.mentoring.databinding.ActivityListDayBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -12,30 +13,29 @@ class ListDayActivity : AppCompatActivity() {
     private lateinit var dayViewModel: DayViewModel
     private lateinit var binding: ActivityListDayBinding
 
-    private val days: MutableList<Days> = mutableListOf(
-        Days(0, "Senin", false),
-        Days(1, "Selasa", false),
-        Days(2, "Rabu", false),
-        Days(3, "Kamis", false),
-        Days(4, "Jumat", false),
-        Days(5, "Sabtu", false),
-        Days(6, "Minggu", false),
-    )
+    private lateinit var days: MutableList<Days>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityListDayBinding.inflate(layoutInflater)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setTitle("Pilih Hari")
+        supportActionBar?.title = getString(R.string.choose_days)
 
-        //Obtain Viewmodel
-        dayViewModel = ViewModelProvider(this).get(DayViewModel::class.java)
+        days = mutableListOf(
+            Days(0, getString(R.string.monday), false),
+            Days(1, getString(R.string.tuesday), false),
+            Days(2, getString(R.string.wednesday), false),
+            Days(3, getString(R.string.thursday), false),
+            Days(4, getString(R.string.friday), false),
+            Days(5, getString(R.string.saturday), false),
+            Days(6, getString(R.string.sunday), false),
+        )
 
-        //Obtain Firebase user token
+        dayViewModel = ViewModelProvider(this)[DayViewModel::class.java]
+
         val user = FirebaseAuth.getInstance().currentUser
         user?.getIdToken(false)
-        // get list of all mentors for adapter
         val token = user?.getIdToken(false)?.result?.token
 
         if (token != null) {
@@ -72,23 +72,28 @@ class ListDayActivity : AppCompatActivity() {
     }
 
     private fun updateAvailableDays(token: String) {
-        //update days value
-        if(binding.checkboxMonday.isChecked) updateItemValue(0,true) else updateItemValue(0,false)
-        if(binding.checkboxTuesday.isChecked)updateItemValue(1,true) else updateItemValue(1,false)
-        if(binding.checkboxWednesday.isChecked)updateItemValue(2,true) else updateItemValue(2,false)
-        if(binding.checkboxThursday.isChecked)updateItemValue(3,true) else updateItemValue(3,false)
-        if(binding.checkboxFriday.isChecked)updateItemValue(4,true) else updateItemValue(4,false)
-        if(binding.checkboxSaturday.isChecked)updateItemValue(5,true) else updateItemValue(5,false)
-        if(binding.checkboxSunday.isChecked)updateItemValue(6,true) else updateItemValue(6,false)
+        if (binding.checkboxMonday.isChecked) updateItemValue(0, true)
+        else updateItemValue(0, false)
+        if (binding.checkboxTuesday.isChecked) updateItemValue(1, true)
+        else updateItemValue(1, false)
+        if (binding.checkboxWednesday.isChecked) updateItemValue(2, true)
+        else updateItemValue(2, false)
+        if (binding.checkboxThursday.isChecked) updateItemValue(3, true)
+        else updateItemValue(3, false)
+        if (binding.checkboxFriday.isChecked) updateItemValue(4, true)
+        else updateItemValue(4, false)
+        if (binding.checkboxSaturday.isChecked) updateItemValue(5, true)
+        else updateItemValue(5, false)
+        if (binding.checkboxSunday.isChecked) updateItemValue(6, true)
+        else updateItemValue(6, false)
 
-        //get days value
-        var statMonday = days[0].isSelected
-        var statTuesday = days[1].isSelected
-        var statWednesday = days[2].isSelected
-        var statThursday = days[3].isSelected
-        var statFriday = days[4].isSelected
-        var statSaturday = days[5].isSelected
-        var statSunday = days[6].isSelected
+        val statMonday = days[0].isSelected
+        val statTuesday = days[1].isSelected
+        val statWednesday = days[2].isSelected
+        val statThursday = days[3].isSelected
+        val statFriday = days[4].isSelected
+        val statSaturday = days[5].isSelected
+        val statSunday = days[6].isSelected
 
         dayViewModel.postDayAvailibility(
             token,
@@ -100,5 +105,10 @@ class ListDayActivity : AppCompatActivity() {
             statSaturday,
             statSunday
         )
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }

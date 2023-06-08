@@ -1,6 +1,8 @@
 <resources>
     <!--General-->
     <string name="app_name">Mentoring</string>
+    <string name="tagline">Pendidikan teknologi untuk semua.</string>
+
     <string name="submit">Kirim</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
@@ -55,7 +57,7 @@
     <string name="role_null">Anda belum mengisi data jenis kelamin</string>
     <string name="radio_female">Perempuan</string>
 
-    <!--    Interest & Days-->
+    <!--Interest & Days-->
     <string name="intro_select_days_interest">Silahkan pilih hari Anda</string>
     <string name="intro_interest">Pilih bidang ketertarikan Anda</string>
 
@@ -85,14 +87,15 @@
     <string name="interests_label">Bidang ketertarikan:</string>
     <string name="days_label">Hari tersedia:</string>
 
-    <string name="tv_hint_havent_set_time">You haven\'t set mentoring time</string>
-    <string name="checkbox_senin">Senin</string>
-    <string name="checkbox_selasa">Selasa</string>
-    <string name="checkbox_rabu">Rabu</string>
-    <string name="checkbox_kamis">Kamis</string>
-    <string name="checkbox_jum_at">Jum\'at</string>
-    <string name="checkbox_sabtu">Sabtu</string>
-    <string name="checkbox_minggu">Minggu</string>
+    <!--Days-->
+    <string name="choose_days">Pilih Hari</string>
+    <string name="monday">Senin</string>
+    <string name="tuesday">Selasa</string>
+    <string name="wednesday">Rabu</string>
+    <string name="thursday">Kamis</string>
+    <string name="friday">Jumat</string>
+    <string name="saturday">Sabtu</string>
+    <string name="sunday">Minggu</string>
 
     <!--Home Mentor-->
     <string name="rating_value">%1$s/5</string>
@@ -104,13 +107,10 @@
     <string name="menu_interest">Pilih Ketertarikan Topik</string>
     <string name="menu_days">Pilih Hari Mentoring</string>
 
-
     <string name="average_rating">Rata-rata Penilaian</string>
     <string name="feedback_summary">Rangkuman Ulasan</string>
     <string name="individual_review">Ulasan Individu</string>
     <string name="feedback_summary_mentee">Rangkuman Ulasan Mentee</string>
 
-
     <string name="mentoring_time_unchosen">Anda belum mengisi waktu mentoring</string>
-    <string name="tagline">Pendidikan teknologi untuk semua.</string>
 </resources>
