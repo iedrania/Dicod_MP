@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mentoring.adapter.MessagesAdapter
 import com.dicoding.mentoring.databinding.FragmentMessageBinding
-import com.dicoding.mentoring.ui.login.LoginActivity
+import com.dicoding.mentoring.ui.onboard.OnboardActivity
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ListenerRegistration
@@ -47,7 +47,7 @@ class MessageFragment : Fragment() {
         if (user != null) {
             renderMessagesPage(user)
         } else {
-            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            startActivity(Intent(requireActivity(), OnboardActivity::class.java))
             activity?.finish()
         }
     }

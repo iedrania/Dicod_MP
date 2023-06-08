@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mentoring.R
 import com.dicoding.mentoring.adapter.MentorsAdapter
 import com.dicoding.mentoring.databinding.FragmentHomeBinding
-import com.dicoding.mentoring.ui.login.LoginActivity
+import com.dicoding.mentoring.ui.onboard.OnboardActivity
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -56,7 +56,7 @@ class HomeFragment : Fragment() {
         if (user != null) {
             renderHomePage(user)
         } else {
-            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            startActivity(Intent(requireActivity(), OnboardActivity::class.java))
             activity?.finish()
         }
     }

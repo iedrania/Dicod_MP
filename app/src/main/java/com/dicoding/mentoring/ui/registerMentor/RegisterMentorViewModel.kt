@@ -1,4 +1,4 @@
-package com.dicoding.mentoring.ui.authmentor
+package com.dicoding.mentoring.ui.registerMentor
 
 import android.util.Log
 import androidx.lifecycle.LiveData

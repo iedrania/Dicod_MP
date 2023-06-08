@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mentoring.adapter.ChatAdapter
 import com.dicoding.mentoring.data.local.Chat
 import com.dicoding.mentoring.databinding.ActivityChatBinding
-import com.dicoding.mentoring.ui.login.LoginActivity
+import com.dicoding.mentoring.ui.onboard.OnboardActivity
 import com.dicoding.mentoring.ui.timepicker.TimePickerActivity
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
@@ -52,7 +52,7 @@ class ChatActivity : AppCompatActivity() {
         if (user != null) {
             checkUserRole(user, groupId)
         } else {
-            startActivity(Intent(this, LoginActivity::class.java))
+            startActivity(Intent(this, OnboardActivity::class.java))
             finish()
         }
     }

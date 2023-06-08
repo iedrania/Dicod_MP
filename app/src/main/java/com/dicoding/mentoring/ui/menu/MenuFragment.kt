@@ -7,8 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.dicoding.mentoring.R
 import com.dicoding.mentoring.databinding.FragmentMenuBinding
-import com.dicoding.mentoring.ui.login.LoginActivity
+import com.dicoding.mentoring.ui.onboard.OnboardActivity
 import com.dicoding.mentoring.ui.profile.EditProfileActivity
 import com.dicoding.mentoring.ui.profile.ListDayActivity
 import com.dicoding.mentoring.ui.profile.ListInterestActivity
@@ -20,12 +21,9 @@ class MenuFragment : Fragment() {
     private lateinit var binding: FragmentMenuBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         binding = FragmentMenuBinding.inflate(inflater, container, false)
-
 
         binding.cardEditDays.setOnClickListener {
             val intent = Intent(activity, ListDayActivity::class.java)
@@ -43,16 +41,13 @@ class MenuFragment : Fragment() {
         }
 
         binding.cardLogout.setOnClickListener {
-            AlertDialog.Builder(requireContext())
-                .setTitle("Logout")
-                .setMessage("Apakah kamu yakin ingin logout dari akunmu?")
-                .setPositiveButton("Ya") { _, _ ->
+            AlertDialog.Builder(requireContext()).setTitle(getString(R.string.logout))
+                .setMessage(getString(R.string.logout_confirmation))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
                     Firebase.auth.signOut()
-                    startActivity(Intent(requireActivity(), LoginActivity::class.java))
+                    startActivity(Intent(requireActivity(), OnboardActivity::class.java))
                     requireActivity().finish()
-                }
-                .setNegativeButton("Tidak", null)
-                .show()
+                }.setNegativeButton(getString(R.string.no), null).show()
         }
         return binding.root
     }
