@@ -20,8 +20,7 @@ import com.google.firebase.ktx.Firebase
 class HomeMentorFragment : Fragment() {
 
     private lateinit var homeMentorViewModel: HomeMentorViewModel
-    private var _binding: FragmentHomeMentorBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentHomeMentorBinding
 
     companion object {
         const val TAG = "HomeMentorFragment"
@@ -30,7 +29,13 @@ class HomeMentorFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeMentorBinding.inflate(inflater, container, false)
+        binding = FragmentHomeMentorBinding.inflate(inflater, container, false)
+
+        binding.cardIndividualFeedback.setOnClickListener {
+            val intent = Intent(activity, IndividualReviewActivity::class.java)
+            activity?.startActivity(intent)
+        }
+
         return binding.root
     }
 
@@ -51,10 +56,6 @@ class HomeMentorFragment : Fragment() {
             binding.tvPercentageNegative.text =
                 getString(R.string.sentiment_value, it.sentiment.negative.toString())
             binding.tvMenteeFeedbackSummarizer.text = it.feedbackSummary
-
-            val adapter = ReviewAdapter(it.feedbacks)
-            binding.rvReviews.layoutManager = LinearLayoutManager(context)
-            binding.rvReviews.adapter = adapter
         }
     }
 

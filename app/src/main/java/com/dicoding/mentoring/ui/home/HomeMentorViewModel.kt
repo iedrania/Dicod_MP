@@ -34,7 +34,7 @@ class HomeMentorViewModel: ViewModel() {
                 _isLoading.value = false
                 if(response.isSuccessful){
                     _dashboardMentorData.value = response.body()?.dashboard
-                    Log.e(TAG, "Response sukses, response body : ${response.body()}")
+                    Log.d(TAG, "Response sukses, response body : ${response.body()}")
                 }else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }

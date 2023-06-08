@@ -9,6 +9,7 @@
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -16,21 +17,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="57dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:paddingBottom="20dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_main_welcome"
@@ -39,11 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="30dp"
-                android:text="Halo, John!"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="Halo, John!" />
 
             <TextView
                 android:id="@+id/tv_main_intro"
@@ -54,8 +44,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/secondary"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_main_welcome"
                 tools:text="@string/home_intro_mentor" />
 
             <androidx.cardview.widget.CardView
@@ -63,10 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_main_intro">
+                android:layout_marginVertical="10dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -82,10 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/average_rating"
-                        android:textSize="18dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_main_intro" />
+                        android:textSize="18dp" />
 
                     <RatingBar
                         android:id="@+id/ratingBar"
@@ -102,9 +84,7 @@
                         android:layout_marginTop="5dp"
                         android:text="X/5"
                         android:textSize="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+                       />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -115,10 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_rating_summary">
+                android:layout_marginVertical="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -133,20 +110,14 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
                         android:text="Rangkuman Sentimen Ulasan"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/card_rating_summary" />
+                        android:textSize="18sp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="10dp"
                         android:gravity="center"
-                        android:orientation="horizontal"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -197,7 +168,6 @@
                     </LinearLayout>
 
 
-
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -210,8 +180,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
                         style="@style/Title"
@@ -225,9 +195,10 @@
                     <TextView
                         android:id="@+id/tv_mentee_feedback_summarizer"
                         style="@style/Body"
-                        android:layout_width="200dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginHorizontal="25dp"
                         android:layout_marginBottom="10dp"
                         android:text="@string/feedback_summary_mentee" />
 
@@ -242,12 +213,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_feedback"
-                app:layout_constraintVertical_bias="0.106">
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -261,23 +227,21 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="16dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:text="@string/individual_review"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_reviews"
-                        android:layout_width="match_parent"
-                        android:layout_height="152dp"
-                        android:layout_marginHorizontal="20dp"
-                        android:layout_marginTop="5dp" />
+                    <TextView
+                        style="@style/Body"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/info_individual_feedback" />
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
