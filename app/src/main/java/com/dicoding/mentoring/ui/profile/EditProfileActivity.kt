@@ -11,11 +11,13 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.dicoding.mentoring.R
 import com.dicoding.mentoring.data.local.PostUserProfileResponse
 import com.dicoding.mentoring.data.remote.network.ApiConfig
 import com.dicoding.mentoring.databinding.ActivityEditProfileBinding
@@ -67,6 +69,10 @@ class EditProfileActivity : AppCompatActivity() {
         profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
 
         profileViewModel.isLoading.observe(this) { showLoading(it) }
+        profileViewModel.isError.observe(this) { showError(it) }
+        profileViewModel.isSuccess.observe(this) {
+            finish()
+        }
 
         binding.btnChangePicture.setOnClickListener { galleryAction() }
 
@@ -80,7 +86,6 @@ class EditProfileActivity : AppCompatActivity() {
                     updateUserDataProfile(it.token)
                     val resultIntent = Intent()
                     setResult(Activity.RESULT_OK, resultIntent)
-                    finish()
                 }
             }
         }
@@ -174,6 +179,13 @@ class EditProfileActivity : AppCompatActivity() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
+    private fun showError(isError: Boolean) {
+        if (isError) {
+            Toast.makeText(
+                this, getString(R.string.profile_update_failed), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
     //    Fungsi membuka gallery
     private fun galleryAction() {
