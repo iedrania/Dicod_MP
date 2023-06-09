@@ -1,7 +1,5 @@
 package com.dicoding.mentoring.ui.profile
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,11 +9,13 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import android.widget.RadioButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.dicoding.mentoring.R
 import com.dicoding.mentoring.data.local.PostUserProfileResponse
 import com.dicoding.mentoring.data.remote.network.ApiConfig
 import com.dicoding.mentoring.databinding.ActivityEditProfileBinding
@@ -54,12 +54,21 @@ class EditProfileActivity : AppCompatActivity() {
         //validate the save button
         attachPhoneValidation(binding.editTextPhone)
         attachNameValidation(binding.editTextFullname)
+        attachGenderValidation(binding.radioMale,binding.radioFemale)
         setSaveButtonEnable()
         binding.editTextFullname.doOnTextChanged { _, _, _, _ ->
             setSaveButtonEnable()
         }
 
         binding.editTextPhone.doOnTextChanged { _, _, _, _ ->
+            setSaveButtonEnable()
+        }
+
+        binding.radioMale.setOnCheckedChangeListener { _, _ ->
+            setSaveButtonEnable()
+        }
+
+        binding.radioFemale.setOnCheckedChangeListener { _, _ ->
             setSaveButtonEnable()
         }
 
@@ -78,8 +87,6 @@ class EditProfileActivity : AppCompatActivity() {
                 user?.getIdToken(false)?.addOnSuccessListener {
                     if (getFile != null) uploadImage(it.token)
                     updateUserDataProfile(it.token)
-                    val resultIntent = Intent()
-                    setResult(Activity.RESULT_OK, resultIntent)
                     finish()
                 }
             }
@@ -236,8 +243,9 @@ class EditProfileActivity : AppCompatActivity() {
         val nameResult = binding.editTextFullname.text
         val phoneResult = binding.editTextPhone.text.toString().trim()
         val isPhoneValid = phoneResult.matches(Regex("^(\\+62)\\d*$")) && phoneResult.length >= 10
+        val isGenderSelected = binding.radioMale.isChecked || binding.radioFemale.isChecked
         binding.btnSave.isEnabled =
-            nameResult != null && nameResult.toString().isNotBlank() && isPhoneValid
+            nameResult != null && nameResult.toString().isNotBlank() && isPhoneValid && isGenderSelected
     }
 
     private fun attachPhoneValidation(editText: EditText) {
@@ -273,5 +281,27 @@ class EditProfileActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun attachGenderValidation(radioButtonMale: RadioButton, radioButtonFemale: RadioButton) {
+        radioButtonMale.setOnCheckedChangeListener { _, isChecked ->
+            if (!isChecked && !radioButtonFemale.isChecked) {
+                // Display error if no gender is selected
+                radioButtonMale.error = "Salah satu gender harus diisi"
+            } else {
+                // Clear error if a gender is selected
+                radioButtonMale.error = null
+            }
+        }
+
+        radioButtonFemale.setOnCheckedChangeListener { _, isChecked ->
+            if (!isChecked && !radioButtonMale.isChecked) {
+                // Display error if no gender is selected
+                radioButtonFemale.error = "Salah satu gender harus diisi"
+            } else {
+                // Clear error if a gender is selected
+                radioButtonFemale.error = null
+            }
+        }
     }
 }
