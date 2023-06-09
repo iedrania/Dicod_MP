@@ -62,7 +62,7 @@ class ProfileViewModel : ViewModel() {
                 call: Call<PostUserProfileResponse>, response: Response<PostUserProfileResponse>
             ) {
                 _isLoading.value = false
-                Log.e(TAG, "response body : $response")
+                Log.d(TAG, "response body : $response")
                 if (response.isSuccessful) {
                     _userProfile.value = response.body()?.updatedUser
                     Log.d(TAG, "Response sukses, response body : ${response.body()}")
