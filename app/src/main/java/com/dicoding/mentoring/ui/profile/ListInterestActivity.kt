@@ -123,7 +123,7 @@ class ListInterestActivity : AppCompatActivity() {
 
     private fun updateItemValue(idInterest: Int, newValue: Boolean) {
         val itemIndex = interests.indexOfFirst { it.id == idInterest }
-        if (idInterest > 0) {
+        if (idInterest > -1) {
             interests[itemIndex].isChecked = newValue
         }
     }

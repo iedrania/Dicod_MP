@@ -53,7 +53,7 @@ class ListDayActivity : AppCompatActivity() {
 
     private fun updateItemValue(idDays: Int, newValue: Boolean) {
         val itemIndex = days.indexOfFirst { it.id == idDays }
-        if (idDays > 0) {
+        if (idDays > -1) {
             days[itemIndex].isSelected = newValue
         }
     }
