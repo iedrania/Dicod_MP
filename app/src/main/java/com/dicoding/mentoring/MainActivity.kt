@@ -24,51 +24,57 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         checkCurrentUser()
+
+        val navView: BottomNavigationView = binding.navView
+
+        val user = Firebase.auth.currentUser
+        user.let {
+            user?.getIdToken(false)?.addOnSuccessListener {
+                val claims = it.claims
+
+                val navGraphResId = if (claims["role"] == "mentor") {
+                    R.navigation.navigation_mentor
+                } else {
+                    R.navigation.navigation_mentee
+                }
+
+                val navHostFragment =
+                    supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_bottom_navigation) as NavHostFragment
+                val navController = navHostFragment.navController
+                val inflater = navController.navInflater
+                val graph = inflater.inflate(navGraphResId)
+
+                navController.graph = graph
+
+                // Passing each menu ID as a set of Ids because each
+                // menu should be considered as top level destinations.
+                val appBarConfiguration = AppBarConfiguration(
+                    setOf(
+                        R.id.navigation_home,
+                        R.id.navigation_message,
+                        R.id.navigation_schedule,
+                        R.id.navigation_menu
+                    )
+                )
+                setupActionBarWithNavController(navController, appBarConfiguration)
+                navView.setupWithNavController(navController)
+
+                val fragmentType = intent.getStringExtra("fragment")
+                if (fragmentType == "schedule") navController.navigate(R.id.navigation_schedule)
+            }
+
+        }
+        setContentView(binding.root)
     }
 
     private fun checkCurrentUser() {
         auth = Firebase.auth
         authStateListener = FirebaseAuth.AuthStateListener { auth ->
-            val user = auth.currentUser
-            if (user == null) {
+            if (auth.currentUser == null) {
                 startActivity(Intent(this, OnboardActivity::class.java))
                 finish()
-            } else {
-                user.getIdToken(false).addOnSuccessListener {
-                    val claims = it.claims
-
-                    val navGraphResId = if (claims["role"] == "mentor") {
-                        R.navigation.navigation_mentor
-                    } else {
-                        R.navigation.navigation_mentee
-                    }
-
-                    val navView: BottomNavigationView = binding.navView
-
-                    val navHostFragment =
-                        supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_bottom_navigation) as NavHostFragment
-                    val navController = navHostFragment.navController
-                    val inflater = navController.navInflater
-                    val graph = inflater.inflate(navGraphResId)
-
-                    navController.graph = graph
-
-                    // Passing each menu ID as a set of Ids because each
-                    // menu should be considered as top level destinations.
-                    val appBarConfiguration = AppBarConfiguration(
-                        setOf(
-                            R.id.navigation_home,
-                            R.id.navigation_message,
-                            R.id.navigation_schedule,
-                            R.id.navigation_menu
-                        )
-                    )
-                    setupActionBarWithNavController(navController, appBarConfiguration)
-                    navView.setupWithNavController(navController)
-                }
             }
         }
     }
